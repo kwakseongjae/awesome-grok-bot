@@ -44,6 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     description,
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+    icons: {
+      icon: [{ url: "/brand/grok-bot-face.svg", type: "image/svg+xml" }],
+      apple: "/brand/grok-bot-face.svg",
+    },
     openGraph: {
       title,
       description,

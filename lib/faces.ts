@@ -11,25 +11,11 @@ export const LISTING_FACE_SLUGS = [
 
 export type ListingFaceSlug = (typeof LISTING_FACE_SLUGS)[number];
 
-export const BRAND = {
-  mascot: "/brand/mascot-hero.png",
-  mark: "/brand/favicon-mark.png",
-} as const;
-
+/** Official marks vendored locally. Do not hotlink or recolor. */
 export const MIGRATE_MARKS = {
-  hermes: "/brand/migrate/hermes-agent.png",
-  openclaw: "/brand/migrate/pixel-lobster.svg",
+  hermes: "/brand/migrate/hermes-icon.png",
+  openclaw: "/brand/migrate/openclaw.svg",
+  grokLight: "/brand/migrate/Grok_Logomark_Light.svg",
+  grokDark: "/brand/migrate/Grok_Logomark_Dark.svg",
 } as const;
 
-const FACE_SLUG_SET = new Set<string>(LISTING_FACE_SLUGS);
-
-export function listingFaceSrc(slug: string) {
-  if (FACE_SLUG_SET.has(slug)) {
-    return `/brand/faces/${slug}.png`;
-  }
-  return BRAND.mark;
-}
-
-export function isListingFaceSlug(slug: string): slug is ListingFaceSlug {
-  return FACE_SLUG_SET.has(slug);
-}

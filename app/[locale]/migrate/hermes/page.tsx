@@ -11,5 +11,5 @@ type Props = {
 export default async function HermesMigratePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(toAppLocale(locale));
-  return <MigrateSourcePage source="hermes" locale={locale} />;
+  return <MigrateSourcePage source="hermes" />;
 }

@@ -16,12 +16,11 @@ type Props = {
   listingDraft: HandoffListingDraft;
   skipped: string[];
   redactedCount: number;
-  canSave: boolean;
 };
 
 const KINDS: PacketKind[] = ["profile", "memory", "skill", "routine"];
 
-export function HandoffQueue({ source, packets, listingDraft, skipped, redactedCount, canSave }: Props) {
+export function HandoffQueue({ source, packets, listingDraft, skipped, redactedCount }: Props) {
   const t = useTranslations("migrate");
   const router = useRouter();
   const [includeOptional, setIncludeOptional] = useState(false);
@@ -132,10 +131,10 @@ export function HandoffQueue({ source, packets, listingDraft, skipped, redactedC
         </div>
         {current.kind === "profile" && profileCopied ? (
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <Button type="button" variant="outline" onClick={handleSaveListing} disabled={!canSave}>
+            <Button type="button" variant="outline" onClick={handleSaveListing}>
               {t("saveListing")}
             </Button>
-            <p className="text-xs text-muted-foreground">{canSave ? t("saveListingHint") : t("saveNeedsAuth")}</p>
+            <p className="text-xs text-muted-foreground">{t("saveListingHint")}</p>
           </div>
         ) : null}
       </section>

@@ -11,14 +11,8 @@ import { Label } from "@/components/ui/label";
 import { buildCharterFromPage } from "@/lib/charter";
 import type { BotDraftInput, ListingLocale } from "@/lib/types";
 
-type Props = {
-  canSave: boolean;
-  signedIn: boolean;
-};
-
-export function FromLinkForm({ canSave, signedIn }: Props) {
+export function FromLinkForm() {
   const t = useTranslations("fromLink");
-  const submitT = useTranslations("submit");
   const locale = useLocale() as ListingLocale;
   const [url, setUrl] = useState("");
   const [splitTeam, setSplitTeam] = useState(false);
@@ -119,9 +113,6 @@ export function FromLinkForm({ canSave, signedIn }: Props) {
         <BotForm
           key={`${draft.slug}-${draft.kind}-${draft.prompt?.slice(0, 24)}`}
           initial={draft}
-          canSave={canSave}
-          signedIn={signedIn}
-          demoHint={signedIn && canSave ? undefined : submitT("demoHint")}
         />
       ) : null}
     </div>

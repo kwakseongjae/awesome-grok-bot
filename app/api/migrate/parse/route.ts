@@ -1,7 +1,5 @@
 import { collectArchiveFiles } from "@/lib/migrate/archive";
 import { buildHandoff } from "@/lib/migrate/parse";
-import { getAuthStatus } from "@/lib/env";
-import { getServerSession } from "@/lib/session";
 import type { HandoffSource } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
 
@@ -19,18 +17,6 @@ function isLocale(value: FormDataEntryValue | null): value is ListingLocale {
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession();
-  if (!session?.user) {
-    const status = getAuthStatus();
-    return Response.json(
-      {
-        error: "Sign in required.",
-        missing: status.missing,
-      },
-      { status: 401 },
-    );
-  }
-
   const form = await request.formData().catch(() => null);
   if (!form) {
     return Response.json({ error: "Invalid form data." }, { status: 400 });

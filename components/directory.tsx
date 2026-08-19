@@ -42,13 +42,12 @@ type Props = {
   bots: BotListing[];
   integrations: string[];
   uiLocale: ListingLocale;
-  demoMode: boolean;
   view: DirectoryView;
 };
 
 const ALL = "all";
 
-export function Directory({ bots, integrations, uiLocale, demoMode, view: serverView }: Props) {
+export function Directory({ bots, integrations, uiLocale, view: serverView }: Props) {
   const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
@@ -118,12 +117,6 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
 
   return (
     <div className="space-y-6">
-      {demoMode ? (
-        <p className="rounded-md border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-          {t("home.demoBanner")}
-        </p>
-      ) : null}
-
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
         <div className="min-w-0 flex-1 space-y-2">
           <Label htmlFor="directory-search">{t("home.searchLabel")}</Label>

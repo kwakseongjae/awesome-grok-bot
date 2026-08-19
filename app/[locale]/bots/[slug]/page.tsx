@@ -53,7 +53,7 @@ export default async function BotDetailPage({ params }: Props) {
 
       <header className="mt-8 space-y-4">
         <div className="flex items-start gap-4">
-          <ListingFace slug={bot.slug} name={bot.name} size={72} priority />
+          <ListingFace slug={bot.slug} name={bot.name} size={72} />
           <div className="min-w-0 flex-1 space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
@@ -118,7 +118,7 @@ export default async function BotDetailPage({ params }: Props) {
             {bot.team_members.map((member, index) => (
               <article key={member.name} className="rounded-lg border bg-card p-4">
                 <div className="flex items-start gap-3">
-                  <ListingFace slug={bot.slug} name={member.name} size={40} crop={(index - 1) * 8} decorative />
+                  <ListingFace slug={bot.slug} name={member.name} size={40} decorative />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold">{member.name}</h3>
