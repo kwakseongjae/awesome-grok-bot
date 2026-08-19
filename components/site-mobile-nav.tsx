@@ -60,10 +60,10 @@ export function SiteMobileNav() {
             </SheetClose>
           ))}
         </nav>
-        <div className="mt-auto flex flex-wrap items-center gap-2 border-t p-4">
-          <LocaleSwitcher />
+        <div className="mt-auto flex items-center gap-1 border-t p-4">
+          <LocaleSwitcher appearance="icon" />
           <ThemeToggle />
-          <AuthButtons />
+          <AuthButtons appearance="icon" />
         </div>
       </SheetContent>
     </Sheet>

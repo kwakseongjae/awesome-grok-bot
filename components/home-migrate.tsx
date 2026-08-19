@@ -25,8 +25,9 @@ export function HomeMigrate() {
             <MigrateLockup source={card.source} />
             <div className="space-y-2">
               <h2 className="text-base font-semibold tracking-tight">{t(card.titleKey)}</h2>
-              <p className="text-sm leading-6 text-muted-foreground">{t("hint")}</p>
+              <p className="text-sm leading-6 text-muted-foreground">{t("body")}</p>
             </div>
+            <span className="text-sm font-medium">{t("cta")}</span>
           </Link>
         ))}
       </div>

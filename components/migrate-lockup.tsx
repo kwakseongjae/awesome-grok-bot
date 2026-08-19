@@ -10,46 +10,44 @@ type Props = {
   className?: string;
 };
 
+function SourceMark({ source }: { source: HandoffSource }) {
+  const src = MIGRATE_MARKS[source];
+
+  return (
+    <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted sm:size-12">
+      {source === "openclaw" ? (
+        // Pixel mark from OpenClaw; next/image SVG needs extra config.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt=""
+          width={36}
+          height={36}
+          className="size-8 sm:size-10"
+          style={{ imageRendering: "pixelated" }}
+        />
+      ) : (
+        <Image src={src} alt="" width={48} height={48} className="size-10 object-cover sm:size-12" />
+      )}
+    </span>
+  );
+}
+
 export function MigrateLockup({ source, className }: Props) {
   const t = useTranslations("migrate.home");
   const brand = useTranslations("brand");
   const sourceLabel = source === "hermes" ? t("hermesMark") : t("openclawMark");
-  const sourceSrc = MIGRATE_MARKS[source];
+  const destLabel = brand("name");
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex min-w-0 items-center gap-2 sm:gap-3", className)}>
       <span className="flex min-w-0 flex-1 items-center gap-2">
-        <span className="relative flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted">
-          {source === "openclaw" ? (
-            // Pixel mark from OpenClaw; next/image SVG needs extra config.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={sourceSrc}
-              alt={sourceLabel}
-              width={40}
-              height={40}
-              className="size-10"
-              style={{ imageRendering: "pixelated" }}
-            />
-          ) : (
-            <Image
-              src={sourceSrc}
-              alt={sourceLabel}
-              width={48}
-              height={48}
-              className="size-12 object-cover"
-            />
-          )}
-        </span>
-        <span className="truncate text-xs font-medium text-muted-foreground">{sourceLabel}</span>
+        <SourceMark source={source} />
+        <span className="truncate text-sm font-medium">{sourceLabel}</span>
       </span>
-      <span className="flex min-w-8 shrink-0 items-center gap-1" aria-hidden="true">
-        <span className="h-px w-6 bg-border sm:w-10" />
-        <ArrowRight className="size-4 text-muted-foreground" />
-      </span>
-      <span className="flex min-w-0 flex-1 items-center justify-end gap-2">
-        <span className="truncate text-right text-xs font-semibold">{brand("name")}</span>
-        <span className="relative size-12 shrink-0 overflow-hidden rounded-full border border-border bg-muted">
+      <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+      <span className="flex min-w-0 flex-1 items-center gap-2">
+        <span className="relative size-10 shrink-0 overflow-hidden rounded-full border border-border bg-muted sm:size-12">
           <Image
             src={BRAND.mark}
             alt=""
@@ -59,6 +57,7 @@ export function MigrateLockup({ source, className }: Props) {
             style={{ objectPosition: "50% 45%" }}
           />
         </span>
+        <span className="truncate text-sm font-medium">{destLabel}</span>
       </span>
     </div>
   );

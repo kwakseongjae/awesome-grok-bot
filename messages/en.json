@@ -1,11 +1,10 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "A sponsor-free Grok Bot directory. Copy setup text, then paste it into Grok Bot."
+    "description": "A listing is a specialist or a team you put into Grok Bot. On a detail page, Copy puts setup text on the clipboard. A team has a chief plus specialists."
   },
   "brand": {
-    "name": "Awesome Grok Bot",
-    "kicker": "Korean-first · bots and teams"
+    "name": "Awesome Grok Bot"
   },
   "nav": {
     "directory": "Directory",
@@ -179,10 +178,11 @@
       "routine": "Routine"
     },
     "home": {
-      "eyebrow": "This is a thing",
-      "hermes": "Agents you used in Hermes, into Grok Bot",
-      "openclaw": "Agents you used in OpenClaw, into Grok Bot",
-      "hint": "Upload a profile. We hand off setup, memory, skills, and routines one packet at a time.",
+      "eyebrow": "Wait — this actually works",
+      "hermes": "Hermes → Grok Bot",
+      "openclaw": "OpenClaw → Grok Bot",
+      "body": "Hands off the profile as packets. Keys stay behind.",
+      "cta": "Start the handoff",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw"
     }

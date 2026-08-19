@@ -1,11 +1,10 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "스폰서 없는 Grok Bot 디렉터리. 설정 문구를 복사해 Grok Bot에 붙여 넣으세요."
+    "description": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 상세 페이지에서 Copy로 설정 문구를 복사해 붙여 넣습니다. 팀은 치프와 전문 봇으로 이루어집니다."
   },
   "brand": {
-    "name": "Awesome Grok Bot",
-    "kicker": "한국어 우선 · 팀과 개인 봇"
+    "name": "Awesome Grok Bot"
   },
   "nav": {
     "directory": "디렉터리",
@@ -179,10 +178,11 @@
       "routine": "루틴"
     },
     "home": {
-      "eyebrow": "이런 게 됩니다",
-      "hermes": "Hermes에서 쓰던 에이전트를 Grok Bot으로",
-      "openclaw": "OpenClaw에서 쓰던 에이전트를 Grok Bot으로",
-      "hint": "프로필을 올리면 설정·기억·스킬·루틴을 하나씩 넘깁니다",
+      "eyebrow": "와우, 이런 게 됩니다",
+      "hermes": "Hermes → Grok Bot",
+      "openclaw": "OpenClaw → Grok Bot",
+      "body": "쓰던 프로필을 패킷으로 이어 받습니다. 키는 안 옮깁니다.",
+      "cta": "이전하기",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw"
     }

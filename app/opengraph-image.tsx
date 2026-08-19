@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import en from "@/messages/en.json";
 
 export const runtime = "nodejs";
-export const alt = "Awesome Grok Bot — sponsor-free directory";
+export const alt = "Awesome Grok Bot";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

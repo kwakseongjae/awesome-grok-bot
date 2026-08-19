@@ -18,9 +18,9 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4">
+      <div className="mx-auto flex h-14 w-full max-w-6xl flex-nowrap items-center justify-between gap-3 overflow-x-clip px-4">
         <BrandLogo />
-        <nav className="hidden items-center gap-2 md:flex" aria-label={a11y("mainNav")}>
+        <nav className="hidden flex-nowrap items-center gap-2 md:flex" aria-label={a11y("mainNav")}>
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
