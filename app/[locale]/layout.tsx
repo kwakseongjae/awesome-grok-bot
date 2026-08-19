@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Newsreader, Noto_Sans_KR } from "next/font/google";
+import { Geist_Mono, Noto_Sans_KR } from "next/font/google";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -14,12 +14,6 @@ const notoSans = Noto_Sans_KR({
   subsets: ["latin"],
   variable: "--font-noto",
   weight: ["400", "500", "600", "700"],
-});
-
-const display = Newsreader({
-  subsets: ["latin"],
-  variable: "--font-display",
-  style: ["normal", "italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -75,12 +69,13 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(toAppLocale(locale));
   const messages = await getMessages();
+  const t = await getTranslations("nav");
 
   return (
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${notoSans.variable} ${display.variable} ${geistMono.variable} h-full`}
+      className={`${notoSans.variable} ${geistMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>
@@ -89,7 +84,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               href="#content"
               className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
             >
-              {locale === "ko" ? "본문으로 건너뛰기" : "Skip to content"}
+              {t("skipToContent")}
             </a>
             <SiteHeader />
             <main id="content" className="flex-1">

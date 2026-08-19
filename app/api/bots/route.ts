@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   if (!body.name?.trim() || !body.summary?.trim() || !body.prompt?.trim()) {
-    return Response.json({ error: "Name, summary, and charter are required." }, { status: 400 });
+    return Response.json({ error: "Name, summary, and setup text are required." }, { status: 400 });
   }
   if (!isKind(body.kind) || !isCategory(body.category) || !isLocale(body.locale)) {
     return Response.json({ error: "Invalid kind, category, or locale." }, { status: 400 });

@@ -5,7 +5,7 @@ export default async function NotFound() {
   const t = await getTranslations("bot");
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-24 text-center">
-      <h1 className="font-display text-4xl">{t("notFound")}</h1>
+      <h1 className="text-4xl font-semibold tracking-tight">{t("notFound")}</h1>
       <p className="mt-6">
         <Link href="/" className="underline">
           {t("back")}

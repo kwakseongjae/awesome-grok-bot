@@ -111,7 +111,7 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
       }}
     >
       {demoHint ? (
-        <p className="rounded-lg border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+        <p className="rounded-md border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
           {demoHint}
         </p>
       ) : null}
@@ -221,7 +221,7 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
             </Button>
           </div>
           {members.map((member, index) => (
-            <div key={index} className="space-y-3 rounded-xl border p-4">
+            <div key={index} className="space-y-3 rounded-lg border p-4">
               <div className="grid gap-3 sm:grid-cols-2">
                 <Field label={t("memberName")} htmlFor={`member-name-${index}`}>
                   <Input

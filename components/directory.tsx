@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import { LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
 import { CopyButton } from "@/components/copy-button";
-import { Badge } from "@/components/ui/badge";
+import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { directoryViewHref, type DirectoryView } from "@/lib/directory-view";
+import { integrationLabel } from "@/lib/integrations";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -52,15 +53,16 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
   const router = useRouter();
   const pathname = usePathname();
   const [view, setView] = useState(serverView);
+  const [prevServerView, setPrevServerView] = useState(serverView);
+  if (prevServerView !== serverView) {
+    setPrevServerView(serverView);
+    setView(serverView);
+  }
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category | typeof ALL>(ALL);
   const [integration, setIntegration] = useState(ALL);
   const [locale, setLocale] = useState<ListingLocale | typeof ALL>(uiLocale);
   const [kind, setKind] = useState<BotKind | typeof ALL>(ALL);
-
-  useEffect(() => {
-    setView(serverView);
-  }, [serverView]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -117,7 +119,7 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
   return (
     <div className="space-y-6">
       {demoMode ? (
-        <p className="rounded-lg border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+        <p className="rounded-md border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
           {t("home.demoBanner")}
         </p>
       ) : null}
@@ -134,7 +136,6 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
           />
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <div className="hidden lg:block">{/* filters sit below on desktop */}</div>
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="outline" className="lg:hidden" aria-label={t("a11y.openFilters")}>
@@ -151,7 +152,7 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
               </div>
             </SheetContent>
           </Sheet>
-          <div className="inline-flex rounded-lg border p-0.5" role="group" aria-label={t("a11y.view")}>
+          <div className="inline-flex rounded-md border p-0.5" role="group" aria-label={t("a11y.view")}>
             <Link
               href={directoryViewHref("table")}
               replace
@@ -185,14 +186,14 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
       </div>
 
       <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
-        <p>{t("home.results", { count: filtered.length })}</p>
+        <p className="font-mono tabular-nums">{t("home.results", { count: filtered.length })}</p>
         <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
           {t("home.clearFilters")}
         </Button>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-xl border border-dashed px-6 py-16 text-center">
+        <div className="rounded-lg border border-dashed px-6 py-16 text-center">
           <p className="font-medium">{t("home.empty")}</p>
           <p className="mt-1 text-sm text-muted-foreground">{t("home.emptyHint")}</p>
         </div>
@@ -229,6 +230,7 @@ function FilterFields({
   onKindChange: (value: string) => void;
 }) {
   const t = useTranslations();
+  const uiLocale = useLocale() as ListingLocale;
 
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -254,7 +256,11 @@ function FilterFields({
         placeholder={t("filters.anyIntegration")}
         options={[
           { value: ALL, label: t("filters.anyIntegration") },
-          ...integrations.map((item) => ({ value: item, label: item })),
+          ...integrations.map((item) => ({
+            value: item,
+            label: integrationLabel(item, uiLocale),
+            plugin: item,
+          })),
         ]}
       />
       <FilterSelect
@@ -298,19 +304,27 @@ function FilterSelect({
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; plugin?: string }[];
 }) {
+  const uiLocale = useLocale() as ListingLocale;
+
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id}>{label}</Label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger id={id} className="w-full">
+        <SelectTrigger id={id} className="w-full cursor-pointer">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
+            <SelectItem key={option.value} value={option.value} className="cursor-pointer">
+              {option.plugin ? (
+                <span className="flex items-center gap-2">
+                  <PluginChip name={option.plugin} locale={uiLocale} />
+                </span>
+              ) : (
+                option.label
+              )}
             </SelectItem>
           ))}
         </SelectContent>
@@ -321,15 +335,15 @@ function FilterSelect({
 
 function DirectoryTable({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
+  const locale = useLocale() as ListingLocale;
 
   return (
-    <div className="rounded-xl border bg-card">
+    <div className="overflow-hidden rounded-lg border bg-card">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("table.bot")}</TableHead>
+            <TableHead>{t("table.name")}</TableHead>
             <TableHead>{t("table.category")}</TableHead>
-            <TableHead className="hidden md:table-cell">{t("table.kind")}</TableHead>
             <TableHead className="hidden sm:table-cell">{t("table.integrations")}</TableHead>
             <TableHead className="hidden lg:table-cell">{t("table.contributor")}</TableHead>
             <TableHead className="text-right">{t("table.copies")}</TableHead>
@@ -338,25 +352,46 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
         <TableBody>
           {bots.map((bot) => (
             <TableRow key={bot.id}>
-              <TableCell className="max-w-[18rem] whitespace-normal">
-                <Link href={`/bots/${bot.slug}`} className="font-medium hover:underline">
-                  {bot.name}
-                </Link>
+              <TableCell className="max-w-[20rem] whitespace-normal">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link
+                    href={`/bots/${bot.slug}`}
+                    className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                  >
+                    {bot.name}
+                  </Link>
+                  <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                </div>
                 <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{bot.summary}</p>
               </TableCell>
               <TableCell>
                 <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
               </TableCell>
-              <TableCell className="hidden md:table-cell">
-                <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-              </TableCell>
               <TableCell className="hidden max-w-xs whitespace-normal sm:table-cell">
-                <IntegrationList items={bot.integrations} />
+                <PluginChipList items={bot.integrations} locale={locale} max={3} />
               </TableCell>
-              <TableCell className="hidden lg:table-cell">
+              <TableCell className="hidden font-mono text-xs lg:table-cell">
                 @{bot.contributor_handle}
               </TableCell>
-              <TableCell className="text-right tabular-nums">{bot.copy_count}</TableCell>
+              <TableCell className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <span
+                    className="font-mono text-xs tabular-nums text-muted-foreground"
+                    aria-label={t("a11y.installCount", { count: bot.copy_count })}
+                  >
+                    {bot.copy_count}
+                  </span>
+                  <CopyButton
+                    text={bot.prompt}
+                    label={t("bot.copy")}
+                    copiedLabel={t("bot.copied")}
+                    ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
+                    botId={bot.id}
+                    size="sm"
+                    variant="outline"
+                  />
+                </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -367,27 +402,31 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
 
 function DirectoryCards({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
+  const locale = useLocale() as ListingLocale;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {bots.map((bot) => (
-        <Card key={bot.id}>
+        <Card key={bot.id} className="rounded-lg">
           <CardHeader>
             <div className="flex flex-wrap items-center gap-2">
               <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
               <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
             </div>
             <CardTitle>
-              <Link href={`/bots/${bot.slug}`} className="hover:underline">
+              <Link
+                href={`/bots/${bot.slug}`}
+                className="underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
                 {bot.name}
               </Link>
             </CardTitle>
             <CardDescription>{bot.summary}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <IntegrationList items={bot.integrations} />
+            <PluginChipList items={bot.integrations} locale={locale} />
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-xs text-muted-foreground">@{bot.contributor_handle}</span>
+              <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
               <CopyButton
                 text={bot.prompt}
                 label={t("bot.copy")}
@@ -400,19 +439,6 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
             </div>
           </CardContent>
         </Card>
-      ))}
-    </div>
-  );
-}
-
-function IntegrationList({ items }: { items: string[] }) {
-  if (items.length === 0) return <span className="text-muted-foreground">—</span>;
-  return (
-    <div className="flex flex-wrap gap-1">
-      {items.map((item) => (
-        <Badge key={item} variant="outline">
-          {item}
-        </Badge>
       ))}
     </div>
   );

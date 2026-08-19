@@ -4,7 +4,9 @@
 
 A sponsor-free [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. Korean-first, with English.
 
-This repo is the public catalog of **bots** (named teammates with a job title and a charter) and **teams** (a Chief plus specialists). Copy a paste-ready charter into Grok Bot. There is no sponsor rail, ads, Stripe, or affiliate code.
+This repo is the public catalog of **bots** (named specialists you install into Grok Bot) and **teams** (a Chief plus specialists). Install copies paste-ready setup text into the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
+
+Visual system: Grok-like white/black monotone. See [`design.md`](design.md).
 
 ## Run locally (no secrets)
 
@@ -20,9 +22,9 @@ Open [http://localhost:3000](http://localhost:3000). Accept-Language sends you t
 
 You can:
 
-- browse table and card views
+- browse table and card views (`/?view=cards`)
 - open a team (try **GTM 테이블** / **GTM Table**)
-- copy a charter
+- install setup text (copies to the clipboard)
 - visit `/from-link`, `/submit`, and `/sign-in`
 
 Sign-in and submit **save** need secrets (below). The pages still render and explain which env vars are missing.
@@ -53,13 +55,15 @@ On Vercel, set the same values. `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` shou
 
 **Auth vs RLS:** published rows are public-read. Drafts and writes are not allowed for the anon key. The app uses the service role only after a Better Auth session, and only the author can publish their own listing (no review board in v1).
 
+X / Twitter sign-in is not wired. Better Auth can add a `twitter` social provider, but it needs a separate OAuth app and secrets; this directory keeps GitHub + Google only.
+
 ## Add a bot
 
 - **In the app:** sign in → Submit. Markdown-like fields. You can publish immediately.
-- **From a public URL:** `/from-link` fetches title/text (no LLM key) and fills a charter template. If fetch fails, fill the form yourself.
+- **From a public URL:** `/from-link` fetches title/text (no LLM key) and fills a setup-text template. If fetch fails, fill the form yourself.
 - **In seed data:** edit `data/seed-bots.json` (local fallback) and keep `supabase/migrations/20260819000002_seed.sql` in sync for Postgres.
 
-A charter should include: name and title, what it owns, what good looks like, what it must never do without asking, integrations, and a first task. Teams add member roles.
+Setup text should include: name and title, what it owns, what good looks like, what it must never do without asking, plugins, and a first task. Teams add member roles.
 
 ## Stack
 

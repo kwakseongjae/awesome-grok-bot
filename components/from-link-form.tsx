@@ -79,7 +79,7 @@ export function FromLinkForm({ canSave, signedIn }: Props) {
   return (
     <div className="space-y-8">
       <form
-        className="space-y-4 rounded-xl border bg-card p-4"
+        className="space-y-4 rounded-lg border bg-card p-4"
         onSubmit={(event) => {
           event.preventDefault();
           void handleFetch();

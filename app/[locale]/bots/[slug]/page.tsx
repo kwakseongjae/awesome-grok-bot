@@ -5,6 +5,7 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
+import { PluginChipList } from "@/components/plugin-chip";
 import { Badge } from "@/components/ui/badge";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
@@ -35,20 +36,26 @@ export default async function BotDetailPage({ params }: Props) {
   const added = new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
     new Date(bot.added_at),
   );
+  const listingLocale = locale as ListingLocale;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
-      <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        href="/"
+        className="text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
         ← {t("bot.back")}
       </Link>
 
-      <header className="mt-6 space-y-4">
+      <header className="mt-8 space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
           <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-          <Badge variant="outline">{bot.locale === "ko" ? "한국어" : "English"}</Badge>
+          <Badge variant="outline" className="rounded-md font-normal">
+            {bot.locale === "ko" ? "한국어" : "English"}
+          </Badge>
         </div>
-        <h1 className="font-display text-4xl tracking-tight">{bot.name}</h1>
+        <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
         <p className="text-lg text-muted-foreground">{bot.summary}</p>
         <div className="flex flex-wrap gap-2">
           <CopyButton
@@ -72,42 +79,32 @@ export default async function BotDetailPage({ params }: Props) {
         <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
       </header>
 
-      <section className="mt-10 space-y-3">
-        <h2 className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
+      <section className="mt-12 space-y-3">
+        <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
           {t("bot.integrations")}
         </h2>
-        <div className="flex flex-wrap gap-1.5">
-          {bot.integrations.length === 0 ? (
-            <span className="text-sm text-muted-foreground">—</span>
-          ) : (
-            bot.integrations.map((item) => (
-              <Badge key={item} variant="outline">
-                {item}
-              </Badge>
-            ))
-          )}
-        </div>
+        <PluginChipList items={bot.integrations} locale={listingLocale} />
       </section>
 
-      <section className="mt-10 space-y-3">
-        <h2 className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
+      <section className="mt-12 space-y-3">
+        <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
           {t("bot.charter")}
         </h2>
-        <pre className="overflow-x-auto rounded-xl border bg-card p-4 font-mono text-sm leading-6 whitespace-pre-wrap">
+        <pre className="overflow-x-auto rounded-lg border bg-card p-4 font-mono text-sm leading-6 whitespace-pre-wrap">
           {bot.prompt}
         </pre>
       </section>
 
       {bot.kind === "team" && bot.team_members.length > 0 ? (
-        <section className="mt-10 space-y-4">
-          <h2 className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
+        <section className="mt-12 space-y-4">
+          <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.members")}
           </h2>
           <div className="space-y-4">
             {bot.team_members.map((member) => (
-              <article key={member.name} className="rounded-xl border bg-card p-4">
+              <article key={member.name} className="rounded-lg border bg-card p-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-medium">{member.name}</h3>
+                  <h3 className="font-semibold">{member.name}</h3>
                   <p className="text-sm text-muted-foreground">{member.role}</p>
                 </div>
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-6">{member.charter}</p>
@@ -127,10 +124,10 @@ export default async function BotDetailPage({ params }: Props) {
         </section>
       ) : null}
 
-      <dl className="mt-10 grid gap-3 text-sm sm:grid-cols-3">
+      <dl className="mt-12 grid gap-3 text-sm sm:grid-cols-3">
         <div>
           <dt className="text-muted-foreground">{t("bot.contributor")}</dt>
-          <dd>@{bot.contributor_handle}</dd>
+          <dd className="font-mono">@{bot.contributor_handle}</dd>
         </div>
         <div>
           <dt className="text-muted-foreground">{t("bot.added")}</dt>
@@ -140,7 +137,11 @@ export default async function BotDetailPage({ params }: Props) {
           <dt className="text-muted-foreground">{t("bot.source")}</dt>
           <dd>
             {bot.source_url ? (
-              <a href={bot.source_url} className="underline" rel="noreferrer">
+              <a
+                href={bot.source_url}
+                className="underline underline-offset-4"
+                rel="noreferrer"
+              >
                 {bot.source_url}
               </a>
             ) : (
@@ -152,13 +153,16 @@ export default async function BotDetailPage({ params }: Props) {
 
       {related.length > 0 ? (
         <section className="mt-12 space-y-3">
-          <h2 className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
+          <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
           <ul className="space-y-2">
             {related.map((item) => (
               <li key={item.id}>
-                <Link href={`/bots/${item.slug}`} className="hover:underline">
+                <Link
+                  href={`/bots/${item.slug}`}
+                  className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
                   {item.name}
                 </Link>
                 <span className="text-muted-foreground"> · {item.summary}</span>

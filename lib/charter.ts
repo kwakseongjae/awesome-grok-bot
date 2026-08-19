@@ -131,7 +131,7 @@ export function formatTeamCopy(bot: BotListing) {
     .map((member) => formatMemberBlock(member, bot.locale))
     .join("\n\n");
 
-  const divider = bot.locale === "ko" ? "팀원 헌장" : "Member charters";
+  const divider = bot.locale === "ko" ? "팀원 설정 문구" : "Member setup text";
   return `${bot.prompt}\n\n---\n\n# ${divider}\n\n${members}`;
 }
 

@@ -15,20 +15,27 @@ export default function OpenGraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#2c2118",
-          color: "#f4ead7",
+          background: "#ffffff",
+          color: "#0a0a0a",
           padding: "72px",
+          border: "1px solid #e5e5e5",
         }}
       >
-        <div style={{ display: "flex", gap: 10 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#f4ead7" }} />
-          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#c45c26" }} />
-          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#e2d2b8" }} />
+        <div
+          style={{
+            display: "flex",
+            fontSize: 18,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            color: "#525252",
+          }}
+        >
+          GROK BOT
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ fontSize: 88, letterSpacing: -2 }}>Grok Bot</div>
-          <div style={{ fontSize: 32, color: "#e2d2b8", maxWidth: 860 }}>
-            A sponsor-free directory. Copy a charter. Paste it into Grok Bot.
+          <div style={{ fontSize: 80, letterSpacing: -2, fontWeight: 600 }}>Grok Bot</div>
+          <div style={{ fontSize: 28, color: "#525252", maxWidth: 860 }}>
+            A sponsor-free directory. Install setup text. Paste it into Grok Bot.
           </div>
         </div>
       </div>

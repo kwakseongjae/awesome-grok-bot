@@ -22,12 +22,12 @@ export default async function HomePage({ params, searchParams }: Props) {
   const integrations = await listIntegrations();
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10">
-      <section className="max-w-3xl space-y-3 pb-10">
-        <p className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
+    <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-12 sm:py-16">
+      <section className="max-w-2xl space-y-4 border-b pb-12">
+        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
           {t("home.eyebrow")}
         </p>
-        <h1 className="font-display text-4xl tracking-tight sm:text-5xl">
+        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
           {t("home.title")}
         </h1>
         <p className="text-base leading-7 text-muted-foreground sm:text-lg">
