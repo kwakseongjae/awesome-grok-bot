@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
 import { CopyButton } from "@/components/copy-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { directoryViewHref, type DirectoryView } from "@/lib/directory-view";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,25 +37,30 @@ import {
 } from "@/components/ui/table";
 import { CATEGORIES, type BotListing, type BotKind, type Category, type ListingLocale } from "@/lib/types";
 
-type ViewMode = "table" | "cards";
-
 type Props = {
   bots: BotListing[];
   integrations: string[];
   uiLocale: ListingLocale;
   demoMode: boolean;
+  view: DirectoryView;
 };
 
 const ALL = "all";
 
-export function Directory({ bots, integrations, uiLocale, demoMode }: Props) {
+export function Directory({ bots, integrations, uiLocale, demoMode, view: serverView }: Props) {
   const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [view, setView] = useState(serverView);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category | typeof ALL>(ALL);
   const [integration, setIntegration] = useState(ALL);
   const [locale, setLocale] = useState<ListingLocale | typeof ALL>(uiLocale);
   const [kind, setKind] = useState<BotKind | typeof ALL>(ALL);
-  const [view, setView] = useState<ViewMode>("table");
+
+  useEffect(() => {
+    setView(serverView);
+  }, [serverView]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -83,59 +90,29 @@ export function Directory({ bots, integrations, uiLocale, demoMode }: Props) {
     setKind(ALL);
   };
 
-  const filterFields = (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <FilterSelect
-        id="category"
-        label={t("filters.category")}
-        value={category}
-        onChange={(value) => setCategory(value as Category | typeof ALL)}
-        placeholder={t("filters.anyCategory")}
-        options={[
-          { value: ALL, label: t("filters.anyCategory") },
-          ...CATEGORIES.map((item) => ({
-            value: item,
-            label: t(`category.${item}`),
-          })),
-        ]}
-      />
-      <FilterSelect
-        id="integration"
-        label={t("filters.integration")}
-        value={integration}
-        onChange={setIntegration}
-        placeholder={t("filters.anyIntegration")}
-        options={[
-          { value: ALL, label: t("filters.anyIntegration") },
-          ...integrations.map((item) => ({ value: item, label: item })),
-        ]}
-      />
-      <FilterSelect
-        id="locale"
-        label={t("filters.locale")}
-        value={locale}
-        onChange={(value) => setLocale(value as ListingLocale | typeof ALL)}
-        placeholder={t("filters.anyLocale")}
-        options={[
-          { value: ALL, label: t("filters.anyLocale") },
-          { value: "ko", label: "한국어" },
-          { value: "en", label: "English" },
-        ]}
-      />
-      <FilterSelect
-        id="kind"
-        label={t("filters.kind")}
-        value={kind}
-        onChange={(value) => setKind(value as BotKind | typeof ALL)}
-        placeholder={t("filters.anyKind")}
-        options={[
-          { value: ALL, label: t("filters.anyKind") },
-          { value: "bot", label: t("kind.bot") },
-          { value: "team", label: t("kind.team") },
-        ]}
-      />
-    </div>
-  );
+  const handleViewClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    next: DirectoryView,
+  ) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+      return;
+    }
+    event.preventDefault();
+    router.replace(next === "cards" ? `${pathname}?view=cards` : pathname);
+    setView(next);
+  };
+
+  const filterFieldProps = {
+    category,
+    integration,
+    locale,
+    kind,
+    integrations,
+    onCategoryChange: (value: string) => setCategory(value as Category | typeof ALL),
+    onIntegrationChange: setIntegration,
+    onLocaleChange: (value: string) => setLocale(value as ListingLocale | typeof ALL),
+    onKindChange: (value: string) => setKind(value as BotKind | typeof ALL),
+  };
 
   return (
     <div className="space-y-6">
@@ -169,35 +146,43 @@ export function Directory({ bots, integrations, uiLocale, demoMode }: Props) {
               <SheetHeader>
                 <SheetTitle>{t("home.filters")}</SheetTitle>
               </SheetHeader>
-              <div className="px-4 pb-6">{filterFields}</div>
+              <div className="px-4 pb-6">
+                <FilterFields idPrefix="filters-mobile" {...filterFieldProps} />
+              </div>
             </SheetContent>
           </Sheet>
           <div className="inline-flex rounded-lg border p-0.5" role="group" aria-label={t("a11y.view")}>
-            <Button
-              type="button"
-              size="sm"
-              variant={view === "table" ? "secondary" : "ghost"}
+            <Link
+              href={directoryViewHref("table")}
+              replace
+              scroll={false}
+              className={cn(buttonVariants({ size: "sm", variant: view === "table" ? "secondary" : "ghost" }))}
               aria-pressed={view === "table"}
-              onClick={() => setView("table")}
+              aria-current={view === "table" ? "page" : undefined}
+              onClick={(event) => handleViewClick(event, "table")}
             >
               <ListIcon />
               {t("home.viewTable")}
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant={view === "cards" ? "secondary" : "ghost"}
+            </Link>
+            <Link
+              href={directoryViewHref("cards")}
+              replace
+              scroll={false}
+              className={cn(buttonVariants({ size: "sm", variant: view === "cards" ? "secondary" : "ghost" }))}
               aria-pressed={view === "cards"}
-              onClick={() => setView("cards")}
+              aria-current={view === "cards" ? "page" : undefined}
+              onClick={(event) => handleViewClick(event, "cards")}
             >
               <LayoutGridIcon />
               {t("home.viewCards")}
-            </Button>
+            </Link>
           </div>
         </div>
       </div>
 
-      <div className="hidden lg:block">{filterFields}</div>
+      <div className="hidden lg:block">
+        <FilterFields idPrefix="filters-desktop" {...filterFieldProps} />
+      </div>
 
       <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
         <p>{t("home.results", { count: filtered.length })}</p>
@@ -216,6 +201,86 @@ export function Directory({ bots, integrations, uiLocale, demoMode }: Props) {
       ) : (
         <DirectoryCards bots={filtered} />
       )}
+    </div>
+  );
+}
+
+function FilterFields({
+  idPrefix,
+  category,
+  integration,
+  locale,
+  kind,
+  integrations,
+  onCategoryChange,
+  onIntegrationChange,
+  onLocaleChange,
+  onKindChange,
+}: {
+  idPrefix: string;
+  category: string;
+  integration: string;
+  locale: string;
+  kind: string;
+  integrations: string[];
+  onCategoryChange: (value: string) => void;
+  onIntegrationChange: (value: string) => void;
+  onLocaleChange: (value: string) => void;
+  onKindChange: (value: string) => void;
+}) {
+  const t = useTranslations();
+
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <FilterSelect
+        id={`${idPrefix}-category`}
+        label={t("filters.category")}
+        value={category}
+        onChange={onCategoryChange}
+        placeholder={t("filters.anyCategory")}
+        options={[
+          { value: ALL, label: t("filters.anyCategory") },
+          ...CATEGORIES.map((item) => ({
+            value: item,
+            label: t(`category.${item}`),
+          })),
+        ]}
+      />
+      <FilterSelect
+        id={`${idPrefix}-integration`}
+        label={t("filters.integration")}
+        value={integration}
+        onChange={onIntegrationChange}
+        placeholder={t("filters.anyIntegration")}
+        options={[
+          { value: ALL, label: t("filters.anyIntegration") },
+          ...integrations.map((item) => ({ value: item, label: item })),
+        ]}
+      />
+      <FilterSelect
+        id={`${idPrefix}-locale`}
+        label={t("filters.locale")}
+        value={locale}
+        onChange={onLocaleChange}
+        placeholder={t("filters.anyLocale")}
+        options={[
+          { value: ALL, label: t("filters.anyLocale") },
+          { value: "ko", label: "한국어" },
+          { value: "en", label: "English" },
+        ]}
+      />
+      <FilterSelect
+        id={`${idPrefix}-kind`}
+        label={t("filters.kind")}
+        value={kind}
+        onChange={onKindChange}
+        placeholder={t("filters.anyKind")}
+        options={[
+          { value: ALL, label: t("filters.anyKind") },
+          { value: "bot", label: t("kind.bot") },
+          { value: "team", label: t("kind.team") },
+        ]}
+      />
     </div>
   );
 }
