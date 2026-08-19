@@ -73,13 +73,13 @@ function failClosedLookup(hostname: string, options: LookupOptions | LookupCallb
 
   dnsLookup(hostname, { all: true, verbatim: true }, (error, addresses) => {
     if (error) {
-      cb(error);
+      cb(error, "", 4);
       return;
     }
     if (!addresses.length || addresses.some((item) => isBlockedAddress(item.address))) {
       const blocked = new Error("PRIVATE_URL") as NodeJS.ErrnoException;
       blocked.code = "PRIVATE_URL";
-      cb(blocked);
+      cb(blocked, "", 4);
       return;
     }
     if (opts.all) {
