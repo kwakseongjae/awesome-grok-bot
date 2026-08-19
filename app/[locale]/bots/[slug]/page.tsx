@@ -115,7 +115,7 @@ export default async function BotDetailPage({ params }: Props) {
             {t("bot.members")}
           </h2>
           <div className="space-y-4">
-            {bot.team_members.map((member, index) => (
+            {bot.team_members.map((member) => (
               <article key={member.name} className="rounded-lg border bg-card p-4">
                 <div className="flex items-start gap-3">
                   <ListingFace slug={bot.slug} name={member.name} size={40} decorative />
