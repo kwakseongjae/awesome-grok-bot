@@ -1,4 +1,5 @@
 import { createBotListing, ensureProfile } from "@/lib/bots";
+import { ensureListingSlug } from "@/lib/charter";
 import { getAuthStatus } from "@/lib/env";
 import { getServerSession } from "@/lib/session";
 import { CATEGORIES, type BotDraftInput, type BotKind, type Category, type ListingLocale } from "@/lib/types";
@@ -36,8 +37,8 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid JSON." }, { status: 400 });
   }
 
-  if (!body.name?.trim() || !body.slug?.trim() || !body.summary?.trim() || !body.prompt?.trim()) {
-    return Response.json({ error: "Name, slug, summary, and charter are required." }, { status: 400 });
+  if (!body.name?.trim() || !body.summary?.trim() || !body.prompt?.trim()) {
+    return Response.json({ error: "Name, summary, and charter are required." }, { status: 400 });
   }
   if (!isKind(body.kind) || !isCategory(body.category) || !isLocale(body.locale)) {
     return Response.json({ error: "Invalid kind, category, or locale." }, { status: 400 });
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
     const listing = await createBotListing(
       {
         name: body.name.trim(),
-        slug: body.slug.trim(),
+        slug: ensureListingSlug(body.name, body.slug),
         kind: body.kind,
         category: body.category,
         locale: body.locale,

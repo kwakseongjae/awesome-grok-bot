@@ -42,7 +42,7 @@ Gmail, Slack, Google Calendar
   'published',
   null,
   '2026-08-04T00:00:00.000Z'::timestamptz,
-  41
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -98,7 +98,7 @@ From this morning''s unread mail and today''s calendar, brief me on decisions on
   'published',
   null,
   '2026-08-04T00:00:00.000Z'::timestamptz,
-  41
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -155,7 +155,7 @@ Salesforce, Gmail, Google Calendar, Slack, Notion
   'published',
   null,
   '2026-08-06T00:00:00.000Z'::timestamptz,
-  27
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -212,7 +212,7 @@ Pick three open opportunities with no next step in seven days. Say who should ta
   'published',
   null,
   '2026-08-06T00:00:00.000Z'::timestamptz,
-  27
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -267,7 +267,7 @@ Notion, Google Docs, Slack, GitHub
   'published',
   null,
   '2026-08-08T00:00:00.000Z'::timestamptz,
-  19
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -322,7 +322,7 @@ Read the latest release-note draft. Build a launch checklist and per-channel cop
   'published',
   null,
   '2026-08-08T00:00:00.000Z'::timestamptz,
-  19
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -377,7 +377,7 @@ Slack, GitHub, Notion, Google Docs
   'published',
   null,
   '2026-08-09T00:00:00.000Z'::timestamptz,
-  16
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -432,7 +432,7 @@ From the last 24 hours of alerts and open issues, draft a one-page handoff. Do n
   'published',
   null,
   '2026-08-09T00:00:00.000Z'::timestamptz,
-  16
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -487,7 +487,7 @@ Salesforce, Zendesk, Slack, Google Slides
   'published',
   null,
   '2026-08-11T00:00:00.000Z'::timestamptz,
-  22
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -542,7 +542,7 @@ Pick two renewals inside 90 days that look risky. Draft a one-page QBR and a che
   'published',
   null,
   '2026-08-11T00:00:00.000Z'::timestamptz,
-  22
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -597,7 +597,7 @@ Gmail, Google Calendar, Notion
   'published',
   null,
   '2026-08-12T00:00:00.000Z'::timestamptz,
-  33
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -652,7 +652,7 @@ From this week''s mail and calendar, list only life-admin items with a due date.
   'published',
   null,
   '2026-08-12T00:00:00.000Z'::timestamptz,
-  33
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -707,7 +707,7 @@ Google Docs, Notion, Slack, GitHub
   'published',
   null,
   '2026-08-14T00:00:00.000Z'::timestamptz,
-  14
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -762,7 +762,7 @@ Draft this week''s memo on the one topic I name. Drop any sentence without a sou
   'published',
   null,
   '2026-08-14T00:00:00.000Z'::timestamptz,
-  14
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -819,7 +819,7 @@ Google Docs, Slack, Notion, YouTube
   'published',
   null,
   '2026-08-16T00:00:00.000Z'::timestamptz,
-  18
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,
@@ -876,7 +876,7 @@ Propose three theme candidates with a reason. When I pick one, prepare the one-l
   'published',
   null,
   '2026-08-16T00:00:00.000Z'::timestamptz,
-  18
+  0
 )
 on conflict (slug, locale) do update set
   name = excluded.name,

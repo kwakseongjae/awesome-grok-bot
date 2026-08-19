@@ -1,15 +1,125 @@
 import type { BotListing, TeamMember } from "@/lib/types";
 
+const HANGUL_CHO = [
+  "g",
+  "kk",
+  "n",
+  "d",
+  "tt",
+  "r",
+  "m",
+  "b",
+  "pp",
+  "s",
+  "ss",
+  "",
+  "j",
+  "jj",
+  "ch",
+  "k",
+  "t",
+  "p",
+  "h",
+];
+const HANGUL_JUNG = [
+  "a",
+  "ae",
+  "ya",
+  "yae",
+  "eo",
+  "e",
+  "yeo",
+  "ye",
+  "o",
+  "wa",
+  "wae",
+  "oe",
+  "yo",
+  "u",
+  "wo",
+  "we",
+  "wi",
+  "yu",
+  "eu",
+  "ui",
+  "i",
+];
+const HANGUL_JONG = [
+  "",
+  "k",
+  "k",
+  "k",
+  "n",
+  "n",
+  "n",
+  "t",
+  "l",
+  "k",
+  "m",
+  "l",
+  "l",
+  "l",
+  "p",
+  "l",
+  "m",
+  "p",
+  "p",
+  "t",
+  "t",
+  "ng",
+  "t",
+  "t",
+  "k",
+  "t",
+  "p",
+  "t",
+];
+
+function romanizeHangul(value: string) {
+  let result = "";
+  for (const char of value) {
+    const code = char.codePointAt(0) ?? 0;
+    if (code >= 0xac00 && code <= 0xd7a3) {
+      const syllable = code - 0xac00;
+      const cho = Math.floor(syllable / 588);
+      const jung = Math.floor((syllable % 588) / 28);
+      const jong = syllable % 28;
+      result += `${HANGUL_CHO[cho]}${HANGUL_JUNG[jung]}${HANGUL_JONG[jong]}`;
+      continue;
+    }
+    result += char;
+  }
+  return result;
+}
+
+function stableToken(value: string) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(36).padStart(7, "0").slice(0, 8);
+}
+
 export function slugify(value: string) {
-  return value
-    .trim()
+  const source = value.trim();
+  if (!source) return "";
+
+  const slug = romanizeHangul(source)
     .toLowerCase()
     .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^\w\s-]/g, "")
     .replace(/[\s_]+/g, "-")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 64);
+
+  return slug || `bot-${stableToken(source)}`;
+}
+
+export function ensureListingSlug(name: string, slug = "") {
+  return slugify(slug) || slugify(name) || `bot-${stableToken(name || slug || "listing")}`;
 }
 
 export function formatTeamCopy(bot: BotListing) {
@@ -101,7 +211,7 @@ export function buildCharterFromPage(input: PageExtract) {
 
     return {
       name,
-      slug: slugify(name) || "from-link",
+      slug: ensureListingSlug(name),
       summary: `${title} 페이지를 기준으로 한 작업 봇.`,
       prompt,
       integrations: [] as string[],
@@ -161,7 +271,7 @@ From the excerpt, propose three tasks for today and one item that needs my appro
 
   return {
     name,
-    slug: slugify(name) || "from-link",
+    slug: ensureListingSlug(name),
     summary: `A working bot drafted from ${title}.`,
     prompt,
     integrations: [] as string[],

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
@@ -24,6 +25,7 @@ export function CopyButton({
   size = "default",
   variant = "default",
 }: Props) {
+  const t = useTranslations("bot");
   const [copied, setCopied] = useState(false);
 
   const handleClick = async () => {
@@ -39,7 +41,7 @@ export function CopyButton({
       }
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error("Copy failed");
+      toast.error(t("copyFailed"));
     }
   };
 

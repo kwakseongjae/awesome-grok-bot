@@ -172,7 +172,7 @@ export function Directory({ bots, integrations, uiLocale, demoMode }: Props) {
               <div className="px-4 pb-6">{filterFields}</div>
             </SheetContent>
           </Sheet>
-          <div className="inline-flex rounded-lg border p-0.5" role="group" aria-label="View">
+          <div className="inline-flex rounded-lg border p-0.5" role="group" aria-label={t("a11y.view")}>
             <Button
               type="button"
               size="sm"
@@ -266,7 +266,7 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
             <TableHead>{t("table.category")}</TableHead>
             <TableHead className="hidden md:table-cell">{t("table.kind")}</TableHead>
             <TableHead className="hidden sm:table-cell">{t("table.integrations")}</TableHead>
-            <TableHead className="hidden lg:table-cell">{t("table.source")}</TableHead>
+            <TableHead className="hidden lg:table-cell">{t("table.contributor")}</TableHead>
             <TableHead className="text-right">{t("table.copies")}</TableHead>
           </TableRow>
         </TableHeader>

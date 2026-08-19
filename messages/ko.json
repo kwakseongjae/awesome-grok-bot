@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Grok Bot",
-    "description": "스폰서 없는 Grok Bot 디렉터리. 역할과 헌장(charter)을 복사해 바로 붙여 넣으세요."
+    "description": "스폰서 없는 Grok Bot 디렉터리. 역할과 설정 문구를 복사해 Grok Bot에 바로 붙여 넣으세요."
   },
   "brand": {
     "name": "Grok Bot",
@@ -26,7 +26,7 @@
     "viewCards": "카드",
     "filters": "필터",
     "clearFilters": "필터 지우기",
-    "results": "{count, plural, other {#개 목록}}",
+    "results": "{count, plural, other {#개}}",
     "empty": "조건에 맞는 봇이 없습니다.",
     "emptyHint": "검색어나 필터를 바꿔 보세요.",
     "demoBanner": "Supabase 환경 변수가 없어 로컬 시드 목록을 보여 줍니다. 카탈로그는 그대로 둘러볼 수 있습니다."
@@ -51,7 +51,7 @@
     "sales": "영업",
     "marketing": "마케팅",
     "ops": "운영",
-    "success": "성공",
+    "success": "고객 성공",
     "personal": "개인"
   },
   "table": {
@@ -59,7 +59,7 @@
     "category": "분야",
     "kind": "종류",
     "integrations": "연결",
-    "source": "출처",
+    "contributor": "기여자",
     "copies": "복사"
   },
   "bot": {
@@ -70,22 +70,22 @@
     "copyAll": "팀 전체 복사",
     "copied": "복사됨",
     "copyFailed": "복사하지 못했습니다. 브라우저 권한을 확인해 주세요.",
-    "pasteHint": "Grok Bot 설정 화면에 붙여 넣으면 됩니다. 연결을 물어본 뒤 자신을 저장합니다.",
+    "pasteHint": "이 문구를 Grok Bot 설정 화면에 붙여 넣으세요. 어떤 서비스를 연결할지 물은 다음, 설정을 저장하면 됩니다.",
     "source": "출처",
     "contributor": "기여자",
     "added": "등록일",
     "locale": "언어",
     "related": "같은 분야의 다른 목록",
     "notFound": "이 봇을 찾을 수 없습니다.",
-    "back": "디렉터리로"
+    "back": "디렉터리로 돌아가기"
   },
   "submit": {
     "title": "봇 등록",
-    "lead": "마크다운처럼 적고, 원할 때 직접 공개하세요. v1에는 심사 위원회가 없습니다.",
+    "lead": "이름과 설정 문구를 적은 뒤, 준비되면 직접 공개하면 됩니다.",
     "needAuth": "등록하려면 로그인이 필요합니다.",
     "demoHint": "지금 환경에는 인증·데이터베이스가 없습니다. 헌장은 복사할 수 있고, 저장은 Supabase와 Better Auth를 연결한 뒤에 가능합니다.",
     "name": "이름",
-    "slug": "슬러그",
+    "slug": "주소 이름",
     "kind": "종류",
     "category": "분야",
     "locale": "언어",
@@ -104,7 +104,7 @@
     "memberCharter": "헌장",
     "saved": "저장했습니다.",
     "error": "저장하지 못했습니다.",
-    "slugHint": "URL에 쓰입니다. 영문 소문자, 숫자, 하이픈.",
+    "slugHint": "목록 주소에 쓰입니다. 한글 이름은 로마자로 바뀌고, 영문 소문자·숫자·하이픈만 남습니다.",
     "promptHint": "역할, 맡는 일, 잘한 기준, 묻지 않고 하지 말 것, 첫 작업을 적으세요."
   },
   "fromLink": {
@@ -142,6 +142,8 @@
     "copyPrompt": "{name} 헌장 복사",
     "copyAll": "{name} 팀 헌장 전체 복사",
     "openFilters": "필터 열기",
-    "localeSwitch": "언어 변경"
+    "localeSwitch": "언어 변경",
+    "view": "보기 전환",
+    "mainNav": "주 메뉴"
   }
 }
