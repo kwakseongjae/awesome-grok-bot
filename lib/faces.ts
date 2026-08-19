@@ -13,7 +13,6 @@ export type ListingFaceSlug = (typeof LISTING_FACE_SLUGS)[number];
 
 export const BRAND = {
   mascot: "/brand/mascot-hero.png",
-  lockup: "/brand/logo-lockup.png",
   mark: "/brand/favicon-mark.png",
 } as const;
 

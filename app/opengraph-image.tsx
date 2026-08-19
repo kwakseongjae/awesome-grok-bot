@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import en from "@/messages/en.json";
 
 export const runtime = "nodejs";
 export const alt = "Grok Bot — sponsor-free directory";
@@ -35,7 +36,7 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div style={{ fontSize: 80, letterSpacing: -2, fontWeight: 600 }}>Grok Bot</div>
           <div style={{ fontSize: 28, color: "#525252", maxWidth: 860 }}>
-            A sponsor-free directory. Install setup text. Paste it into Grok Bot.
+            {en.meta.description}
           </div>
         </div>
       </div>
