@@ -69,7 +69,7 @@ export function HeroHuddle({ listings }: Props) {
       href: `/bots/${listing.slug}`,
       src: listingFaceSrc(listing.slug),
       name: listing.name,
-      objectPosition: "50% 18%",
+      objectPosition: "50% 28%",
     })),
   ];
 

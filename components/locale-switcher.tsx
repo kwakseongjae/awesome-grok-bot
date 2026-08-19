@@ -1,10 +1,15 @@
 "use client";
 
+import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
-export function LocaleSwitcher() {
+type Props = {
+  appearance?: "label" | "icon";
+};
+
+export function LocaleSwitcher({ appearance = "label" }: Props) {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
@@ -15,6 +20,20 @@ export function LocaleSwitcher() {
     const query = window.location.search;
     router.replace(`${pathname}${query}`, { locale: nextLocale });
   };
+
+  if (appearance === "icon") {
+    return (
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        onClick={handleClick}
+        aria-label={t("localeSwitch")}
+      >
+        <Languages />
+      </Button>
+    );
+  }
 
   return (
     <Button

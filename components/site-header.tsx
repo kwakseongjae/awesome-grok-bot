@@ -1,9 +1,16 @@
 import { AuthButtons } from "@/components/auth-buttons";
 import { BrandLogo } from "@/components/brand-logo";
 import { LocaleSwitcher } from "@/components/locale-switcher";
+import { SiteMobileNav } from "@/components/site-mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+
+const NAV_ITEMS = [
+  { href: "/migrate" as const, key: "migrate" as const },
+  { href: "/from-link" as const, key: "fromLink" as const },
+  { href: "/submit" as const, key: "submit" as const },
+];
 
 export function SiteHeader() {
   const t = useTranslations("nav");
@@ -11,34 +18,25 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-2 sm:h-14 sm:flex-nowrap sm:py-0">
+      <div className="mx-auto flex h-14 w-full max-w-6xl flex-nowrap items-center justify-between gap-3 overflow-x-clip px-4">
         <BrandLogo />
-        <nav
-          className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-x-1 gap-y-1 sm:flex-none sm:gap-2"
-          aria-label={a11y("mainNav")}
-        >
-          <Link
-            href="/migrate"
-            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            {t("migrate")}
-          </Link>
-          <Link
-            href="/from-link"
-            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            {t("fromLink")}
-          </Link>
-          <Link
-            href="/submit"
-            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            {t("submit")}
-          </Link>
+        <nav className="hidden flex-nowrap items-center gap-2 md:flex" aria-label={a11y("mainNav")}>
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              {t(item.key)}
+            </Link>
+          ))}
           <LocaleSwitcher />
           <ThemeToggle />
           <AuthButtons />
         </nav>
+        <div className="md:hidden">
+          <SiteMobileNav />
+        </div>
       </div>
     </header>
   );

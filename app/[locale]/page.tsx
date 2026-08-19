@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { toAppLocale } from "@/i18n/routing";
 import { Directory } from "@/components/directory";
 import { HeroHuddle } from "@/components/hero-huddle";
+import { HomeMigrate } from "@/components/home-migrate";
 import { parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -46,6 +47,7 @@ export default async function HomePage({ params, searchParams }: Props) {
           </p>
         </div>
       </section>
+      <HomeMigrate />
       <Directory
         bots={bots}
         integrations={integrations}

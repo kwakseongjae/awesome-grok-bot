@@ -1,10 +1,6 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { toAppLocale } from "@/i18n/routing";
-import { Link } from "@/i18n/navigation";
-import { MigrateUpload } from "@/components/migrate-upload";
-import { MigrateWall } from "@/components/migrate-wall";
-import { getAuthStatus } from "@/lib/env";
-import { getServerSession } from "@/lib/session";
+import { MigrateSourcePage } from "@/components/migrate-source-page";
 
 export const dynamic = "force-dynamic";
 
@@ -15,30 +11,5 @@ type Props = {
 export default async function OpenClawMigratePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(toAppLocale(locale));
-  const t = await getTranslations("migrate");
-  const session = await getServerSession();
-  const status = getAuthStatus();
-  const signedIn = Boolean(session?.user);
-
-  return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-10">
-      <Link href="/migrate" className="text-sm text-muted-foreground hover:text-foreground">
-        ← {t("backHub")}
-      </Link>
-      <h1 className="mt-6 text-4xl font-semibold tracking-tight">{t("openclawTitle")}</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">{t("openclawPageLead")}</p>
-      {!signedIn ? (
-        <MigrateWall
-          canRunAuth={status.canRunAuth}
-          providers={status.providers}
-          missing={status.missing}
-          callbackPath={`/${locale}/migrate/openclaw`}
-        />
-      ) : (
-        <div className="mt-8">
-          <MigrateUpload source="openclaw" canSave={status.canPersistListings} />
-        </div>
-      )}
-    </div>
-  );
+  return <MigrateSourcePage source="openclaw" locale={locale} />;
 }

@@ -21,7 +21,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   const bot = await getPublishedBot(slug, locale as ListingLocale);
-  if (!bot) return { title: "Grok Bot" };
+  if (!bot) return { title: "Awesome Grok Bot" };
   return {
     title: bot.name,
     description: bot.summary,
