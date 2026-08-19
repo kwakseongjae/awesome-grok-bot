@@ -4,12 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hallmark · macrostructure: Index · hero: eyebrow + title + lead, no stats
+ * theme: custom · vibe: "white, black, one hairline, lots of air"
+ * paper: oklch(1 0 0) · accent: oklch(0.145 0 0)
+ * display: Noto Sans KR 600 · body: Noto Sans KR · mono: Geist Mono
+ * axes: light / geometric-sans / neutral · gates: brand-mono overrides tinted-paper
+ */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-noto), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-heading: var(--font-display), ui-serif, Georgia, serif;
+  --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,82 +46,135 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.75);
+  --radius-4xl: calc(var(--radius) * 2);
 }
 
 :root {
-  --background: oklch(0.975 0.012 85);
-  --foreground: oklch(0.22 0.02 50);
-  --card: oklch(0.99 0.008 85);
-  --card-foreground: oklch(0.22 0.02 50);
-  --popover: oklch(0.99 0.008 85);
-  --popover-foreground: oklch(0.22 0.02 50);
-  --primary: oklch(0.4 0.07 48);
-  --primary-foreground: oklch(0.985 0.01 85);
-  --secondary: oklch(0.94 0.02 80);
-  --secondary-foreground: oklch(0.28 0.03 50);
-  --muted: oklch(0.945 0.015 82);
-  --muted-foreground: oklch(0.5 0.03 55);
-  --accent: oklch(0.93 0.03 75);
-  --accent-foreground: oklch(0.28 0.03 50);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.02 80);
-  --input: oklch(0.88 0.02 80);
-  --ring: oklch(0.55 0.06 50);
+  --color-paper: oklch(1 0 0);
+  --color-paper-2: oklch(0.98 0 0);
+  --color-ink: oklch(0.145 0 0);
+  --color-ink-2: oklch(0.44 0 0);
+  --color-rule: oklch(0.9 0 0);
+  --color-accent: var(--color-ink);
+  --color-accent-ink: var(--color-paper);
+  --color-focus: var(--color-ink);
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-paper);
+  --secondary: var(--color-paper-2);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-paper-2);
+  --muted-foreground: var(--color-ink-2);
+  --accent: var(--color-paper-2);
+  --accent-foreground: var(--color-ink);
+  --destructive: oklch(0.5 0.18 25);
+  --border: var(--color-rule);
+  --input: var(--color-rule);
+  --ring: var(--color-focus);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.5rem;
+  --sidebar: var(--color-paper);
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-primary: var(--color-ink);
+  --sidebar-primary-foreground: var(--color-paper);
+  --sidebar-accent: var(--color-paper-2);
+  --sidebar-accent-foreground: var(--color-ink);
+  --sidebar-border: var(--color-rule);
+  --sidebar-ring: var(--color-focus);
+
+  --brand-google-bg: var(--color-paper);
+  --brand-google-text: var(--color-ink);
+  --brand-google-border: oklch(0.55 0 0);
+  --brand-github-bg: oklch(0.18 0 0);
+  --brand-github-text: oklch(0.985 0 0);
+
+  --mark-google-blue: #4285f4;
+  --mark-google-red: #ea4335;
+  --mark-google-yellow: #fbbc05;
+  --mark-google-green: #34a853;
+  --mark-gmail: #ea4335;
+  --mark-slack-red: #e01e5a;
+  --mark-slack-blue: #36c5f0;
+  --mark-slack-green: #2eb67d;
+  --mark-slack-yellow: #ecb22e;
+  --mark-salesforce: #00a1e0;
+  --mark-calendar: #4285f4;
+  --mark-docs: #4285f4;
+  --mark-slides: #f4b400;
+  --mark-youtube: #ff0000;
+  --mark-zendesk: #03363d;
+  --mark-linear: #5e6ad2;
+  --mark-github: var(--color-ink);
+  --mark-notion: var(--color-ink);
 }
 
 .dark {
-  --background: oklch(0.18 0.015 55);
-  --foreground: oklch(0.96 0.012 85);
-  --card: oklch(0.22 0.016 55);
-  --card-foreground: oklch(0.96 0.012 85);
-  --popover: oklch(0.22 0.016 55);
-  --popover-foreground: oklch(0.96 0.012 85);
-  --primary: oklch(0.86 0.05 80);
-  --primary-foreground: oklch(0.22 0.02 50);
-  --secondary: oklch(0.28 0.02 55);
-  --secondary-foreground: oklch(0.96 0.012 85);
-  --muted: oklch(0.28 0.02 55);
-  --muted-foreground: oklch(0.74 0.02 80);
-  --accent: oklch(0.3 0.025 60);
-  --accent-foreground: oklch(0.96 0.012 85);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 12%);
+  --color-paper: oklch(0 0 0);
+  --color-paper-2: oklch(0.16 0 0);
+  --color-ink: oklch(0.985 0 0);
+  --color-ink-2: oklch(0.72 0 0);
+  --color-rule: oklch(1 0 0 / 12%);
+  --color-accent: var(--color-ink);
+  --color-accent-ink: var(--color-paper);
+  --color-focus: var(--color-ink);
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-paper);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-paper-2);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-paper);
+  --secondary: var(--color-paper-2);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-paper-2);
+  --muted-foreground: var(--color-ink-2);
+  --accent: var(--color-paper-2);
+  --accent-foreground: var(--color-ink);
+  --destructive: oklch(0.72 0.16 25);
+  --border: var(--color-rule);
   --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.7 0.04 80);
+  --ring: var(--color-focus);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: var(--color-paper);
+  --sidebar-foreground: var(--color-ink);
+  --sidebar-primary: var(--color-ink);
+  --sidebar-primary-foreground: var(--color-paper);
+  --sidebar-accent: var(--color-paper-2);
+  --sidebar-accent-foreground: var(--color-ink);
+  --sidebar-border: var(--color-rule);
+  --sidebar-ring: var(--color-focus);
+
+  --brand-google-bg: oklch(1 0 0);
+  --brand-google-text: oklch(0.145 0 0);
+  --brand-google-border: oklch(0.55 0 0);
+  --brand-github-bg: oklch(1 0 0);
+  --brand-github-text: oklch(0.145 0 0);
+
+  --mark-zendesk: oklch(0.82 0 0);
+  --mark-github: var(--color-ink);
+  --mark-notion: var(--color-ink);
 }
 
 @layer base {
@@ -127,7 +187,30 @@
   html {
     @apply font-sans;
   }
-  h1, h2, .font-display {
-    font-family: var(--font-heading);
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  select:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Grok Bot",
-    "description": "A sponsor-free Grok Bot directory. Copy a role and charter, then paste it into Grok Bot."
+    "description": "A sponsor-free Grok Bot directory. Install setup text, then paste it into Grok Bot."
   },
   "brand": {
     "name": "Grok Bot",
@@ -17,28 +17,28 @@
     "skipToContent": "Skip to content"
   },
   "home": {
-    "eyebrow": "Grok Bot charters",
-    "title": "Bots and teams you can paste",
-    "lead": "A bot is a named teammate with a job title and a charter. A team is a Chief plus specialists who hand work to each other. There is no sponsor column.",
-    "search": "Search by name, summary, or integration",
+    "eyebrow": "Install into Grok Bot",
+    "title": "Bots and teams you can install",
+    "lead": "A listing is a specialist or a team you install into Grok Bot. Install copies the setup text so you can paste it into Grok Bot. A team has a chief plus specialists.",
+    "search": "Search by name, summary, or plugin",
     "searchLabel": "Search",
     "viewTable": "Table",
     "viewCards": "Cards",
     "filters": "Filters",
     "clearFilters": "Clear filters",
     "results": "{count, plural, one {# listing} other {# listings}}",
-    "empty": "No bots match these filters.",
+    "empty": "No listings match these filters.",
     "emptyHint": "Try another search or reset the filters.",
     "demoBanner": "Supabase env vars are missing, so this catalog is loaded from the committed seed file. You can still browse every listing."
   },
   "filters": {
     "category": "Category",
-    "integration": "Integration",
+    "integration": "Plugin",
     "locale": "Language",
     "kind": "Kind",
     "all": "All",
     "anyCategory": "Any category",
-    "anyIntegration": "Any integration",
+    "anyIntegration": "Any plugin",
     "anyLocale": "Any language",
     "anyKind": "Bots and teams"
   },
@@ -51,47 +51,47 @@
     "sales": "Sales",
     "marketing": "Marketing",
     "ops": "Ops",
-    "success": "Success",
+    "success": "Support",
     "personal": "Personal"
   },
   "table": {
-    "bot": "Bot",
+    "name": "Name",
     "category": "Category",
     "kind": "Kind",
-    "integrations": "Integrations",
+    "integrations": "Plugins",
     "contributor": "Contributor",
-    "copies": "Copies"
+    "copies": "Install"
   },
   "bot": {
-    "charter": "Charter",
+    "charter": "Setup text",
     "members": "Team members",
-    "integrations": "Connect first",
-    "copy": "Copy charter",
-    "copyAll": "Copy whole team",
-    "copied": "Copied",
-    "copyFailed": "Could not copy. Check clipboard permission.",
+    "integrations": "Plugins",
+    "copy": "Install",
+    "copyAll": "Install whole team",
+    "copied": "Installed",
+    "copyFailed": "Could not copy to the clipboard. Check browser permission.",
     "pasteHint": "Paste this into Grok Bot setup. It should ask what to connect, then save itself.",
     "source": "Source",
     "contributor": "Contributor",
     "added": "Added",
     "locale": "Language",
     "related": "More in this category",
-    "notFound": "This bot was not found.",
+    "notFound": "This listing was not found.",
     "back": "Back to the directory"
   },
   "submit": {
     "title": "Submit a bot",
     "lead": "Fill markdown-like fields and publish it yourself. v1 has no review board.",
     "needAuth": "Sign in to save a listing.",
-    "demoHint": "Auth and the database are not configured in this environment. You can still copy a charter; saving needs Supabase and Better Auth.",
+    "demoHint": "Auth and the database are not configured in this environment. You can still install setup text; saving needs Supabase and Better Auth.",
     "name": "Name",
     "slug": "Slug",
     "kind": "Kind",
     "category": "Category",
     "locale": "Language",
     "summary": "One-line summary",
-    "prompt": "Charter / setup prompt",
-    "integrations": "Integrations (comma separated)",
+    "prompt": "Setup text",
+    "integrations": "Plugins (comma separated)",
     "sourceUrl": "Source URL (optional)",
     "publish": "Publish now",
     "saveDraft": "Save draft",
@@ -101,19 +101,19 @@
     "removeMember": "Remove",
     "memberName": "Name",
     "memberRole": "Role",
-    "memberCharter": "Charter",
+    "memberCharter": "Setup text",
     "saved": "Saved.",
     "error": "Could not save.",
     "slugHint": "Used in the URL. Korean names are romanized. Lowercase letters, numbers, hyphens.",
     "promptHint": "Include role, what it owns, what good looks like, what it must never do without asking, and a first task."
   },
   "fromLink": {
-    "title": "Draft a charter from a link",
+    "title": "Draft setup text from a link",
     "lead": "Paste a public URL. v1 pulls the title and text into a fixed template. No paid LLM key required.",
     "url": "Page URL",
     "fetch": "Fetch page",
     "fetching": "Fetching…",
-    "fetched": "Page read. Edit the draft below, then copy or submit it.",
+    "fetched": "Page read. Edit the draft below, then install or submit it.",
     "fetchFailed": "Could not fetch that page. Check the URL, or fill the form yourself.",
     "extractedTitle": "Extracted title",
     "splitTeam": "Split into a team (Chief + specialists)",
@@ -124,12 +124,13 @@
     "lead": "Use GitHub or Google to submit listings.",
     "github": "Continue with GitHub",
     "google": "Continue with Google",
+    "pending": "Connecting",
     "missing": "Local demo mode. Set these env vars to enable social login.",
     "missingDb": "A database (DATABASE_URL) is also required.",
     "back": "Back to the directory"
   },
   "footer": {
-    "note": "No ads, affiliates, or sponsor rails. Write and share charters yourself.",
+    "note": "No ads, affiliates, or sponsor rails. Write and share setup text yourself.",
     "license": "Listings are free to copy and adapt."
   },
   "theme": {
@@ -139,11 +140,12 @@
     "system": "System"
   },
   "a11y": {
-    "copyPrompt": "Copy charter for {name}",
-    "copyAll": "Copy every charter on the {name} team",
+    "copyPrompt": "Install setup text for {name}",
+    "copyAll": "Install every setup text on the {name} team",
     "openFilters": "Open filters",
     "localeSwitch": "Change language",
     "view": "Change view",
-    "mainNav": "Main"
+    "mainNav": "Main",
+    "installCount": "{count, plural, one {# install} other {# installs}}"
   }
 }

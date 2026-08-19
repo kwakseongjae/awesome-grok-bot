@@ -10,10 +10,13 @@ export function SiteHeader() {
   const a11y = useTranslations("a11y");
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-2 sm:h-14 sm:flex-nowrap sm:py-0">
-        <Link href="/" className="flex min-w-0 items-baseline gap-2 rounded-md focus-visible:ring-3 focus-visible:ring-ring/50">
-          <span className="font-display text-lg tracking-tight">{brand("name")}</span>
+        <Link
+          href="/"
+          className="flex min-w-0 items-baseline gap-2 rounded-md focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <span className="text-sm font-semibold tracking-tight">{brand("name")}</span>
           <span className="hidden truncate text-xs text-muted-foreground sm:inline">
             {brand("tagline")}
           </span>
@@ -24,13 +27,13 @@ export function SiteHeader() {
         >
           <Link
             href="/from-link"
-            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             {t("fromLink")}
           </Link>
           <Link
             href="/submit"
-            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             {t("submit")}
           </Link>

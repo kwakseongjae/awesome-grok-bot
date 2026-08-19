@@ -16,7 +16,7 @@ export default async function SignInPage({ params }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="font-display text-4xl tracking-tight">{t("title")}</h1>
+      <h1 className="text-4xl font-semibold tracking-tight">{t("title")}</h1>
       <p className="mt-3 text-muted-foreground">{t("lead")}</p>
       <div className="mt-8">
         <SignInActions
@@ -27,7 +27,7 @@ export default async function SignInPage({ params }: Props) {
         />
       </div>
       <p className="mt-8 text-sm">
-        <Link href="/" className="underline">
+        <Link href="/" className="underline underline-offset-4">
           {t("back")}
         </Link>
       </p>

@@ -1,0 +1,114 @@
+# Design — Grok Bot
+
+Locked design system. Future pages defer to this file. Amend it
+intentionally; do not improvise colours or type in components.
+
+## System
+
+- Genre · modern-minimal (Linear / Stripe / Grok school)
+- Macrostructure · Index (directory workbench: hairline table + air)
+- Theme · custom · vibe: "white, black, one hairline, lots of air"
+- Axes · light / geometric-sans / neutral
+- Tone · austere, technical, Korean-first. Roman headings only.
+
+This is **not** a Hallmark catalog theme (Specimen, Newsprint, etc.).
+The owner named the brand: Grok-like white + black monotone. True
+chroma-0 paper/ink is the product, not a tinted cream or AI purple.
+
+## Tokens (canonical · `app/globals.css`)
+
+```css
+:root {
+  --color-paper:      oklch(1 0 0);           /* #ffffff */
+  --color-paper-2:    oklch(0.98 0 0);
+  --color-ink:        oklch(0.145 0 0);       /* ~#0a0a0a */
+  --color-ink-2:      oklch(0.44 0 0);        /* muted text, ≥4.5:1 */
+  --color-rule:       oklch(0.9 0 0);
+  --color-accent:     oklch(0.145 0 0);       /* primary = ink */
+  --color-accent-ink: oklch(1 0 0);
+  --color-focus:      oklch(0.145 0 0);
+
+  --font-display: var(--font-noto), ui-sans-serif, system-ui, sans-serif;
+  --font-body:    var(--font-noto), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-card:  0.5rem;
+  --radius-input: 0.5rem;
+  --radius-pill:  0.375rem;
+
+  --dur-fast: 120ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark {
+  --color-paper:      oklch(0 0 0);
+  --color-paper-2:    oklch(0.16 0 0);
+  --color-ink:        oklch(0.985 0 0);
+  --color-ink-2:      oklch(0.72 0 0);
+  --color-rule:       oklch(1 0 0 / 12%);
+  --color-accent:     oklch(0.985 0 0);
+  --color-accent-ink: oklch(0 0 0);
+  --color-focus:      oklch(0.985 0 0);
+}
+```
+
+shadcn semantic tokens (`--background`, `--primary`, `--border`, …)
+map 1:1 onto the block above in `app/globals.css`. Do not set
+component hex outside that file.
+
+**Exceptions (named, not improvised):** official product marks keep
+trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
+`--brand-github-*` so Google/GitHub identity is not flattened into ink.
+
+## Type
+
+- UI + headings: Noto Sans KR (Korean-first). Headings = same sans,
+  weight 600, tracking tight, never italic, never serif display.
+- Counts, slugs, eyebrows, overflow `+n`: Geist Mono.
+- Body 16px / 1.5. Directory table 14px.
+
+## CTA voice
+
+- Primary · ink fill, paper type, radius 0.5rem, no glow.
+- Secondary · hairline outline, paper fill.
+- Directory action label is **설치 / Install** (copies setup text).
+  Past tense: 설치됨 / Installed.
+
+## Motion stance
+
+- Motion-cut. No bounce, no gradient wash, no glow, no scroll-reveal.
+- Hover: opacity / background only, ≤150ms.
+- Reduced-motion: disable animation and non-essential transition.
+
+## Component voice
+
+- No emoji-as-icons. Lucide or official SVG marks only.
+- Clickables: `cursor-pointer`, visible `:focus-visible` ring.
+- Chips wrap, or collapse with `+n`. Plugin chips = official mark +
+  short label, never a raw English tag dump.
+- Category badges are monotone outlines, not rainbow.
+- Kind (봇 / 팀) lives on the name row as a compact badge.
+- No fake metrics, testimonials, or browser chrome.
+
+## Vocabulary (user-facing)
+
+A **listing** is a specialist or a team you install into Grok Bot.
+**Install** copies the setup text so the user can paste it into Grok Bot.
+A **team** has a chief plus specialists.
+
+| UI | Korean | English |
+| --- | --- | --- |
+| CTA | 설치 | Install |
+| Payload | 설정 문구 | Setup text |
+| Plugins | 플러그인 | Plugins |
+| Category `success` | 고객지원 | Support |
+
+Do not show 헌장 / charter or 성공 / Success in the UI. Code and
+data may still use `charter` / `success` as keys.
+
+## Anti-patterns (Hallmark + UI UX Pro Max)
+
+- No warm beige, orange `#c45c26`, cream oklch, or AI purple/pink.
+- No Inter / Roboto / Poppins / system-ui as a display face.
+- No italic headings, bounce, glassmorphism, or gradient CTA.
+- Contrast: body text ≥ 4.5:1. Keyboard focus always visible.
