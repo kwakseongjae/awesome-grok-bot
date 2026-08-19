@@ -11,6 +11,12 @@ export function SiteFooter() {
         <p>{t("note")}</p>
         <div className="flex flex-wrap gap-3">
           <Link
+            href="/migrate"
+            className="hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {nav("migrate")}
+          </Link>
+          <Link
             href="/from-link"
             className="hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
           >

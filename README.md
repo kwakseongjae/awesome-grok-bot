@@ -4,9 +4,9 @@
 
 A sponsor-free [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. Korean-first, with English.
 
-This repo is the public catalog of **bots** (named specialists you install into Grok Bot) and **teams** (a Chief plus specialists). Install copies paste-ready setup text into the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
+This repo is the public catalog of **bots** (named specialists you put into Grok Bot) and **teams** (a Chief plus specialists). On a listing page, **Copy** puts paste-ready setup text on the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
 
-Visual system: Grok-like white/black monotone. See [`design.md`](design.md).
+Visual system: Grok-like white/black monotone. See [`design.md`](design.md). Brand faces live in `public/brand/`.
 
 ## Run locally (no secrets)
 
@@ -22,12 +22,13 @@ Open [http://localhost:3000](http://localhost:3000). Accept-Language sends you t
 
 You can:
 
-- browse table and card views (`/?view=cards`)
-- open a team (try **GTM 테이블** / **GTM Table**)
-- install setup text (copies to the clipboard)
-- visit `/from-link`, `/submit`, and `/sign-in`
+- browse table and card views (`/ko`, `/ko?view=cards`)
+- open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
+- visit `/from-link`, `/submit`, `/sign-in`, and `/migrate`
+- on `/migrate` while signed out: explainer + sign-in wall (no fake migration)
+- Hermes sample files (no secrets): `fixtures/hermes-handoff/SOUL.md` and `MEMORY.md`
 
-Sign-in and submit **save** need secrets (below). The pages still render and explain which env vars are missing.
+Sign-in, submit **save**, and migrate **upload/parse** need secrets (below). The pages still render and explain which env vars are missing.
 
 ## Run with secrets (Supabase + Better Auth)
 

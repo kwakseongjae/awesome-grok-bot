@@ -5,7 +5,7 @@ import { LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
-import { CopyButton } from "@/components/copy-button";
+import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { directoryViewHref, type DirectoryView } from "@/lib/directory-view";
@@ -338,7 +338,7 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
   const locale = useLocale() as ListingLocale;
 
   return (
-    <div className="overflow-hidden rounded-lg border bg-card">
+    <div className="overflow-x-clip rounded-lg border bg-card [&_[data-slot=table-container]]:overflow-x-clip">
       <Table>
         <TableHeader>
           <TableRow>
@@ -346,23 +346,28 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
             <TableHead>{t("table.category")}</TableHead>
             <TableHead className="hidden sm:table-cell">{t("table.integrations")}</TableHead>
             <TableHead className="hidden lg:table-cell">{t("table.contributor")}</TableHead>
-            <TableHead className="text-right">{t("table.copies")}</TableHead>
+            <TableHead className="hidden sm:table-cell">{t("table.copies")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {bots.map((bot) => (
             <TableRow key={bot.id}>
-              <TableCell className="max-w-[20rem] whitespace-normal">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Link
-                    href={`/bots/${bot.slug}`}
-                    className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {bot.name}
-                  </Link>
-                  <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+              <TableCell className="max-w-[18rem] whitespace-normal">
+                <div className="flex min-w-0 items-center gap-2">
+                  <ListingFace slug={bot.slug} name={bot.name} size={36} decorative />
+                  <div className="min-w-0">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <Link
+                        href={`/bots/${bot.slug}`}
+                        className="block truncate font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      >
+                        {bot.name}
+                      </Link>
+                      <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                    </div>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{bot.summary}</p>
+                  </div>
                 </div>
-                <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{bot.summary}</p>
               </TableCell>
               <TableCell>
                 <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
@@ -373,24 +378,13 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
               <TableCell className="hidden font-mono text-xs lg:table-cell">
                 @{bot.contributor_handle}
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                  <span
-                    className="font-mono text-xs tabular-nums text-muted-foreground"
-                    aria-label={t("a11y.installCount", { count: bot.copy_count })}
-                  >
-                    {bot.copy_count}
-                  </span>
-                  <CopyButton
-                    text={bot.prompt}
-                    label={t("bot.copy")}
-                    copiedLabel={t("bot.copied")}
-                    ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
-                    botId={bot.id}
-                    size="sm"
-                    variant="outline"
-                  />
-                </div>
+              <TableCell className="hidden sm:table-cell">
+                <span
+                  className="font-mono text-xs tabular-nums text-muted-foreground"
+                  aria-label={t("a11y.installCount", { count: bot.copy_count })}
+                >
+                  {bot.copy_count}
+                </span>
               </TableCell>
             </TableRow>
           ))}
@@ -409,33 +403,35 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
       {bots.map((bot) => (
         <Card key={bot.id} className="rounded-lg">
           <CardHeader>
-            <div className="flex flex-wrap items-center gap-2">
-              <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-              <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+            <div className="flex items-start gap-3">
+              <ListingFace slug={bot.slug} name={bot.name} size={48} decorative />
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+                  <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                </div>
+                <CardTitle>
+                  <Link
+                    href={`/bots/${bot.slug}`}
+                    className="underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                  >
+                    {bot.name}
+                  </Link>
+                </CardTitle>
+                <CardDescription>{bot.summary}</CardDescription>
+              </div>
             </div>
-            <CardTitle>
-              <Link
-                href={`/bots/${bot.slug}`}
-                className="underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                {bot.name}
-              </Link>
-            </CardTitle>
-            <CardDescription>{bot.summary}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <PluginChipList items={bot.integrations} locale={locale} />
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
-              <CopyButton
-                text={bot.prompt}
-                label={t("bot.copy")}
-                copiedLabel={t("bot.copied")}
-                ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
-                botId={bot.id}
-                size="sm"
-                variant="outline"
-              />
+              <span
+                className="font-mono text-xs tabular-nums text-muted-foreground"
+                aria-label={t("a11y.installCount", { count: bot.copy_count })}
+              >
+                {t("a11y.installCount", { count: bot.copy_count })}
+              </span>
             </div>
           </CardContent>
         </Card>

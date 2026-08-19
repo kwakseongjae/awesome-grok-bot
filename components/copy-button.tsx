@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,9 @@ type Props = {
   ariaLabel: string;
   botId?: string;
   size?: "default" | "sm" | "lg";
-  variant?: "default" | "outline" | "secondary";
+  variant?: "default" | "outline" | "secondary" | "ghost";
+  className?: string;
+  onCopied?: () => void;
 };
 
 export function CopyButton({
@@ -24,6 +26,8 @@ export function CopyButton({
   botId,
   size = "default",
   variant = "default",
+  className,
+  onCopied,
 }: Props) {
   const t = useTranslations("bot");
   const [copied, setCopied] = useState(false);
@@ -32,6 +36,7 @@ export function CopyButton({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      onCopied?.();
       if (botId) {
         void fetch("/api/copy", {
           method: "POST",
@@ -50,6 +55,7 @@ export function CopyButton({
       type="button"
       size={size}
       variant={variant}
+      className={className}
       onClick={handleClick}
       aria-label={ariaLabel}
       aria-live="polite"

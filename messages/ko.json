@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Grok Bot",
-    "description": "스폰서 없는 Grok Bot 디렉터리. 설정 문구를 설치해 Grok Bot에 붙여 넣으세요."
+    "description": "스폰서 없는 Grok Bot 디렉터리. 설정 문구를 복사해 Grok Bot에 붙여 넣으세요."
   },
   "brand": {
     "name": "Grok Bot",
@@ -12,14 +12,15 @@
     "directory": "디렉터리",
     "submit": "등록",
     "fromLink": "링크에서 만들기",
+    "migrate": "이전",
     "signIn": "로그인",
     "signOut": "로그아웃",
     "skipToContent": "본문으로 건너뛰기"
   },
   "home": {
-    "eyebrow": "Grok Bot에 설치",
-    "title": "설치할 봇과 팀",
-    "lead": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 설치는 설정 문구를 복사해 Grok Bot에 붙여 넣는 일입니다. 팀은 치프와 전문 봇으로 이루어집니다.",
+    "eyebrow": "Grok Bot에 넣기",
+    "title": "봇과 팀 디렉터리",
+    "lead": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 상세 페이지에서 Copy로 설정 문구를 복사해 붙여 넣습니다. 팀은 치프와 전문 봇으로 이루어집니다.",
     "search": "이름, 요약, 플러그인으로 검색",
     "searchLabel": "검색",
     "viewTable": "표",
@@ -29,7 +30,8 @@
     "results": "{count, plural, other {#개}}",
     "empty": "조건에 맞는 목록이 없습니다.",
     "emptyHint": "검색어나 필터를 바꿔 보세요.",
-    "demoBanner": "Supabase 환경 변수가 없어 로컬 시드 목록을 보여 줍니다. 카탈로그는 그대로 둘러볼 수 있습니다."
+    "demoBanner": "Supabase 환경 변수가 없어 로컬 시드 목록을 보여 줍니다. 카탈로그는 그대로 둘러볼 수 있습니다.",
+    "mascotName": "디렉터리 마스코트"
   },
   "filters": {
     "category": "분야",
@@ -65,11 +67,16 @@
     "charter": "설정 문구",
     "members": "팀원",
     "integrations": "플러그인",
-    "copy": "설치",
-    "copyAll": "팀 전체 설치",
-    "copied": "설치됨",
+    "copy": "Copy",
+    "copyAll": "Copy all",
+    "copied": "Copied",
+    "copyHint": "이 목록의 설정 문구만 복사합니다.",
+    "copyAllHint": "팀 전체 설정 문구를 한 번에 복사합니다.",
+    "memberCopyHint": "이 팀원의 설정 문구만 복사합니다.",
     "copyFailed": "클립보드에 넣지 못했습니다. 브라우저 권한을 확인해 주세요.",
     "pasteHint": "이 문구를 Grok Bot 설정 화면에 붙여 넣으세요. 어떤 서비스를 연결할지 물은 다음, 설정을 저장하면 됩니다.",
+    "share": "공유",
+    "shareCopied": "주소를 복사했습니다.",
     "source": "출처",
     "contributor": "기여자",
     "added": "등록일",
@@ -82,7 +89,7 @@
     "title": "봇 등록",
     "lead": "이름과 설정 문구를 적은 뒤, 준비되면 직접 공개하면 됩니다.",
     "needAuth": "등록하려면 로그인이 필요합니다.",
-    "demoHint": "지금 환경에는 인증·데이터베이스가 없습니다. 설정 문구는 설치할 수 있고, 저장은 Supabase와 Better Auth를 연결한 뒤에 가능합니다.",
+    "demoHint": "지금 환경에는 인증·데이터베이스가 없습니다. 설정 문구는 복사할 수 있고, 저장은 Supabase와 Better Auth를 연결한 뒤에 가능합니다.",
     "name": "이름",
     "slug": "주소 이름",
     "kind": "종류",
@@ -112,11 +119,66 @@
     "url": "페이지 URL",
     "fetch": "가져오기",
     "fetching": "가져오는 중…",
-    "fetched": "페이지를 읽었습니다. 아래 초안을 고친 뒤 설치하거나 등록하세요.",
+    "fetched": "페이지를 읽었습니다. 아래 초안을 고친 뒤 복사하거나 등록하세요.",
     "fetchFailed": "페이지를 가져오지 못했습니다. 주소를 확인하고, 필요하면 아래 칸을 직접 채우세요.",
     "extractedTitle": "추출한 제목",
     "splitTeam": "팀으로 나누기 (치프 + 전문가)",
     "fillAnyway": "빈 템플릿으로 계속"
+  },
+  "migrate": {
+    "eyebrow": "인수인계",
+    "hubTitle": "이전 에이전트에서 Grok Bot으로",
+    "hubLead": "한 번에 쏟아붓지 않습니다. Grok Bot은 패킷을 하나씩 받습니다. 프로필을 복사한 뒤, 기억·스킬·루틴을 차례로 붙여 넣으세요. API 키는 옮기지 않고, Hermes를 Grok 위에서 실행하지도 않습니다.",
+    "ruleMemory": "기억은 미리보기 후 확인합니다. 일일 노트와 DREAMS는 작업 레이어라서 기본으로 넣지 않습니다.",
+    "ruleRoutines": "스킬은 how, 루틴은 when. 공식 순서: 한 번 하기 → 스킬로 저장 → 그다음 루틴. 봇당 루틴 50개. Duplicate Bot은 학습된 기억을 복사하지 않습니다.",
+    "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef, 키처럼 보이는 문자열은 항상 제거합니다. 세션·state.db·트랜스크립트는 기억이 아닙니다.",
+    "wallTitle": "업로드하려면 로그인하세요",
+    "wallLead": "설명은 여기까지입니다. 파일 올리기, 파싱, 큐, 저장은 세션이 필요합니다. 로그인 없이 이전을 흉내 내지 않습니다.",
+    "demoWall": "Better Auth가 없는 데모 모드입니다. 아래 빠진 환경 변수를 보면 됩니다. 이전 결과는 만들지 않습니다.",
+    "toSignIn": "로그인 페이지",
+    "backHub": "이전 허브",
+    "hermesTitle": "Hermes → Grok Bot",
+    "hermesLead": "프로필 export(zip/tar.gz) 또는 SOUL.md, MEMORY.md, 스킬, cron.",
+    "hermesPageLead": "Hermes 프로필을 받아 설정 문구·기억·스킬·루틴 패킷으로 나눕니다. hermes claw migrate처럼 항상 미리보기 후 확인합니다. 크론은 재작성하고, 비밀은 가져오지 않습니다.",
+    "openclawTitle": "OpenClaw → Grok Bot",
+    "openclawLead": "~/.openclaw zip, 워크스페이스, 또는 SOUL.md / AGENTS.md / MEMORY.md / cron.",
+    "openclawPageLead": "OpenClaw(또는 clawdbot/moltbot) 워크스페이스를 패킷으로 나눕니다. Import Memory처럼 마크다운만 다루고, 부트스트랩 MEMORY.md에 몰래 합치지 않습니다.",
+    "files": "파일",
+    "accept": {
+      "hermes": "zip/tar.gz 프로필, 또는 SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
+      "openclaw": "zip, 또는 SOUL.md, AGENTS.md, USER.md, MEMORY.md, memory/*.md, HEARTBEAT.md, openclaw.json, cron/jobs.json, skills. clawdbot/moltbot 이름도 됩니다."
+    },
+    "preview": "미리보기",
+    "parsing": "읽는 중…",
+    "needFiles": "파일을 선택하세요.",
+    "needSession": "세션이 없습니다. 로그인하세요.",
+    "parseFailed": "파일을 읽지 못했습니다.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyPacket": "{title} 패킷 복사",
+    "prev": "이전 패킷",
+    "next": "다음 패킷",
+    "remaining": "남은 큐",
+    "emptyQueue": "패킷이 없습니다.",
+    "includeOptional": "일일 노트·DREAMS {count}개를 큐에 넣기 (기본 꺼짐)",
+    "stripped": "비밀 {redacted}곳 가림 · 건너뛴 파일 {skipped}개",
+    "honesty": "이것은 {source}를 Grok에서 돌리는 이전이 아닙니다. 다음 Grok Bot에게 다음 조각만 건넵니다. 기억·스킬·루틴 패킷은 채팅에 붙여 넣는 Copy입니다. xAI 메모리 API에는 쓰지 못합니다.",
+    "saveListing": "목록으로 저장",
+    "saveListingHint": "프로필 패킷을 등록 초안으로 엽니다.",
+    "saveNeedsAuth": "목록 저장은 Supabase가 연결된 로그인 세션에서만 됩니다.",
+    "draftReady": "등록 폼에 프로필을 넣었습니다.",
+    "step": {
+      "profile": "프로필",
+      "memory": "기억",
+      "skill": "스킬",
+      "routine": "루틴"
+    },
+    "kind": {
+      "profile": "프로필",
+      "memory": "기억",
+      "skill": "스킬",
+      "routine": "루틴"
+    }
   },
   "signIn": {
     "title": "로그인",
@@ -139,12 +201,13 @@
     "system": "시스템"
   },
   "a11y": {
-    "copyPrompt": "{name} 설정 문구 설치",
-    "copyAll": "{name} 팀 설정 문구 전체 설치",
+    "copyPrompt": "{name} 설정 문구 Copy",
+    "copyAll": "{name} 팀 설정 문구 Copy all",
     "openFilters": "필터 열기",
     "localeSwitch": "언어 변경",
     "view": "보기 전환",
     "mainNav": "주 메뉴",
-    "installCount": "설치 {count}회"
+    "installCount": "설치 {count}회",
+    "huddle": "디렉터리 얼굴. 장식용입니다. 얼굴을 누르면 해당 목록으로 갑니다."
   }
 }

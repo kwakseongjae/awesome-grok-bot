@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Grok Bot",
-    "description": "A sponsor-free Grok Bot directory. Install setup text, then paste it into Grok Bot."
+    "description": "A sponsor-free Grok Bot directory. Copy setup text, then paste it into Grok Bot."
   },
   "brand": {
     "name": "Grok Bot",
@@ -12,14 +12,15 @@
     "directory": "Directory",
     "submit": "Submit",
     "fromLink": "From a link",
+    "migrate": "Migrate",
     "signIn": "Sign in",
     "signOut": "Sign out",
     "skipToContent": "Skip to content"
   },
   "home": {
-    "eyebrow": "Install into Grok Bot",
-    "title": "Bots and teams you can install",
-    "lead": "A listing is a specialist or a team you install into Grok Bot. Install copies the setup text so you can paste it into Grok Bot. A team has a chief plus specialists.",
+    "eyebrow": "Into Grok Bot",
+    "title": "Bots and teams",
+    "lead": "A listing is a specialist or a team you put into Grok Bot. On a detail page, Copy puts setup text on the clipboard. A team has a chief plus specialists.",
     "search": "Search by name, summary, or plugin",
     "searchLabel": "Search",
     "viewTable": "Table",
@@ -29,7 +30,8 @@
     "results": "{count, plural, one {# listing} other {# listings}}",
     "empty": "No listings match these filters.",
     "emptyHint": "Try another search or reset the filters.",
-    "demoBanner": "Supabase env vars are missing, so this catalog is loaded from the committed seed file. You can still browse every listing."
+    "demoBanner": "Supabase env vars are missing, so this catalog is loaded from the committed seed file. You can still browse every listing.",
+    "mascotName": "Directory mascot"
   },
   "filters": {
     "category": "Category",
@@ -59,17 +61,22 @@
     "category": "Category",
     "integrations": "Plugins",
     "contributor": "Contributor",
-    "copies": "Install"
+    "copies": "Installs"
   },
   "bot": {
     "charter": "Setup text",
     "members": "Team members",
     "integrations": "Plugins",
-    "copy": "Install",
-    "copyAll": "Install whole team",
-    "copied": "Installed",
+    "copy": "Copy",
+    "copyAll": "Copy all",
+    "copied": "Copied",
+    "copyHint": "Copies setup text for this listing only.",
+    "copyAllHint": "Copies every member setup text on the team.",
+    "memberCopyHint": "Copies this member only.",
     "copyFailed": "Could not copy to the clipboard. Check browser permission.",
     "pasteHint": "Paste this into Grok Bot setup. It should ask what to connect, then save itself.",
+    "share": "Share",
+    "shareCopied": "Copied the URL.",
     "source": "Source",
     "contributor": "Contributor",
     "added": "Added",
@@ -82,7 +89,7 @@
     "title": "Submit a bot",
     "lead": "Fill markdown-like fields and publish it yourself. v1 has no review board.",
     "needAuth": "Sign in to save a listing.",
-    "demoHint": "Auth and the database are not configured in this environment. You can still install setup text; saving needs Supabase and Better Auth.",
+    "demoHint": "Auth and the database are not configured in this environment. You can still copy setup text; saving needs Supabase and Better Auth.",
     "name": "Name",
     "slug": "Slug",
     "kind": "Kind",
@@ -97,9 +104,9 @@
     "savePublish": "Save and publish",
     "teamMembers": "Team members",
     "addMember": "Add member",
+    "memberRole": "Role",
     "removeMember": "Remove",
     "memberName": "Name",
-    "memberRole": "Role",
     "memberCharter": "Setup text",
     "saved": "Saved.",
     "error": "Could not save.",
@@ -112,11 +119,66 @@
     "url": "Page URL",
     "fetch": "Fetch page",
     "fetching": "Fetching…",
-    "fetched": "Page read. Edit the draft below, then install or submit it.",
+    "fetched": "Page read. Edit the draft below, then copy or submit it.",
     "fetchFailed": "Could not fetch that page. Check the URL, or fill the form yourself.",
     "extractedTitle": "Extracted title",
     "splitTeam": "Split into a team (Chief + specialists)",
     "fillAnyway": "Continue with an empty template"
+  },
+  "migrate": {
+    "eyebrow": "Handoff",
+    "hubTitle": "From a previous agent into Grok Bot",
+    "hubLead": "This is not a one-shot dump. Grok Bot receives one packet at a time. Copy the profile, then memory, skills, and routines. This does not move API keys or run Hermes on Grok.",
+    "ruleMemory": "Memory is preview-then-confirm. Daily notes and DREAMS are a working layer, so they stay off the queue unless you opt in.",
+    "ruleRoutines": "A skill is how; a routine is when. Official order: do the task once → save as a skill → then schedule a routine. Cap 50 routines per Bot. Duplicate Bot does not copy learned memory.",
+    "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef values, and key-looking strings are always stripped. Sessions, state.db, and transcripts are not memory.",
+    "wallTitle": "Sign in to upload",
+    "wallLead": "The explainer is as far as it goes without a session. Upload, parse, queue, and save require sign-in. We do not fake a migration.",
+    "demoWall": "Demo mode without Better Auth. The missing env vars are listed below. No migration result is invented.",
+    "toSignIn": "Sign-in page",
+    "backHub": "Migration hub",
+    "hermesTitle": "Hermes → Grok Bot",
+    "hermesLead": "A profile export (zip/tar.gz) or loose SOUL.md, MEMORY.md, skills, and cron.",
+    "hermesPageLead": "Hermes profiles become setup text, memory, skill, and routine packets. Always preview, then confirm — like hermes claw migrate. Cron is recreated. Secrets are never taken.",
+    "openclawTitle": "OpenClaw → Grok Bot",
+    "openclawLead": "A ~/.openclaw zip, a workspace, or SOUL.md / AGENTS.md / MEMORY.md / cron.",
+    "openclawPageLead": "OpenClaw (or clawdbot/moltbot) workspaces become packets. Markdown only, like Import Memory. Files are not merged blindly into bootstrap MEMORY.md.",
+    "files": "Files",
+    "accept": {
+      "hermes": "zip/tar.gz profile, or SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
+      "openclaw": "zip, or SOUL.md, AGENTS.md, USER.md, MEMORY.md, memory/*.md, HEARTBEAT.md, openclaw.json, cron/jobs.json, skills. Legacy clawdbot/moltbot names work."
+    },
+    "preview": "Preview",
+    "parsing": "Reading…",
+    "needFiles": "Choose files first.",
+    "needSession": "No session. Sign in.",
+    "parseFailed": "Could not read those files.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyPacket": "Copy packet {title}",
+    "prev": "Previous packet",
+    "next": "Next packet",
+    "remaining": "Remaining queue",
+    "emptyQueue": "No packets.",
+    "includeOptional": "Add {count} daily notes / DREAMS to the queue (off by default)",
+    "stripped": "Redacted {redacted} secret-looking strings · skipped {skipped} files",
+    "honesty": "This does not move API keys or run {source} on Grok. It hands the next Grok Bot the next piece. Memory, skill, and routine packets are Copy-only into chat. We cannot write xAI memory APIs.",
+    "saveListing": "Save as a listing",
+    "saveListingHint": "Opens Submit with the profile packet.",
+    "saveNeedsAuth": "Saving a listing needs a signed-in session with Supabase.",
+    "draftReady": "Opened the profile in Submit.",
+    "step": {
+      "profile": "Profile",
+      "memory": "Memory",
+      "skill": "Skills",
+      "routine": "Routines"
+    },
+    "kind": {
+      "profile": "Profile",
+      "memory": "Memory",
+      "skill": "Skill",
+      "routine": "Routine"
+    }
   },
   "signIn": {
     "title": "Sign in",
@@ -139,12 +201,13 @@
     "system": "System"
   },
   "a11y": {
-    "copyPrompt": "Install setup text for {name}",
-    "copyAll": "Install every setup text on the {name} team",
+    "copyPrompt": "Copy setup text for {name}",
+    "copyAll": "Copy all setup text on the {name} team",
     "openFilters": "Open filters",
     "localeSwitch": "Change language",
     "view": "Change view",
     "mainNav": "Main",
-    "installCount": "{count, plural, one {# install} other {# installs}}"
+    "installCount": "{count, plural, one {# install} other {# installs}}",
+    "huddle": "Directory faces. Decorative. A face opens that listing."
   }
 }
