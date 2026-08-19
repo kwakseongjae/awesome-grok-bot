@@ -1,11 +1,10 @@
 {
   "meta": {
-    "title": "Grok Bot",
+    "title": "Awesome Grok Bot",
     "description": "스폰서 없는 Grok Bot 디렉터리. 설정 문구를 복사해 Grok Bot에 붙여 넣으세요."
   },
   "brand": {
-    "name": "Grok Bot",
-    "tagline": "스폰서 없는 디렉터리",
+    "name": "Awesome Grok Bot",
     "kicker": "한국어 우선 · 팀과 개인 봇"
   },
   "nav": {
@@ -178,6 +177,14 @@
       "memory": "기억",
       "skill": "스킬",
       "routine": "루틴"
+    },
+    "home": {
+      "eyebrow": "이런 게 됩니다",
+      "hermes": "Hermes에서 쓰던 에이전트를 Grok Bot으로",
+      "openclaw": "OpenClaw에서 쓰던 에이전트를 Grok Bot으로",
+      "hint": "프로필을 올리면 설정·기억·스킬·루틴을 하나씩 넘깁니다",
+      "hermesMark": "Hermes Agent",
+      "openclawMark": "OpenClaw"
     }
   },
   "signIn": {
@@ -208,6 +215,8 @@
     "view": "보기 전환",
     "mainNav": "주 메뉴",
     "installCount": "설치 {count}회",
-    "huddle": "디렉터리 얼굴. 장식용입니다. 얼굴을 누르면 해당 목록으로 갑니다."
+    "huddle": "디렉터리 얼굴. 장식용입니다. 얼굴을 누르면 해당 목록으로 갑니다.",
+    "openMenu": "메뉴 열기",
+    "closeMenu": "메뉴 닫기"
   }
 }

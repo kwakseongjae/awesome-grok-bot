@@ -16,6 +16,11 @@ export const BRAND = {
   mark: "/brand/favicon-mark.png",
 } as const;
 
+export const MIGRATE_MARKS = {
+  hermes: "/brand/migrate/hermes-agent.png",
+  openclaw: "/brand/migrate/pixel-lobster.svg",
+} as const;
+
 const FACE_SLUG_SET = new Set<string>(LISTING_FACE_SLUGS);
 
 export function listingFaceSrc(slug: string) {

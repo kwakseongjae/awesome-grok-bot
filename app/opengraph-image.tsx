@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import en from "@/messages/en.json";
 
 export const runtime = "nodejs";
-export const alt = "Grok Bot — sponsor-free directory";
+export const alt = "Awesome Grok Bot — sponsor-free directory";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -31,10 +31,10 @@ export default function OpenGraphImage() {
             color: "#525252",
           }}
         >
-          GROK BOT
+          AWESOME GROK BOT
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ fontSize: 80, letterSpacing: -2, fontWeight: 600 }}>Grok Bot</div>
+          <div style={{ fontSize: 64, letterSpacing: -2, fontWeight: 600 }}>Awesome Grok Bot</div>
           <div style={{ fontSize: 28, color: "#525252", maxWidth: 860 }}>
             {en.meta.description}
           </div>

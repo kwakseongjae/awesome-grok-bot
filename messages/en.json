@@ -1,11 +1,10 @@
 {
   "meta": {
-    "title": "Grok Bot",
+    "title": "Awesome Grok Bot",
     "description": "A sponsor-free Grok Bot directory. Copy setup text, then paste it into Grok Bot."
   },
   "brand": {
-    "name": "Grok Bot",
-    "tagline": "A sponsor-free directory",
+    "name": "Awesome Grok Bot",
     "kicker": "Korean-first · bots and teams"
   },
   "nav": {
@@ -178,6 +177,14 @@
       "memory": "Memory",
       "skill": "Skill",
       "routine": "Routine"
+    },
+    "home": {
+      "eyebrow": "This is a thing",
+      "hermes": "Agents you used in Hermes, into Grok Bot",
+      "openclaw": "Agents you used in OpenClaw, into Grok Bot",
+      "hint": "Upload a profile. We hand off setup, memory, skills, and routines one packet at a time.",
+      "hermesMark": "Hermes Agent",
+      "openclawMark": "OpenClaw"
     }
   },
   "signIn": {
@@ -208,6 +215,8 @@
     "view": "Change view",
     "mainNav": "Main",
     "installCount": "{count, plural, one {# install} other {# installs}}",
-    "huddle": "Directory faces. Decorative. A face opens that listing."
+    "huddle": "Directory faces. Decorative. A face opens that listing.",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   }
 }

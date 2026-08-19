@@ -24,7 +24,7 @@ export function ListingFace({
   priority = false,
 }: Props) {
   const imageSrc = src ?? (slug ? listingFaceSrc(slug) : BRAND.mark);
-  const position = crop === 0 ? "50% 18%" : `${50 + crop}% ${18 + crop / 2}%`;
+  const position = crop === 0 ? "50% 28%" : `${50 + crop}% ${28 + crop / 2}%`;
 
   return (
     <span

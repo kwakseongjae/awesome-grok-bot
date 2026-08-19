@@ -23,12 +23,7 @@ export function BrandLogo() {
           style={{ objectPosition: "50% 45%" }}
         />
       </span>
-      <span className="flex min-w-0 flex-col">
-        <span className="text-sm font-semibold tracking-tight">{brand("name")}</span>
-        <span className="hidden truncate text-[11px] leading-none text-muted-foreground sm:inline">
-          {brand("tagline")}
-        </span>
-      </span>
+      <span className="truncate text-sm font-semibold tracking-tight">{brand("name")}</span>
     </Link>
   );
 }
