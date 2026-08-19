@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { BRAND, listingFaceSrc } from "@/lib/faces";
+import { GrokBotFace } from "@/components/grok-bot-face";
 import { cn } from "@/lib/utils";
 
 export type HuddleListing = {
@@ -19,9 +18,7 @@ type Props = {
 type FaceItem = {
   id: string;
   href: string | null;
-  src: string;
   name: string;
-  objectPosition: string;
 };
 
 const FAN_MS = 420;
@@ -60,16 +57,12 @@ export function HeroHuddle({ listings }: Props) {
     {
       id: "mascot",
       href: null,
-      src: BRAND.mascot,
       name: t("mascotName"),
-      objectPosition: "50% 12%",
     },
     ...listings.map((listing) => ({
       id: listing.slug,
       href: `/bots/${listing.slug}`,
-      src: listingFaceSrc(listing.slug),
       name: listing.name,
-      objectPosition: "50% 28%",
     })),
   ];
 
@@ -136,17 +129,7 @@ export function HeroHuddle({ listings }: Props) {
           "focus-visible:ring-3 focus-visible:ring-ring/50",
           face.href ? "cursor-pointer" : "cursor-default",
         );
-        const image = (
-          <Image
-            src={face.src}
-            alt={face.href ? face.name : ""}
-            fill
-            sizes="80px"
-            priority={index < 3}
-            className="object-cover"
-            style={{ objectPosition: face.objectPosition }}
-          />
-        );
+        const image = <GrokBotFace name={face.name} decorative className="size-full" />;
 
         if (!face.href) {
           return (

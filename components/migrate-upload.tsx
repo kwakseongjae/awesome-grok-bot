@@ -12,10 +12,9 @@ import type { ListingLocale } from "@/lib/types";
 
 type Props = {
   source: HandoffSource;
-  canSave: boolean;
 };
 
-export function MigrateUpload({ source, canSave }: Props) {
+export function MigrateUpload({ source }: Props) {
   const t = useTranslations("migrate");
   const locale = useLocale() as ListingLocale;
   const [pending, setPending] = useState(false);
@@ -45,14 +44,10 @@ export function MigrateUpload({ source, canSave }: Props) {
         body,
       });
       const payload = (await response.json().catch(() => null)) as
-        | (ParseResult & { error?: string; missing?: string[] })
+        | (ParseResult & { error?: string })
         | null;
       if (!response.ok || !payload || payload.error) {
-        if (payload?.missing?.length) {
-          toast.error(t("needSession"));
-        } else {
-          toast.error(payload?.error || t("parseFailed"));
-        }
+        toast.error(payload?.error || t("parseFailed"));
         return;
       }
       setResult(payload);
@@ -89,7 +84,6 @@ export function MigrateUpload({ source, canSave }: Props) {
           listingDraft={result.listingDraft}
           skipped={result.skipped}
           redactedCount={result.redactedCount}
-          canSave={canSave}
         />
       ) : null}
     </div>

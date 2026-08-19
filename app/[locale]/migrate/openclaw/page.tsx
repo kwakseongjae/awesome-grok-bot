@@ -11,5 +11,5 @@ type Props = {
 export default async function OpenClawMigratePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(toAppLocale(locale));
-  return <MigrateSourcePage source="openclaw" locale={locale} />;
+  return <MigrateSourcePage source="openclaw" />;
 }

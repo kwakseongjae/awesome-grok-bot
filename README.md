@@ -6,7 +6,7 @@ A sponsor-free [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) dire
 
 This repo is the public catalog of **bots** (named specialists you put into Grok Bot) and **teams** (a Chief plus specialists). On a listing page, **Copy** puts paste-ready setup text on the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
 
-Visual system: Grok-like white/black monotone. See [`design.md`](design.md). Brand faces live in `public/brand/`.
+Visual system: Grok-like white/black monotone. See [`design.md`](design.md). Listing faces are the Grok Bot sphere SVG (`public/brand/grok-bot-face.svg`). Migrate cards use official vendor marks in `public/brand/migrate/`.
 
 ## Run locally (no secrets)
 
@@ -25,10 +25,9 @@ You can:
 - browse table and card views (`/ko`, `/ko?view=cards`)
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
 - visit `/from-link`, `/submit`, `/sign-in`, and `/migrate`
-- on `/migrate` while signed out: explainer + sign-in wall (no fake migration)
 - Hermes sample files (no secrets): `fixtures/hermes-handoff/SOUL.md` and `MEMORY.md`
 
-Sign-in, submit **save**, and migrate **upload/parse** need secrets (below). The pages still render and explain which env vars are missing.
+Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secrets are still stripped from handoff files.
 
 ## Run with secrets (Supabase + Better Auth)
 

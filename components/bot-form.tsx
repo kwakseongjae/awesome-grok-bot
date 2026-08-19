@@ -21,14 +21,11 @@ import { CATEGORIES, type BotDraftInput, type BotKind, type Category, type Listi
 
 type Props = {
   initial?: Partial<BotDraftInput>;
-  canSave: boolean;
-  signedIn: boolean;
-  demoHint?: string;
 };
 
 const emptyMember = (): TeamMember => ({ name: "", role: "", charter: "" });
 
-export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
+export function BotForm({ initial }: Props) {
   const t = useTranslations("submit");
   const kindT = useTranslations("kind");
   const catT = useTranslations("category");
@@ -78,10 +75,6 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
   };
 
   const handleSave = async () => {
-    if (!signedIn || !canSave) {
-      toast.error(t("needAuth"));
-      return;
-    }
     setPending(true);
     try {
       const response = await fetch("/api/bots", {
@@ -110,12 +103,6 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
         void handleSave();
       }}
     >
-      {demoHint ? (
-        <p className="rounded-md border border-dashed bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-          {demoHint}
-        </p>
-      ) : null}
-
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label={t("name")} htmlFor="name">
           <Input
@@ -287,7 +274,7 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
         {t("publish")}
       </label>
 
-      <Button type="submit" disabled={pending || !signedIn || !canSave}>
+      <Button type="submit" disabled={pending}>
         {publish ? t("savePublish") : t("saveDraft")}
       </Button>
     </form>

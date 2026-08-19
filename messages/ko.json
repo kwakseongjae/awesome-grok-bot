@@ -4,7 +4,8 @@
     "description": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 상세 페이지에서 Copy로 설정 문구를 복사해 붙여 넣습니다. 팀은 치프와 전문 봇으로 이루어집니다."
   },
   "brand": {
-    "name": "Awesome Grok Bot"
+    "name": "Awesome Grok Bot",
+    "product": "Grok Bot"
   },
   "nav": {
     "directory": "디렉터리",
@@ -28,7 +29,6 @@
     "results": "{count, plural, other {#개}}",
     "empty": "조건에 맞는 목록이 없습니다.",
     "emptyHint": "검색어나 필터를 바꿔 보세요.",
-    "demoBanner": "Supabase 환경 변수가 없어 로컬 시드 목록을 보여 줍니다. 카탈로그는 그대로 둘러볼 수 있습니다.",
     "mascotName": "디렉터리 마스코트"
   },
   "filters": {
@@ -86,8 +86,6 @@
   "submit": {
     "title": "봇 등록",
     "lead": "이름과 설정 문구를 적은 뒤, 준비되면 직접 공개하면 됩니다.",
-    "needAuth": "등록하려면 로그인이 필요합니다.",
-    "demoHint": "지금 환경에는 인증·데이터베이스가 없습니다. 설정 문구는 복사할 수 있고, 저장은 Supabase와 Better Auth를 연결한 뒤에 가능합니다.",
     "name": "이름",
     "slug": "주소 이름",
     "kind": "종류",
@@ -130,10 +128,6 @@
     "ruleMemory": "기억은 미리보기 후 확인합니다. 일일 노트와 DREAMS는 작업 레이어라서 기본으로 넣지 않습니다.",
     "ruleRoutines": "스킬은 how, 루틴은 when. 공식 순서: 한 번 하기 → 스킬로 저장 → 그다음 루틴. 봇당 루틴 50개. Duplicate Bot은 학습된 기억을 복사하지 않습니다.",
     "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef, 키처럼 보이는 문자열은 항상 제거합니다. 세션·state.db·트랜스크립트는 기억이 아닙니다.",
-    "wallTitle": "업로드하려면 로그인하세요",
-    "wallLead": "설명은 여기까지입니다. 파일 올리기, 파싱, 큐, 저장은 세션이 필요합니다. 로그인 없이 이전을 흉내 내지 않습니다.",
-    "demoWall": "Better Auth가 없는 데모 모드입니다. 아래 빠진 환경 변수를 보면 됩니다. 이전 결과는 만들지 않습니다.",
-    "toSignIn": "로그인 페이지",
     "backHub": "이전 허브",
     "hermesTitle": "Hermes → Grok Bot",
     "hermesLead": "프로필 export(zip/tar.gz) 또는 SOUL.md, MEMORY.md, 스킬, cron.",
@@ -149,7 +143,6 @@
     "preview": "미리보기",
     "parsing": "읽는 중…",
     "needFiles": "파일을 선택하세요.",
-    "needSession": "세션이 없습니다. 로그인하세요.",
     "parseFailed": "파일을 읽지 못했습니다.",
     "copy": "Copy",
     "copied": "Copied",
@@ -163,7 +156,6 @@
     "honesty": "이것은 {source}를 Grok에서 돌리는 이전이 아닙니다. 다음 Grok Bot에게 다음 조각만 건넵니다. 기억·스킬·루틴 패킷은 채팅에 붙여 넣는 Copy입니다. xAI 메모리 API에는 쓰지 못합니다.",
     "saveListing": "목록으로 저장",
     "saveListingHint": "프로필 패킷을 등록 초안으로 엽니다.",
-    "saveNeedsAuth": "목록 저장은 Supabase가 연결된 로그인 세션에서만 됩니다.",
     "draftReady": "등록 폼에 프로필을 넣었습니다.",
     "step": {
       "profile": "프로필",
@@ -184,8 +176,14 @@
       "body": "쓰던 프로필을 패킷으로 이어 받습니다. 키는 안 옮깁니다.",
       "cta": "이전하기",
       "hermesMark": "Hermes Agent",
-      "openclawMark": "OpenClaw"
+      "openclawMark": "OpenClaw",
+      "destMark": "Grok Bot"
     }
+  },
+  "guide": {
+    "title": "Grok Bot 세팅 가이드",
+    "body": "Nate Herk이 20분 만에 봇 팀을 만드는 방법.",
+    "cta": "가이드 보기"
   },
   "signIn": {
     "title": "로그인",
@@ -193,8 +191,7 @@
     "github": "GitHub로 계속",
     "google": "Google로 계속",
     "pending": "연결하는 중",
-    "missing": "로컬 데모 모드입니다. 소셜 로그인을 켜려면 아래 환경 변수를 설정하세요.",
-    "missingDb": "데이터베이스(DATABASE_URL)도 필요합니다.",
+    "error": "로그인하지 못했습니다.",
     "back": "디렉터리로 돌아가기"
   },
   "footer": {

@@ -4,7 +4,8 @@
     "description": "A listing is a specialist or a team you put into Grok Bot. On a detail page, Copy puts setup text on the clipboard. A team has a chief plus specialists."
   },
   "brand": {
-    "name": "Awesome Grok Bot"
+    "name": "Awesome Grok Bot",
+    "product": "Grok Bot"
   },
   "nav": {
     "directory": "Directory",
@@ -28,7 +29,6 @@
     "results": "{count, plural, one {# listing} other {# listings}}",
     "empty": "No listings match these filters.",
     "emptyHint": "Try another search or reset the filters.",
-    "demoBanner": "Supabase env vars are missing, so this catalog is loaded from the committed seed file. You can still browse every listing.",
     "mascotName": "Directory mascot"
   },
   "filters": {
@@ -86,8 +86,6 @@
   "submit": {
     "title": "Submit a bot",
     "lead": "Fill markdown-like fields and publish it yourself. v1 has no review board.",
-    "needAuth": "Sign in to save a listing.",
-    "demoHint": "Auth and the database are not configured in this environment. You can still copy setup text; saving needs Supabase and Better Auth.",
     "name": "Name",
     "slug": "Slug",
     "kind": "Kind",
@@ -130,10 +128,6 @@
     "ruleMemory": "Memory is preview-then-confirm. Daily notes and DREAMS are a working layer, so they stay off the queue unless you opt in.",
     "ruleRoutines": "A skill is how; a routine is when. Official order: do the task once → save as a skill → then schedule a routine. Cap 50 routines per Bot. Duplicate Bot does not copy learned memory.",
     "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef values, and key-looking strings are always stripped. Sessions, state.db, and transcripts are not memory.",
-    "wallTitle": "Sign in to upload",
-    "wallLead": "The explainer is as far as it goes without a session. Upload, parse, queue, and save require sign-in. We do not fake a migration.",
-    "demoWall": "Demo mode without Better Auth. The missing env vars are listed below. No migration result is invented.",
-    "toSignIn": "Sign-in page",
     "backHub": "Migration hub",
     "hermesTitle": "Hermes → Grok Bot",
     "hermesLead": "A profile export (zip/tar.gz) or loose SOUL.md, MEMORY.md, skills, and cron.",
@@ -149,7 +143,6 @@
     "preview": "Preview",
     "parsing": "Reading…",
     "needFiles": "Choose files first.",
-    "needSession": "No session. Sign in.",
     "parseFailed": "Could not read those files.",
     "copy": "Copy",
     "copied": "Copied",
@@ -163,7 +156,6 @@
     "honesty": "This does not move API keys or run {source} on Grok. It hands the next Grok Bot the next piece. Memory, skill, and routine packets are Copy-only into chat. We cannot write xAI memory APIs.",
     "saveListing": "Save as a listing",
     "saveListingHint": "Opens Submit with the profile packet.",
-    "saveNeedsAuth": "Saving a listing needs a signed-in session with Supabase.",
     "draftReady": "Opened the profile in Submit.",
     "step": {
       "profile": "Profile",
@@ -184,8 +176,14 @@
       "body": "Hands off the profile as packets. Keys stay behind.",
       "cta": "Start the handoff",
       "hermesMark": "Hermes Agent",
-      "openclawMark": "OpenClaw"
+      "openclawMark": "OpenClaw",
+      "destMark": "Grok Bot"
     }
+  },
+  "guide": {
+    "title": "Grok Bot setup guide",
+    "body": "Nate Herk’s 20-minute walkthrough for a Bot team.",
+    "cta": "Watch the guide"
   },
   "signIn": {
     "title": "Sign in",
@@ -193,8 +191,7 @@
     "github": "Continue with GitHub",
     "google": "Continue with Google",
     "pending": "Connecting",
-    "missing": "Local demo mode. Set these env vars to enable social login.",
-    "missingDb": "A database (DATABASE_URL) is also required.",
+    "error": "Could not sign in.",
     "back": "Back to the directory"
   },
   "footer": {

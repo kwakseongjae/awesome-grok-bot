@@ -3,9 +3,9 @@ import { toAppLocale } from "@/i18n/routing";
 import { Directory } from "@/components/directory";
 import { HeroHuddle } from "@/components/hero-huddle";
 import { HomeMigrate } from "@/components/home-migrate";
+import { SetupGuide } from "@/components/setup-guide";
 import { parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
-import { isSupabaseConfigured } from "@/lib/env";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
 import type { ListingLocale } from "@/lib/types";
 
@@ -47,12 +47,12 @@ export default async function HomePage({ params, searchParams }: Props) {
           </p>
         </div>
       </section>
+      <SetupGuide />
       <HomeMigrate />
       <Directory
         bots={bots}
         integrations={integrations}
         uiLocale={uiLocale}
-        demoMode={!isSupabaseConfigured()}
         view={parseDirectoryView(query.view)}
       />
     </div>

@@ -7,9 +7,6 @@ import type { BotDraftInput } from "@/lib/types";
 
 type Props = {
   fallback: Partial<BotDraftInput>;
-  canSave: boolean;
-  signedIn: boolean;
-  demoHint?: string;
 };
 
 function subscribe() {
@@ -26,7 +23,7 @@ function readDraft() {
   }
 }
 
-export function SubmitForm({ fallback, canSave, signedIn, demoHint }: Props) {
+export function SubmitForm({ fallback }: Props) {
   const mounted = useSyncExternalStore(subscribe, () => true, () => false);
   const draft = mounted ? readDraft() : null;
   const initial = draft ?? fallback;
@@ -35,9 +32,6 @@ export function SubmitForm({ fallback, canSave, signedIn, demoHint }: Props) {
     <BotForm
       key={`${initial.slug ?? ""}-${initial.prompt?.slice(0, 24) ?? ""}`}
       initial={initial}
-      canSave={canSave}
-      signedIn={signedIn}
-      demoHint={demoHint}
     />
   );
 }

@@ -213,4 +213,40 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .grok-bot-face-motion,
+  .grok-bot-face-motion .grok-bot-eyes {
+    animation: none !important;
+  }
+}
+
+@keyframes grok-bot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes grok-bot-blink {
+  0%,
+  88%,
+  100% {
+    transform: scaleY(1);
+  }
+  92%,
+  96% {
+    transform: scaleY(0.08);
+  }
+}
+
+.grok-bot-face-motion {
+  animation: grok-bot-float 5.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.grok-bot-face-motion .grok-bot-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: grok-bot-blink 5.6s ease-in-out infinite;
 }

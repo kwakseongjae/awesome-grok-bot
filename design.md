@@ -83,6 +83,7 @@ trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 - Reduced-motion: disable animation and non-essential transition.
 - Home hero: faces fan, then a huddle (CSS/WAAPI). Reduced-motion:
   static huddle. No bounce, no glow. Decorative, not a second nav.
+- Header mark only: slow float + eye blink (CSS). Reduced-motion: static.
 
 ## Component voice
 

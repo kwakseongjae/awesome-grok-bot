@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { BRAND } from "@/lib/faces";
+import { ListingFace } from "@/components/listing-face";
 
 export function BrandLogo() {
   const brand = useTranslations("brand");
@@ -12,17 +11,7 @@ export function BrandLogo() {
       className="flex min-w-0 flex-nowrap items-center gap-2 rounded-md focus-visible:ring-3 focus-visible:ring-ring/50"
       aria-label={brand("name")}
     >
-      <span className="relative size-8 shrink-0 overflow-hidden rounded-full border border-border bg-muted">
-        <Image
-          src={BRAND.mark}
-          alt=""
-          fill
-          sizes="32px"
-          priority
-          className="object-cover"
-          style={{ objectPosition: "50% 45%" }}
-        />
-      </span>
+      <ListingFace name={brand("product")} size={32} decorative motion />
       <span className="whitespace-nowrap text-sm font-semibold tracking-tight">{brand("name")}</span>
     </Link>
   );
