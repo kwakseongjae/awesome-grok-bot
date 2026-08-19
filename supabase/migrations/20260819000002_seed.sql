@@ -31,7 +31,7 @@ insert into public.bots (
 - 급여·계약·건강 정보를 저장하거나 다른 봇에게 전달
 - 나를 사칭해 약속 잡기
 
-연결
+플러그인
 Gmail, Slack, Google Calendar
 
 첫 작업
@@ -87,7 +87,7 @@ Never do without asking
 - Store or forward payroll, contracts, or health details
 - Book time while pretending to be me
 
-Integrations
+Plugins
 Gmail, Slack, Google Calendar
 
 First task
@@ -144,7 +144,7 @@ insert into public.bots (
 - CRM 단계 변경, 기회 삭제, 가격 확정
 - 법률 문구를 최종본으로 단정
 
-연결
+플러그인
 Salesforce, Gmail, Google Calendar, Slack, Notion
 
 첫 작업
@@ -201,7 +201,7 @@ Never do without asking
 - Change CRM stage, delete an opportunity, or lock a price
 - Treat legal language as final
 
-Integrations
+Plugins
 Salesforce, Gmail, Google Calendar, Slack, Notion
 
 First task
@@ -256,7 +256,7 @@ insert into public.bots (
 - 가격·날짜를 확정된 것처럼 쓰기
 - 고객 로고나 인용을 출처 없이 넣기
 
-연결
+플러그인
 Notion, Google Docs, Slack, GitHub
 
 첫 작업
@@ -311,7 +311,7 @@ Never do without asking
 - State price or date as if they were locked
 - Use a customer logo or quote without a source
 
-Integrations
+Plugins
 Notion, Google Docs, Slack, GitHub
 
 First task
@@ -366,7 +366,7 @@ insert into public.bots (
 - 공개 상태 페이지 문구 게시
 - 고객에게 장애 메일을 보내기
 
-연결
+플러그인
 Slack, GitHub, Notion, Google Docs
 
 첫 작업
@@ -421,7 +421,7 @@ Never do without asking
 - Publish status-page copy
 - Email customers about an outage
 
-Integrations
+Plugins
 Slack, GitHub, Notion, Google Docs
 
 First task
@@ -476,7 +476,7 @@ insert into public.bots (
 - 갱신 할인이나 크레딧을 약속
 - 지원 티켓을 해결됨으로 표시
 
-연결
+플러그인
 Salesforce, Zendesk, Slack, Google Slides
 
 첫 작업
@@ -531,7 +531,7 @@ Never do without asking
 - Promise a renewal discount or credit
 - Mark support tickets solved
 
-Integrations
+Plugins
 Salesforce, Zendesk, Slack, Google Slides
 
 First task
@@ -586,7 +586,7 @@ insert into public.bots (
 - 학교·관공서에 회신 보내기
 - 가족 메일을 다른 사람에게 전달
 
-연결
+플러그인
 Gmail, Google Calendar, Notion
 
 첫 작업
@@ -641,7 +641,7 @@ Never do without asking
 - Send a reply to a school or office
 - Forward family mail to anyone else
 
-Integrations
+Plugins
 Gmail, Google Calendar, Notion
 
 First task
@@ -696,7 +696,7 @@ insert into public.bots (
 - 유료 자료 결제
 - 조사 결과를 공개 채널에 올리기
 
-연결
+플러그인
 Google Docs, Notion, Slack, GitHub
 
 첫 작업
@@ -751,7 +751,7 @@ Never do without asking
 - Pay for a source
 - Post the memo to a public channel
 
-Integrations
+Plugins
 Google Docs, Notion, Slack, GitHub
 
 First task
@@ -808,7 +808,7 @@ insert into public.bots (
 - 고객 사례를 허락 없이 쓰기
 - 다른 팀 봇의 초안을 몰래 고치기
 
-연결
+플러그인
 Google Docs, Slack, Notion, YouTube
 
 첫 작업
@@ -865,7 +865,7 @@ Never do without asking
 - Use a customer story without permission
 - Silently edit another bot''s draft
 
-Integrations
+Plugins
 Google Docs, Slack, Notion, YouTube
 
 First task
