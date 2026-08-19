@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "title": "Grok Bot",
+    "description": "스폰서 없는 Grok Bot 디렉터리. 역할과 헌장(charter)을 복사해 바로 붙여 넣으세요."
+  },
+  "brand": {
+    "name": "Grok Bot",
+    "tagline": "스폰서 없는 디렉터리",
+    "kicker": "한국어 우선 · 팀과 개인 봇"
+  },
+  "nav": {
+    "directory": "디렉터리",
+    "submit": "등록",
+    "fromLink": "링크에서 만들기",
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "skipToContent": "본문으로 건너뛰기"
+  },
+  "home": {
+    "eyebrow": "Grok Bot 헌장 모음",
+    "title": "붙여 넣을 수 있는 봇과 팀",
+    "lead": "봇은 이름·직함·헌장을 가진 지속 팀원입니다. 팀이라면 치프가 일을 나누고, 전문 봇이 이어서 처리합니다. 스폰서 칸은 없습니다.",
+    "search": "이름, 요약, 통합으로 검색",
+    "searchLabel": "검색",
+    "viewTable": "표",
+    "viewCards": "카드",
+    "filters": "필터",
+    "clearFilters": "필터 지우기",
+    "results": "{count, plural, other {#개 목록}}",
+    "empty": "조건에 맞는 봇이 없습니다.",
+    "emptyHint": "검색어나 필터를 바꿔 보세요.",
+    "demoBanner": "Supabase 환경 변수가 없어 로컬 시드 목록을 보여 줍니다. 카탈로그는 그대로 둘러볼 수 있습니다."
+  },
+  "filters": {
+    "category": "분야",
+    "integration": "연결",
+    "locale": "언어",
+    "kind": "종류",
+    "all": "전체",
+    "anyCategory": "모든 분야",
+    "anyIntegration": "모든 연결",
+    "anyLocale": "모든 언어",
+    "anyKind": "봇과 팀"
+  },
+  "kind": {
+    "bot": "봇",
+    "team": "팀"
+  },
+  "category": {
+    "productivity": "생산성",
+    "sales": "영업",
+    "marketing": "마케팅",
+    "ops": "운영",
+    "success": "성공",
+    "personal": "개인"
+  },
+  "table": {
+    "bot": "봇",
+    "category": "분야",
+    "kind": "종류",
+    "integrations": "연결",
+    "source": "출처",
+    "copies": "복사"
+  },
+  "bot": {
+    "charter": "헌장",
+    "members": "팀원",
+    "integrations": "먼저 연결",
+    "copy": "헌장 복사",
+    "copyAll": "팀 전체 복사",
+    "copied": "복사됨",
+    "copyFailed": "복사하지 못했습니다. 브라우저 권한을 확인해 주세요.",
+    "pasteHint": "Grok Bot 설정 화면에 붙여 넣으면 됩니다. 연결을 물어본 뒤 자신을 저장합니다.",
+    "source": "출처",
+    "contributor": "기여자",
+    "added": "등록일",
+    "locale": "언어",
+    "related": "같은 분야의 다른 목록",
+    "notFound": "이 봇을 찾을 수 없습니다.",
+    "back": "디렉터리로"
+  },
+  "submit": {
+    "title": "봇 등록",
+    "lead": "마크다운처럼 적고, 원할 때 직접 공개하세요. v1에는 심사 위원회가 없습니다.",
+    "needAuth": "등록하려면 로그인이 필요합니다.",
+    "demoHint": "지금 환경에는 인증·데이터베이스가 없습니다. 헌장은 복사할 수 있고, 저장은 Supabase와 Better Auth를 연결한 뒤에 가능합니다.",
+    "name": "이름",
+    "slug": "슬러그",
+    "kind": "종류",
+    "category": "분야",
+    "locale": "언어",
+    "summary": "한 줄 요약",
+    "prompt": "헌장 / 설정 프롬프트",
+    "integrations": "연결 (쉼표로 구분)",
+    "sourceUrl": "출처 URL (선택)",
+    "publish": "지금 공개",
+    "saveDraft": "초안으로 저장",
+    "savePublish": "저장하고 공개",
+    "teamMembers": "팀원",
+    "addMember": "팀원 추가",
+    "removeMember": "삭제",
+    "memberName": "이름",
+    "memberRole": "역할",
+    "memberCharter": "헌장",
+    "saved": "저장했습니다.",
+    "error": "저장하지 못했습니다.",
+    "slugHint": "URL에 쓰입니다. 영문 소문자, 숫자, 하이픈.",
+    "promptHint": "역할, 맡는 일, 잘한 기준, 묻지 않고 하지 말 것, 첫 작업을 적으세요."
+  },
+  "fromLink": {
+    "title": "링크에서 헌장 만들기",
+    "lead": "공개 페이지 URL을 붙이면 제목과 본문을 읽어 정해진 템플릿으로 초안을 채웁니다. 유료 LLM 키는 필요 없습니다.",
+    "url": "페이지 URL",
+    "fetch": "가져오기",
+    "fetching": "가져오는 중…",
+    "fetched": "페이지를 읽었습니다. 아래 초안을 고친 뒤 복사하거나 등록하세요.",
+    "fetchFailed": "페이지를 가져오지 못했습니다. 주소를 확인하고, 필요하면 아래 칸을 직접 채우세요.",
+    "extractedTitle": "추출한 제목",
+    "splitTeam": "팀으로 나누기 (치프 + 전문가)",
+    "fillAnyway": "빈 템플릿으로 계속"
+  },
+  "signIn": {
+    "title": "로그인",
+    "lead": "GitHub 또는 Google로 등록하고, 목록을 남길 수 있습니다.",
+    "github": "GitHub로 계속",
+    "google": "Google로 계속",
+    "missing": "로컬 데모 모드입니다. 소셜 로그인을 켜려면 아래 환경 변수를 설정하세요.",
+    "missingDb": "데이터베이스(DATABASE_URL)도 필요합니다.",
+    "back": "디렉터리로 돌아가기"
+  },
+  "footer": {
+    "note": "광고·제휴·스폰서 레일 없음. 헌장은 직접 쓰고 공유하세요.",
+    "license": "목록은 복사·각색해도 됩니다."
+  },
+  "theme": {
+    "toggle": "테마 전환",
+    "light": "라이트",
+    "dark": "다크",
+    "system": "시스템"
+  },
+  "a11y": {
+    "copyPrompt": "{name} 헌장 복사",
+    "copyAll": "{name} 팀 헌장 전체 복사",
+    "openFilters": "필터 열기",
+    "localeSwitch": "언어 변경"
+  }
+}

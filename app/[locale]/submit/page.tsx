@@ -1,0 +1,36 @@
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { toAppLocale } from "@/i18n/routing";
+import { BotForm } from "@/components/bot-form";
+import { getAuthStatus } from "@/lib/env";
+import { getServerSession } from "@/lib/session";
+import type { ListingLocale } from "@/lib/types";
+
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function SubmitPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(toAppLocale(locale));
+  const t = await getTranslations("submit");
+  const session = await getServerSession();
+  const status = getAuthStatus();
+
+  return (
+    <div className="mx-auto w-full max-w-3xl px-4 py-10">
+      <h1 className="font-display text-4xl tracking-tight">{t("title")}</h1>
+      <p className="mt-3 max-w-2xl text-muted-foreground">{t("lead")}</p>
+      {!session?.user ? (
+        <p className="mt-4 text-sm text-muted-foreground">{t("needAuth")}</p>
+      ) : null}
+      <div className="mt-8">
+        <BotForm
+          initial={{ locale: locale as ListingLocale, status: "published", kind: "bot", category: "productivity", team_members: [], integrations: [], name: "", slug: "", summary: "", prompt: "" }}
+          canSave={status.canPersistListings}
+          signedIn={Boolean(session?.user)}
+          demoHint={session?.user && status.canPersistListings ? undefined : t("demoHint")}
+        />
+      </div>
+    </div>
+  );
+}
