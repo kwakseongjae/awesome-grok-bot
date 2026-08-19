@@ -5,10 +5,13 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
+import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
+import { ShareButton } from "@/components/share-button";
 import { Badge } from "@/components/ui/badge";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
+import { getAppUrl } from "@/lib/env";
 import type { ListingLocale } from "@/lib/types";
 
 type Props = {
@@ -37,6 +40,7 @@ export default async function BotDetailPage({ params }: Props) {
     new Date(bot.added_at),
   );
   const listingLocale = locale as ListingLocale;
+  const shareUrl = `${getAppUrl()}/${locale}/bots/${bot.slug}`;
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -48,16 +52,21 @@ export default async function BotDetailPage({ params }: Props) {
       </Link>
 
       <header className="mt-8 space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-          <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-          <Badge variant="outline" className="rounded-md font-normal">
-            {bot.locale === "ko" ? "한국어" : "English"}
-          </Badge>
+        <div className="flex items-start gap-4">
+          <ListingFace slug={bot.slug} name={bot.name} size={72} priority />
+          <div className="min-w-0 flex-1 space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+              <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+              <Badge variant="outline" className="rounded-md font-normal">
+                {bot.locale === "ko" ? "한국어" : "English"}
+              </Badge>
+            </div>
+            <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
+            <p className="text-lg text-muted-foreground">{bot.summary}</p>
+          </div>
         </div>
-        <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
-        <p className="text-lg text-muted-foreground">{bot.summary}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <CopyButton
             text={bot.prompt}
             label={t("bot.copy")}
@@ -72,10 +81,15 @@ export default async function BotDetailPage({ params }: Props) {
               copiedLabel={t("bot.copied")}
               ariaLabel={t("a11y.copyAll", { name: bot.name })}
               botId={bot.id}
-              variant="outline"
+              variant="ghost"
             />
           ) : null}
+          <ShareButton title={bot.name} url={shareUrl} />
         </div>
+        <p className="text-sm text-muted-foreground">{t("bot.copyHint")}</p>
+        {bot.kind === "team" ? (
+          <p className="text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
+        ) : null}
         <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
       </header>
 
@@ -101,22 +115,27 @@ export default async function BotDetailPage({ params }: Props) {
             {t("bot.members")}
           </h2>
           <div className="space-y-4">
-            {bot.team_members.map((member) => (
+            {bot.team_members.map((member, index) => (
               <article key={member.name} className="rounded-lg border bg-card p-4">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="font-semibold">{member.name}</h3>
-                  <p className="text-sm text-muted-foreground">{member.role}</p>
-                </div>
-                <p className="mt-3 whitespace-pre-wrap text-sm leading-6">{member.charter}</p>
-                <div className="mt-3">
-                  <CopyButton
-                    text={member.charter}
-                    label={t("bot.copy")}
-                    copiedLabel={t("bot.copied")}
-                    ariaLabel={t("a11y.copyPrompt", { name: member.name })}
-                    size="sm"
-                    variant="outline"
-                  />
+                <div className="flex items-start gap-3">
+                  <ListingFace slug={bot.slug} name={member.name} size={40} crop={(index - 1) * 8} decorative />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="font-semibold">{member.name}</h3>
+                      <p className="text-sm text-muted-foreground">{member.role}</p>
+                    </div>
+                    <p className="mt-3 whitespace-pre-wrap text-sm leading-6">{member.charter}</p>
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <CopyButton
+                        text={member.charter}
+                        label={t("bot.copy")}
+                        copiedLabel={t("bot.copied")}
+                        ariaLabel={t("a11y.copyPrompt", { name: member.name })}
+                        size="sm"
+                      />
+                      <p className="text-xs text-muted-foreground">{t("bot.memberCopyHint")}</p>
+                    </div>
+                  </div>
                 </div>
               </article>
             ))}
@@ -158,14 +177,17 @@ export default async function BotDetailPage({ params }: Props) {
           </h2>
           <ul className="space-y-2">
             {related.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={`/bots/${item.slug}`}
-                  className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  {item.name}
-                </Link>
-                <span className="text-muted-foreground"> · {item.summary}</span>
+              <li key={item.id} className="flex items-center gap-2">
+                <ListingFace slug={item.slug} name={item.name} size={28} decorative />
+                <span className="min-w-0">
+                  <Link
+                    href={`/bots/${item.slug}`}
+                    className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                  >
+                    {item.name}
+                  </Link>
+                  <span className="text-muted-foreground"> · {item.summary}</span>
+                </span>
               </li>
             ))}
           </ul>

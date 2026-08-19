@@ -71,14 +71,18 @@ trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 
 - Primary · ink fill, paper type, radius 0.5rem, no glow.
 - Secondary · hairline outline, paper fill.
-- Directory action label is **설치 / Install** (copies setup text).
-  Past tense: 설치됨 / Installed.
+- Detail action labels are English **Copy** / **Copy all**
+  (this listing vs the whole team). Home listings show install
+  count as text only — no copy button on the index.
+  After copy: Copied.
 
 ## Motion stance
 
 - Motion-cut. No bounce, no gradient wash, no glow, no scroll-reveal.
 - Hover: opacity / background only, ≤150ms.
 - Reduced-motion: disable animation and non-essential transition.
+- Home hero: faces fan, then a huddle (CSS/WAAPI). Reduced-motion:
+  static huddle. No bounce, no glow. Decorative, not a second nav.
 
 ## Component voice
 
@@ -92,16 +96,20 @@ trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 
 ## Vocabulary (user-facing)
 
-A **listing** is a specialist or a team you install into Grok Bot.
-**Install** copies the setup text so the user can paste it into Grok Bot.
-A **team** has a chief plus specialists.
+A **listing** is a specialist or a team you put into Grok Bot.
+**Copy** puts setup text on the clipboard so it can be pasted into
+Grok Bot. A **team** has a chief plus specialists.
 
 | UI | Korean | English |
 | --- | --- | --- |
-| CTA | 설치 | Install |
+| Listing copy | Copy (도움말: 이 목록) | Copy |
+| Team copy | Copy all (도움말: 팀 전체) | Copy all |
 | Payload | 설정 문구 | Setup text |
 | Plugins | 플러그인 | Plugins |
 | Category `success` | 고객지원 | Support |
+| Migrate | 이전 | Migrate |
+| Handoff stepper | 인수인계 | Handoff |
+| Share | 공유 | Share |
 
 Do not show 헌장 / charter or 성공 / Success in the UI. Code and
 data may still use `charter` / `success` as keys.

@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { toAppLocale } from "@/i18n/routing";
-import { BotForm } from "@/components/bot-form";
+import { SubmitForm } from "@/components/submit-form";
 import { getAuthStatus } from "@/lib/env";
 import { getServerSession } from "@/lib/session";
 import type { ListingLocale } from "@/lib/types";
@@ -24,8 +24,8 @@ export default async function SubmitPage({ params }: Props) {
         <p className="mt-4 text-sm text-muted-foreground">{t("needAuth")}</p>
       ) : null}
       <div className="mt-8">
-        <BotForm
-          initial={{ locale: locale as ListingLocale, status: "published", kind: "bot", category: "productivity", team_members: [], integrations: [], name: "", slug: "", summary: "", prompt: "" }}
+        <SubmitForm
+          fallback={{ locale: locale as ListingLocale, status: "published", kind: "bot", category: "productivity", team_members: [], integrations: [], name: "", slug: "", summary: "", prompt: "" }}
           canSave={status.canPersistListings}
           signedIn={Boolean(session?.user)}
           demoHint={session?.user && status.canPersistListings ? undefined : t("demoHint")}
