@@ -1,4 +1,5 @@
 import seedFile from "@/data/seed-bots.json";
+import { ensureListingSlug } from "@/lib/charter";
 import { createAdminClient, createAnonClient } from "@/lib/supabase";
 import { isSupabaseConfigured } from "@/lib/env";
 import type {
@@ -249,7 +250,7 @@ export async function createBotListing(input: BotDraftInput, user: {
   const { data, error } = await admin
     .from("bots")
     .insert({
-      slug: input.slug,
+      slug: ensureListingSlug(input.name, input.slug),
       name: input.name,
       kind: input.kind,
       category: input.category,

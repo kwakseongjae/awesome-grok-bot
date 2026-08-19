@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { slugify } from "@/lib/charter";
+import { ensureListingSlug, slugify } from "@/lib/charter";
 import { CATEGORIES, type BotDraftInput, type BotKind, type Category, type ListingLocale, type TeamMember } from "@/lib/types";
 
 type Props = {
@@ -53,7 +53,7 @@ export function BotForm({ initial, canSave, signedIn, demoHint }: Props) {
   const payload = useMemo<BotDraftInput>(
     () => ({
       name: name.trim(),
-      slug: (slug || slugify(name) || "bot").trim(),
+      slug: ensureListingSlug(name, slug),
       kind,
       category,
       locale,

@@ -12,7 +12,8 @@ export function LocaleSwitcher() {
   const nextLocale = locale === "ko" ? "en" : "ko";
 
   const handleClick = () => {
-    router.replace(pathname, { locale: nextLocale });
+    const query = window.location.search;
+    router.replace(`${pathname}${query}`, { locale: nextLocale });
   };
 
   return (

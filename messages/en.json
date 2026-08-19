@@ -59,7 +59,7 @@
     "category": "Category",
     "kind": "Kind",
     "integrations": "Integrations",
-    "source": "Source",
+    "contributor": "Contributor",
     "copies": "Copies"
   },
   "bot": {
@@ -77,7 +77,7 @@
     "locale": "Language",
     "related": "More in this category",
     "notFound": "This bot was not found.",
-    "back": "Back to directory"
+    "back": "Back to the directory"
   },
   "submit": {
     "title": "Submit a bot",
@@ -104,7 +104,7 @@
     "memberCharter": "Charter",
     "saved": "Saved.",
     "error": "Could not save.",
-    "slugHint": "Used in the URL. Lowercase letters, numbers, hyphens.",
+    "slugHint": "Used in the URL. Korean names are romanized. Lowercase letters, numbers, hyphens.",
     "promptHint": "Include role, what it owns, what good looks like, what it must never do without asking, and a first task."
   },
   "fromLink": {
@@ -142,6 +142,8 @@
     "copyPrompt": "Copy charter for {name}",
     "copyAll": "Copy every charter on the {name} team",
     "openFilters": "Open filters",
-    "localeSwitch": "Change language"
+    "localeSwitch": "Change language",
+    "view": "Change view",
+    "mainNav": "Main"
   }
 }

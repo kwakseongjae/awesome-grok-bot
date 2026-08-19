@@ -1,40 +1,211 @@
-const PRIVATE_HOSTS = new Set([
+import http from "node:http";
+import https from "node:https";
+import { lookup as dnsLookup } from "node:dns";
+import type { LookupAddress, LookupOptions } from "node:dns";
+import { BlockList, isIP } from "node:net";
+
+const FETCH_TIMEOUT_MS = 8_000;
+const MAX_RESPONSE_BYTES = 512_000;
+const MAX_REDIRECTS = 3;
+
+const REDIRECT_STATUS = new Set([301, 302, 303, 307, 308]);
+
+const BLOCKED_HOSTS = new Set([
   "localhost",
-  "127.0.0.1",
-  "0.0.0.0",
-  "::1",
   "metadata.google.internal",
+  "metadata.google.com",
+  "kubernetes.default",
+  "kubernetes.default.svc",
+  "kubernetes.default.svc.cluster.local",
 ]);
 
-function isPrivateIpv4(hostname: string) {
-  const parts = hostname.split(".").map(Number);
-  if (parts.length !== 4 || parts.some((part) => Number.isNaN(part))) return false;
-  const [a, b] = parts;
-  if (a === 10 || a === 127 || a === 0) return true;
-  if (a === 169 && b === 254) return true;
-  if (a === 192 && b === 168) return true;
-  if (a === 172 && b >= 16 && b <= 31) return true;
-  return false;
+const BLOCKED_HOST_SUFFIXES = [".local", ".internal", ".localhost", ".lan"];
+
+const blockedAddresses = new BlockList();
+blockedAddresses.addSubnet("0.0.0.0", 8, "ipv4");
+blockedAddresses.addSubnet("10.0.0.0", 8, "ipv4");
+blockedAddresses.addSubnet("100.64.0.0", 10, "ipv4");
+blockedAddresses.addSubnet("127.0.0.0", 8, "ipv4");
+blockedAddresses.addSubnet("169.254.0.0", 16, "ipv4");
+blockedAddresses.addSubnet("172.16.0.0", 12, "ipv4");
+blockedAddresses.addSubnet("192.0.0.0", 24, "ipv4");
+blockedAddresses.addSubnet("192.0.2.0", 24, "ipv4");
+blockedAddresses.addSubnet("192.168.0.0", 16, "ipv4");
+blockedAddresses.addSubnet("198.18.0.0", 15, "ipv4");
+blockedAddresses.addSubnet("198.51.100.0", 24, "ipv4");
+blockedAddresses.addSubnet("203.0.113.0", 24, "ipv4");
+blockedAddresses.addSubnet("224.0.0.0", 4, "ipv4");
+blockedAddresses.addSubnet("240.0.0.0", 4, "ipv4");
+blockedAddresses.addAddress("::", "ipv6");
+blockedAddresses.addAddress("::1", "ipv6");
+blockedAddresses.addSubnet("100::", 64, "ipv6");
+blockedAddresses.addSubnet("2001:db8::", 32, "ipv6");
+blockedAddresses.addSubnet("fc00::", 7, "ipv6");
+blockedAddresses.addSubnet("fe80::", 10, "ipv6");
+blockedAddresses.addSubnet("ff00::", 8, "ipv6");
+
+function hostnameOf(url: URL) {
+  return url.hostname.replace(/^\[/, "").replace(/\]$/, "").toLowerCase();
 }
 
-export function assertPublicHttpUrl(raw: string) {
+function isBlockedAddress(address: string) {
+  const version = isIP(address);
+  if (version === 4) return blockedAddresses.check(address, "ipv4");
+  if (version === 6) return blockedAddresses.check(address, "ipv6");
+  return true;
+}
+
+function headerValue(value: string | string[] | undefined) {
+  if (!value) return "";
+  return Array.isArray(value) ? value[0] ?? "" : value;
+}
+
+type LookupCallback = (
+  err: NodeJS.ErrnoException | null,
+  address: string | LookupAddress[],
+  family?: number,
+) => void;
+
+function failClosedLookup(hostname: string, options: LookupOptions | LookupCallback, callback?: LookupCallback) {
+  const cb = typeof options === "function" ? options : callback;
+  const opts = typeof options === "function" ? {} : options;
+  if (!cb) return;
+
+  dnsLookup(hostname, { all: true, verbatim: true }, (error, addresses) => {
+    if (error) {
+      cb(error, "", 4);
+      return;
+    }
+    if (!addresses.length || addresses.some((item) => isBlockedAddress(item.address))) {
+      const blocked = new Error("PRIVATE_URL") as NodeJS.ErrnoException;
+      blocked.code = "PRIVATE_URL";
+      cb(blocked, "", 4);
+      return;
+    }
+    if (opts.all) {
+      cb(null, addresses);
+      return;
+    }
+    const chosen = addresses[0]!;
+    cb(null, chosen.address, chosen.family);
+  });
+}
+
+export async function assertPublicHttpUrl(raw: string, base?: string) {
   let url: URL;
   try {
-    url = new URL(raw);
+    url = base ? new URL(raw, base) : new URL(raw);
   } catch {
     throw new Error("INVALID_URL");
   }
+
   if (url.protocol !== "http:" && url.protocol !== "https:") {
     throw new Error("INVALID_URL");
   }
-  const hostname = url.hostname.replace(/^\[|\]$/g, "").toLowerCase();
-  if (PRIVATE_HOSTS.has(hostname) || hostname.endsWith(".local") || hostname.endsWith(".internal")) {
+  if (url.username || url.password) {
+    throw new Error("INVALID_URL");
+  }
+
+  const hostname = hostnameOf(url);
+  if (!hostname) throw new Error("INVALID_URL");
+  if (BLOCKED_HOSTS.has(hostname) || BLOCKED_HOST_SUFFIXES.some((suffix) => hostname.endsWith(suffix))) {
     throw new Error("PRIVATE_URL");
   }
-  if (isPrivateIpv4(hostname) || hostname.includes(":")) {
-    throw new Error("PRIVATE_URL");
-  }
+
+  await new Promise<void>((resolve, reject) => {
+    failClosedLookup(hostname, {}, (error) => {
+      if (error?.code === "PRIVATE_URL" || error?.message === "PRIVATE_URL") {
+        reject(new Error("PRIVATE_URL"));
+        return;
+      }
+      if (error) {
+        reject(new Error("FETCH_FAILED"));
+        return;
+      }
+      resolve();
+    });
+  });
+
   return url;
+}
+
+type HopResponse = {
+  status: number;
+  location: string;
+  contentType: string;
+  body: string;
+};
+
+function requestHop(url: URL, signal: AbortSignal) {
+  const client = url.protocol === "https:" ? https : http;
+
+  return new Promise<HopResponse>((resolve, reject) => {
+    const req = client.request(
+      url,
+      {
+        method: "GET",
+        agent: false,
+        signal,
+        lookup: failClosedLookup as typeof dnsLookup,
+        headers: {
+          Accept: "text/html,application/xhtml+xml,text/plain",
+          "User-Agent": "GrokBotDirectory/0.1 (+https://github.com/kwakseongjae/awesome-grok-bot)",
+          Connection: "close",
+        },
+      },
+      (response) => {
+        const status = response.statusCode ?? 0;
+        const location = headerValue(response.headers.location);
+        const contentType = headerValue(response.headers["content-type"]);
+
+        if (REDIRECT_STATUS.has(status)) {
+          response.resume();
+          resolve({ status, location, contentType, body: "" });
+          return;
+        }
+
+        const declared = Number(response.headers["content-length"]);
+        if (Number.isFinite(declared) && declared > MAX_RESPONSE_BYTES) {
+          req.destroy();
+          response.destroy();
+          reject(new Error("FETCH_FAILED"));
+          return;
+        }
+
+        const chunks: Buffer[] = [];
+        let received = 0;
+        response.on("data", (chunk: Buffer) => {
+          received += chunk.length;
+          if (received > MAX_RESPONSE_BYTES) {
+            const overflow = received - MAX_RESPONSE_BYTES;
+            chunks.push(chunk.subarray(0, Math.max(0, chunk.length - overflow)));
+            response.destroy();
+            return;
+          }
+          chunks.push(chunk);
+        });
+        response.on("end", () => {
+          resolve({
+            status,
+            location,
+            contentType,
+            body: Buffer.concat(chunks).toString("utf8"),
+          });
+        });
+        response.on("error", () => reject(new Error("FETCH_FAILED")));
+      },
+    );
+
+    req.on("error", (error) => {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === "PRIVATE_URL" || error.message === "PRIVATE_URL") {
+        reject(new Error("PRIVATE_URL"));
+        return;
+      }
+      reject(new Error("FETCH_FAILED"));
+    });
+    req.end();
+  });
 }
 
 function stripTags(html: string) {
@@ -61,45 +232,42 @@ function decodeEntities(value: string) {
 }
 
 export async function extractPublicPage(rawUrl: string) {
-  const url = assertPublicHttpUrl(rawUrl);
+  let url = await assertPublicHttpUrl(rawUrl);
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
   try {
-    const response = await fetch(url.toString(), {
-      signal: controller.signal,
-      redirect: "follow",
-      headers: {
-        Accept: "text/html,application/xhtml+xml",
-        "User-Agent": "GrokBotDirectory/0.1 (+https://github.com/kwakseongjae/awesome-grok-bot)",
-      },
-    });
+    for (let hop = 0; hop <= MAX_REDIRECTS; hop += 1) {
+      const response = await requestHop(url, controller.signal);
 
-    if (!response.ok) {
-      throw new Error("FETCH_FAILED");
+      if (REDIRECT_STATUS.has(response.status)) {
+        if (hop === MAX_REDIRECTS || !response.location) throw new Error("FETCH_FAILED");
+        url = await assertPublicHttpUrl(response.location, url.toString());
+        continue;
+      }
+
+      if (response.status < 200 || response.status >= 300) throw new Error("FETCH_FAILED");
+
+      const contentType = response.contentType;
+      if (contentType && !contentType.includes("html") && !contentType.includes("text/plain")) {
+        throw new Error("UNSUPPORTED_TYPE");
+      }
+
+      const html = response.body;
+      const titleMatch =
+        html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+        html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+      const title = decodeEntities(stripTags(titleMatch?.[1] || "").trim()).slice(0, 200);
+      const text = stripTags(html).replace(/\s+/g, " ").trim().slice(0, 4000);
+
+      return {
+        url: url.toString(),
+        title: title || hostnameOf(url),
+        text,
+      };
     }
 
-    const contentType = response.headers.get("content-type") || "";
-    if (!contentType.includes("html") && !contentType.includes("text/plain") && contentType) {
-      throw new Error("UNSUPPORTED_TYPE");
-    }
-
-    const buffer = await response.arrayBuffer();
-    const bytes = buffer.byteLength > 1_000_000 ? buffer.slice(0, 1_000_000) : buffer;
-    const html = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
-
-    const titleMatch =
-      html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
-      html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-    const title = decodeEntities(stripTags(titleMatch?.[1] || "").trim()).slice(0, 200);
-
-    const text = stripTags(html).replace(/\s+/g, " ").trim().slice(0, 4000);
-
-    return {
-      url: url.toString(),
-      title: title || url.hostname,
-      text,
-    };
+    throw new Error("FETCH_FAILED");
   } finally {
     clearTimeout(timer);
   }

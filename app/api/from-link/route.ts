@@ -1,5 +1,7 @@
 import { extractPublicPage } from "@/lib/extract-page";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as { url?: string } | null;
   if (!body?.url) {
