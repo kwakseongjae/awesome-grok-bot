@@ -57,7 +57,6 @@
   "table": {
     "name": "이름",
     "category": "분야",
-    "kind": "종류",
     "integrations": "플러그인",
     "contributor": "기여자",
     "copies": "설치"

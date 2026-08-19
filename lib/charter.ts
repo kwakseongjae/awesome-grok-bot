@@ -180,7 +180,7 @@ export function buildCharterFromPage(input: PageExtract) {
 - 원문을 통째로 재게시
 - 개인정보나 비밀을 저장·재사용
 
-연결
+플러그인
 (이 일을 하려면 어떤 도구가 필요한지 먼저 물어보고 연결을 도와 줘.)
 
 첫 작업
@@ -240,7 +240,7 @@ Never do without asking
 - Republish the source page in full
 - Store or reuse private data
 
-Integrations
+Plugins
 Ask which tools this job needs, then help connect them.
 
 First task
