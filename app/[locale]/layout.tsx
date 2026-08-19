@@ -39,7 +39,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isKo = locale === "ko";
-  const title = "Grok Book";
+  const title = "Grok Bot";
   const description = isKo
     ? "스폰서 없는 Grok Bot 디렉터리. 역할과 헌장을 복사해 바로 붙여 넣으세요."
     : "A sponsor-free Grok Bot directory. Copy a role and charter, then paste it into Grok Bot.";

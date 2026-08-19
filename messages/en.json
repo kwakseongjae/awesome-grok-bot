@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Grok Book",
+    "title": "Grok Bot",
     "description": "A sponsor-free Grok Bot directory. Copy a role and charter, then paste it into Grok Bot."
   },
   "brand": {
-    "name": "Grok Book",
-    "tagline": "A sponsor-free Grok Bot directory",
+    "name": "Grok Bot",
+    "tagline": "A sponsor-free directory",
     "kicker": "Korean-first · bots and teams"
   },
   "nav": {

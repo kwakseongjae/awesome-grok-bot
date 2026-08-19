@@ -1,4 +1,4 @@
--- Grok Book schema: Better Auth tables + directory tables + RLS.
+-- Grok Bot directory schema: Better Auth tables + catalog tables + RLS.
 -- Apply in the Supabase SQL editor or via `supabase db push`.
 
 create extension if not exists pgcrypto;

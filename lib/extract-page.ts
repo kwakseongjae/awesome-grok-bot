@@ -71,7 +71,7 @@ export async function extractPublicPage(rawUrl: string) {
       redirect: "follow",
       headers: {
         Accept: "text/html,application/xhtml+xml",
-        "User-Agent": "GrokBook/0.1 (+https://github.com/kwakseongjae/awesome-grok-book)",
+        "User-Agent": "GrokBotDirectory/0.1 (+https://github.com/kwakseongjae/awesome-grok-bot)",
       },
     });
 

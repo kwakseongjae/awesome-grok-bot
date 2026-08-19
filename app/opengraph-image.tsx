@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "nodejs";
-export const alt = "Grok Book — sponsor-free Grok Bot directory";
+export const alt = "Grok Bot — sponsor-free directory";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,26 +20,15 @@ export default function OpenGraphImage() {
           padding: "72px",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            width: 84,
-            height: 84,
-            borderRadius: 18,
-            background: "#f4ead7",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#c45c26",
-            fontSize: 42,
-            fontWeight: 700,
-          }}
-        >
-          GB
+        <div style={{ display: "flex", gap: 10 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#f4ead7" }} />
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#c45c26" }} />
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: "#e2d2b8" }} />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ fontSize: 88, letterSpacing: -2 }}>Grok Book</div>
+          <div style={{ fontSize: 88, letterSpacing: -2 }}>Grok Bot</div>
           <div style={{ fontSize: 32, color: "#e2d2b8", maxWidth: 860 }}>
-            A sponsor-free Grok Bot directory. Copy a charter. Paste it into Grok Bot.
+            A sponsor-free directory. Copy a charter. Paste it into Grok Bot.
           </div>
         </div>
       </div>

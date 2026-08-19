@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Grok Book",
+    "title": "Grok Bot",
     "description": "스폰서 없는 Grok Bot 디렉터리. 역할과 헌장(charter)을 복사해 바로 붙여 넣으세요."
   },
   "brand": {
-    "name": "Grok Book",
-    "tagline": "스폰서 없는 Grok Bot 디렉터리",
+    "name": "Grok Bot",
+    "tagline": "스폰서 없는 디렉터리",
     "kicker": "한국어 우선 · 팀과 개인 봇"
   },
   "nav": {

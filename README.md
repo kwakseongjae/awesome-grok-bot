@@ -1,10 +1,10 @@
-# Grok Book
+# awesome-grok-bot
 
 스폰서 없는 Grok Bot 디렉터리. 한국어 우선, 영문 병기.
 
-A sponsor-free Grok Bot directory. Korean-first, with English.
+A sponsor-free [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. Korean-first, with English.
 
-Grok Book is a public catalog of **bots** (named teammates with a job title and a charter) and **teams** (a Chief plus specialists). Copy a paste-ready charter into Grok Bot. There is no sponsor rail, ads, Stripe, or affiliate code.
+This repo is the public catalog of **bots** (named teammates with a job title and a charter) and **teams** (a Chief plus specialists). Copy a paste-ready charter into Grok Bot. There is no sponsor rail, ads, Stripe, or affiliate code.
 
 ## Run locally (no secrets)
 

@@ -1,7 +1,12 @@
 {
-  "name": "grok-book",
+  "name": "awesome-grok-bot",
   "version": "0.1.0",
   "private": true,
+  "description": "Sponsor-free Grok Bot directory",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kwakseongjae/awesome-grok-bot.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
