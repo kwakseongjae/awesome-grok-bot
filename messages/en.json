@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "title": "Grok Book",
+    "description": "A sponsor-free Grok Bot directory. Copy a role and charter, then paste it into Grok Bot."
+  },
+  "brand": {
+    "name": "Grok Book",
+    "tagline": "A sponsor-free Grok Bot directory",
+    "kicker": "Korean-first · bots and teams"
+  },
+  "nav": {
+    "directory": "Directory",
+    "submit": "Submit",
+    "fromLink": "From a link",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "skipToContent": "Skip to content"
+  },
+  "home": {
+    "eyebrow": "Grok Bot charters",
+    "title": "Bots and teams you can paste",
+    "lead": "A bot is a named teammate with a job title and a charter. A team is a Chief plus specialists who hand work to each other. There is no sponsor column.",
+    "search": "Search by name, summary, or integration",
+    "searchLabel": "Search",
+    "viewTable": "Table",
+    "viewCards": "Cards",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "results": "{count, plural, one {# listing} other {# listings}}",
+    "empty": "No bots match these filters.",
+    "emptyHint": "Try another search or reset the filters.",
+    "demoBanner": "Supabase env vars are missing, so this catalog is loaded from the committed seed file. You can still browse every listing."
+  },
+  "filters": {
+    "category": "Category",
+    "integration": "Integration",
+    "locale": "Language",
+    "kind": "Kind",
+    "all": "All",
+    "anyCategory": "Any category",
+    "anyIntegration": "Any integration",
+    "anyLocale": "Any language",
+    "anyKind": "Bots and teams"
+  },
+  "kind": {
+    "bot": "Bot",
+    "team": "Team"
+  },
+  "category": {
+    "productivity": "Productivity",
+    "sales": "Sales",
+    "marketing": "Marketing",
+    "ops": "Ops",
+    "success": "Success",
+    "personal": "Personal"
+  },
+  "table": {
+    "bot": "Bot",
+    "category": "Category",
+    "kind": "Kind",
+    "integrations": "Integrations",
+    "source": "Source",
+    "copies": "Copies"
+  },
+  "bot": {
+    "charter": "Charter",
+    "members": "Team members",
+    "integrations": "Connect first",
+    "copy": "Copy charter",
+    "copyAll": "Copy whole team",
+    "copied": "Copied",
+    "copyFailed": "Could not copy. Check clipboard permission.",
+    "pasteHint": "Paste this into Grok Bot setup. It should ask what to connect, then save itself.",
+    "source": "Source",
+    "contributor": "Contributor",
+    "added": "Added",
+    "locale": "Language",
+    "related": "More in this category",
+    "notFound": "This bot was not found.",
+    "back": "Back to directory"
+  },
+  "submit": {
+    "title": "Submit a bot",
+    "lead": "Fill markdown-like fields and publish it yourself. v1 has no review board.",
+    "needAuth": "Sign in to save a listing.",
+    "demoHint": "Auth and the database are not configured in this environment. You can still copy a charter; saving needs Supabase and Better Auth.",
+    "name": "Name",
+    "slug": "Slug",
+    "kind": "Kind",
+    "category": "Category",
+    "locale": "Language",
+    "summary": "One-line summary",
+    "prompt": "Charter / setup prompt",
+    "integrations": "Integrations (comma separated)",
+    "sourceUrl": "Source URL (optional)",
+    "publish": "Publish now",
+    "saveDraft": "Save draft",
+    "savePublish": "Save and publish",
+    "teamMembers": "Team members",
+    "addMember": "Add member",
+    "removeMember": "Remove",
+    "memberName": "Name",
+    "memberRole": "Role",
+    "memberCharter": "Charter",
+    "saved": "Saved.",
+    "error": "Could not save.",
+    "slugHint": "Used in the URL. Lowercase letters, numbers, hyphens.",
+    "promptHint": "Include role, what it owns, what good looks like, what it must never do without asking, and a first task."
+  },
+  "fromLink": {
+    "title": "Draft a charter from a link",
+    "lead": "Paste a public URL. v1 pulls the title and text into a fixed template. No paid LLM key required.",
+    "url": "Page URL",
+    "fetch": "Fetch page",
+    "fetching": "Fetching…",
+    "fetched": "Page read. Edit the draft below, then copy or submit it.",
+    "fetchFailed": "Could not fetch that page. Check the URL, or fill the form yourself.",
+    "extractedTitle": "Extracted title",
+    "splitTeam": "Split into a team (Chief + specialists)",
+    "fillAnyway": "Continue with an empty template"
+  },
+  "signIn": {
+    "title": "Sign in",
+    "lead": "Use GitHub or Google to submit listings.",
+    "github": "Continue with GitHub",
+    "google": "Continue with Google",
+    "missing": "Local demo mode. Set these env vars to enable social login.",
+    "missingDb": "A database (DATABASE_URL) is also required.",
+    "back": "Back to the directory"
+  },
+  "footer": {
+    "note": "No ads, affiliates, or sponsor rails. Write and share charters yourself.",
+    "license": "Listings are free to copy and adapt."
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "a11y": {
+    "copyPrompt": "Copy charter for {name}",
+    "copyAll": "Copy every charter on the {name} team",
+    "openFilters": "Open filters",
+    "localeSwitch": "Change language"
+  }
+}
