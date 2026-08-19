@@ -6,6 +6,8 @@ import { MigrateWall } from "@/components/migrate-wall";
 import { getAuthStatus } from "@/lib/env";
 import { getServerSession } from "@/lib/session";
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
