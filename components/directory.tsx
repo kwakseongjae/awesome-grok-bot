@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import { LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
@@ -53,15 +53,16 @@ export function Directory({ bots, integrations, uiLocale, demoMode, view: server
   const router = useRouter();
   const pathname = usePathname();
   const [view, setView] = useState(serverView);
+  const [prevServerView, setPrevServerView] = useState(serverView);
+  if (prevServerView !== serverView) {
+    setPrevServerView(serverView);
+    setView(serverView);
+  }
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category | typeof ALL>(ALL);
   const [integration, setIntegration] = useState(ALL);
   const [locale, setLocale] = useState<ListingLocale | typeof ALL>(uiLocale);
   const [kind, setKind] = useState<BotKind | typeof ALL>(ALL);
-
-  useEffect(() => {
-    setView(serverView);
-  }, [serverView]);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
