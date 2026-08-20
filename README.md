@@ -53,6 +53,63 @@ Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is av
 
 On Vercel, set the same values. `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` should be the production origin.
 
+## Production launch
+
+Live today: [https://awesome-grok-bot.vercel.app](https://awesome-grok-bot.vercel.app). No custom domain is attached yet. The catalog can run from seed data; **sign-in/submit persist only after Vercel env values are filled**. Dashboard keys currently exist as empty placeholders — production `/api/auth/*` returns 503 until real values are set.
+
+### 1. Fill Vercel environment variables
+
+Project → Settings → Environment Variables. Production **and** Preview. Then **redeploy**. Empty names do not count.
+
+| Variable | Notes |
+| --- | --- |
+| `NEXT_PUBLIC_APP_URL` / `BETTER_AUTH_URL` | Canonical origin, e.g. `https://your-domain` (or the `.vercel.app` URL until DNS is live) |
+| `BETTER_AUTH_SECRET` | `openssl rand -base64 32` |
+| `DATABASE_URL` | Supabase Postgres URI (Better Auth tables from `supabase/migrations`) |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` | Catalog reads/writes |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth app |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth client |
+| `NEXT_PUBLIC_GTM_ID` | `GTM-…` container; omit until the container exists |
+| `GOOGLE_SITE_VERIFICATION` | Search Console HTML-tag token |
+| `NAVER_SITE_VERIFICATION` | 서치어드바이저 HTML-tag token |
+| `INDEXNOW_KEY` | 8–128 chars (`A–Z a–z 0–9 -`). Serves `/{key}.txt` after rebuild |
+| `BETTER_AUTH_ALLOWED_HOSTS` / `BETTER_AUTH_TRUSTED_ORIGINS` | Optional extras for the custom domain (`www` + apex). `*.vercel.app` is already trusted |
+
+### 2. OAuth callbacks
+
+In the GitHub and Google OAuth apps, add **both** the Vercel URL and the custom domain:
+
+- `{origin}/api/auth/callback/github`
+- `{origin}/api/auth/callback/google`
+
+Replace `{origin}` with `https://awesome-grok-bot.vercel.app` and later `https://your-domain`.
+
+### 3. Custom domain (Vercel)
+
+1. Vercel project → Settings → Domains → add the hostname.
+2. At the registrar, follow Vercel’s DNS (usually `A 10.0.1.2` for apex, `CNAME cname.vercel-dns.com` for `www`, or Vercel nameservers).
+3. After TLS is issued, set `NEXT_PUBLIC_APP_URL` and `BETTER_AUTH_URL` to `https://your-domain`, add the host to `BETTER_AUTH_ALLOWED_HOSTS`, update OAuth callbacks, redeploy.
+
+Tell the agent the domain name when you have it — it cannot be guessed from this repo.
+
+### 4. GTM, Search Console, 네이버 서치어드바이저, Brave
+
+Code already emits (once env is set):
+
+- `gtm.js` via `@next/third-parties` `GoogleTagManager` (GA4 should live **inside** the GTM container, not as a second `gtag` snippet).
+- `<meta name="google-site-verification">` and `<meta name="naver-site-verification">`
+- `/robots.txt` (allow `/`, disallow `/api/`, sitemap URL) and `/sitemap.xml` (ko/en + listings, hreflang)
+- IndexNow key file + ping on published listings (`https://api.indexnow.org/indexnow`, shared with participating engines including Bing)
+
+Dashboard steps after the next production deploy:
+
+1. [Google Tag Manager](https://tagmanager.google.com/) → create a web container → paste the `GTM-` id into `NEXT_PUBLIC_GTM_ID` → add a GA4 Configuration tag in that container.
+2. [Google Search Console](https://search.google.com/search-console) → URL-prefix property → HTML tag → `GOOGLE_SITE_VERIFICATION` → redeploy → verify → submit `https://your-domain/sitemap.xml`. GTM can also verify Search Console, but the meta tag is the path this app implements.
+3. [네이버 서치어드바이저](https://searchadvisor.naver.com/) → 사이트 등록 (host 단위, 예: `https://your-domain`) → HTML 메타 태그 소유확인 → `NAVER_SITE_VERIFICATION` → 재배포 → 요청에서 사이트맵 제출. 네이버 로봇 User-Agent는 `Yeti`.
+4. Brave Search has no separate webmaster console. Independent indexing is: `robots.txt` allow + sitemap + [IndexNow](https://www.indexnow.org/documentation) (this app) and/or [Bing Webmaster](https://www.bing.com/webmasters) sitemap import (Brave consumes a large independent index and also overlapping web crawl; IndexNow is the submission protocol we can automate).
+
+`/sign-in` is `noindex`. Do not put secrets or verification files in git; env and Vercel only.
+
 **Auth vs RLS:** published rows are public-read. Drafts and writes are not allowed for the anon key. The app uses the service role only after a Better Auth session, and only the author can publish their own listing (no review board in v1).
 
 X / Twitter sign-in is not wired. Better Auth can add a `twitter` social provider, but it needs a separate OAuth app and secrets; this directory keeps GitHub + Google only.

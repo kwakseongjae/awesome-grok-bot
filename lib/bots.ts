@@ -2,6 +2,7 @@ import seedFile from "@/data/seed-bots.json";
 import { ensureListingSlug } from "@/lib/charter";
 import { createAdminClient, createAnonClient } from "@/lib/supabase";
 import { isSupabaseConfigured } from "@/lib/env";
+import { listingUrl, notifyIndexNow } from "@/lib/indexnow";
 import type {
   BotDraftInput,
   BotFilters,
@@ -289,6 +290,9 @@ export async function createBotListing(input: BotDraftInput, user: {
   }
 
   const [listing] = await attachMembers([data as BotRow]);
+  if (listing?.status === "published") {
+    void notifyIndexNow([listingUrl(listing.locale, listing.slug)]);
+  }
   return listing;
 }
 
