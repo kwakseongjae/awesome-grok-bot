@@ -2,7 +2,9 @@ import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { Pool } from "pg";
 import {
+  getAllowedAuthHosts,
   getAppUrl,
+  getTrustedOrigins,
   githubOAuthConfigured,
   googleOAuthConfigured,
   hasBetterAuthSecret,
@@ -43,9 +45,22 @@ function createAuth() {
     return null;
   }
 
+  const appUrl = getAppUrl();
+  const production = process.env.NODE_ENV === "production";
+
   return betterAuth({
+    appName: "Awesome Grok Bot",
     secret: process.env.BETTER_AUTH_SECRET,
-    baseURL: getAppUrl(),
+    baseURL: {
+      allowedHosts: getAllowedAuthHosts(),
+      protocol: production ? "https" : "auto",
+      fallback: appUrl,
+    },
+    trustedOrigins: getTrustedOrigins(),
+    advanced: {
+      trustedProxyHeaders: production,
+      useSecureCookies: production,
+    },
     database: new Pool({ connectionString: process.env.DATABASE_URL }),
     socialProviders,
     plugins: [nextCookies()],

@@ -4,6 +4,7 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { trackCopy } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 
 type Props = {
@@ -16,6 +17,10 @@ type Props = {
   variant?: "default" | "outline" | "secondary" | "ghost";
   className?: string;
   onCopied?: () => void;
+  analytics?: {
+    action: "copy" | "copy_all";
+    kind: "bot" | "team";
+  };
 };
 
 export function CopyButton({
@@ -28,6 +33,7 @@ export function CopyButton({
   variant = "default",
   className,
   onCopied,
+  analytics,
 }: Props) {
   const t = useTranslations("bot");
   const [copied, setCopied] = useState(false);
@@ -36,6 +42,7 @@ export function CopyButton({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      if (analytics) trackCopy(analytics);
       onCopied?.();
       if (botId) {
         void fetch("/api/copy", {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { trackSignIn } from "@/lib/analytics";
 import { authClient } from "@/lib/auth-client";
 import { GitHubMark, GoogleGMark } from "@/components/brand-marks";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export function SignInActions({ callbackPath }: Props) {
   const handleSignIn = async (provider: "github" | "google") => {
     setPending(provider);
     try {
+      trackSignIn({ provider });
       await authClient.signIn.social({
         provider,
         callbackURL: callbackPath,

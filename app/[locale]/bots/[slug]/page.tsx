@@ -73,6 +73,7 @@ export default async function BotDetailPage({ params }: Props) {
             copiedLabel={t("bot.copied")}
             ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
             botId={bot.id}
+            analytics={{ action: "copy", kind: bot.kind }}
           />
           {bot.kind === "team" ? (
             <CopyButton
@@ -82,6 +83,7 @@ export default async function BotDetailPage({ params }: Props) {
               ariaLabel={t("a11y.copyAll", { name: bot.name })}
               botId={bot.id}
               variant="ghost"
+              analytics={{ action: "copy_all", kind: "team" }}
             />
           ) : null}
           <ShareButton title={bot.name} url={shareUrl} />
@@ -132,6 +134,7 @@ export default async function BotDetailPage({ params }: Props) {
                         copiedLabel={t("bot.copied")}
                         ariaLabel={t("a11y.copyPrompt", { name: member.name })}
                         size="sm"
+                        analytics={{ action: "copy", kind: "team" }}
                       />
                       <p className="text-xs text-muted-foreground">{t("bot.memberCopyHint")}</p>
                     </div>

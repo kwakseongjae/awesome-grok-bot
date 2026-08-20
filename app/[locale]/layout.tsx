@@ -5,10 +5,12 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, toAppLocale } from "@/i18n/routing";
+import { SiteGtm } from "@/components/site-gtm";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { getAppUrl, getSiteVerification } from "@/lib/env";
 
 const notoSans = Noto_Sans_KR({
   subsets: ["latin"],
@@ -36,6 +38,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale: toAppLocale(locale), namespace: "meta" });
   const title = t("title");
   const description = t("description");
+  const origin = getAppUrl();
+  const verificationTokens = getSiteVerification();
+  const verification: Metadata["verification"] = {};
+  if (verificationTokens.google) verification.google = verificationTokens.google;
+  if (verificationTokens.naver) {
+    verification.other = { "naver-site-verification": verificationTokens.naver };
+  }
 
   return {
     title: {
@@ -43,7 +52,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       template: `%s · ${title}`,
     },
     description,
-    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+    metadataBase: new URL(origin),
+    applicationName: title,
+    alternates: {
+      canonical: `/${toAppLocale(locale)}`,
+      languages: {
+        ko: "/ko",
+        en: "/en",
+        "x-default": "/ko",
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    ...(Object.keys(verification).length > 0 ? { verification } : {}),
     icons: {
       icon: [{ url: "/brand/grok-bot-face.svg", type: "image/svg+xml" }],
       apple: "/brand/grok-bot-face.svg",
@@ -51,6 +80,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
+      url: `/${toAppLocale(locale)}`,
+      siteName: title,
       locale: isKo ? "ko_KR" : "en_US",
       type: "website",
     },
@@ -78,6 +109,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       suppressHydrationWarning
       className={`${notoSans.variable} ${geistMono.variable} h-full`}
     >
+      <SiteGtm />
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>
