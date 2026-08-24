@@ -11,7 +11,7 @@ type ChipProps = {
 
 export function PluginChip({ name, locale, className }: ChipProps) {
   const integration = resolveIntegration(name);
-  const label = integration.labels[locale];
+  const label = integration.labels[locale] ?? integration.labels.en;
 
   return (
     <span
@@ -22,7 +22,7 @@ export function PluginChip({ name, locale, className }: ChipProps) {
       )}
     >
       {integration.known ? (
-        <IntegrationMark mark={integration.mark} className="size-3.5 shrink-0" />
+        <IntegrationMark mark={integration.mark} className="mark-idle size-3.5 shrink-0" />
       ) : (
         <span
           aria-hidden

@@ -1,25 +1,18 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Noto_Sans_KR } from "next/font/google";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { LOCALE_OG } from "@/lib/locales";
+import { websiteJsonLd } from "@/lib/seo";
+import { siteVerification } from "@/lib/site-verify";
+import { OG_IMAGE, SITE_NAME } from "@/lib/site";
 import { routing, toAppLocale } from "@/i18n/routing";
+import { HtmlLang } from "@/components/html-lang";
+import { JsonLd } from "@/components/json-ld";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-
-const notoSans = Noto_Sans_KR({
-  subsets: ["latin"],
-  variable: "--font-noto",
-  weight: ["400", "500", "600", "700"],
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
 
 type Props = {
   children: React.ReactNode;
@@ -32,8 +25,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const isKo = toAppLocale(locale) === "ko";
-  const t = await getTranslations({ locale: toAppLocale(locale), namespace: "meta" });
+  const appLocale = toAppLocale(locale);
+  const t = await getTranslations({ locale: appLocale, namespace: "meta" });
   const title = t("title");
   const description = t("description");
 
@@ -43,22 +36,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       template: `%s · ${title}`,
     },
     description,
-    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
     icons: {
-      icon: [{ url: "/brand/grok-bot-face.svg", type: "image/svg+xml" }],
-      apple: "/brand/grok-bot-face.svg",
+      icon: [{ url: "/favicon.png", type: "image/png" }],
+      apple: "/brand/mascot/awesome-mark.png",
     },
     openGraph: {
       title,
       description,
-      locale: isKo ? "ko_KR" : "en_US",
+      siteName: SITE_NAME,
+      locale: LOCALE_OG[appLocale],
       type: "website",
+      images: [OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [OG_IMAGE.url],
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+    verification: siteVerification(),
   };
 }
 
@@ -73,29 +74,21 @@ export default async function LocaleLayout({ children, params }: Props) {
   const t = await getTranslations("nav");
 
   return (
-    <html
-      lang={locale}
-      suppressHydrationWarning
-      className={`${notoSans.variable} ${geistMono.variable} h-full`}
-    >
-      <body className="min-h-full flex flex-col antialiased">
-        <ThemeProvider>
-          <NextIntlClientProvider messages={messages}>
-            <a
-              href="#content"
-              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
-            >
-              {t("skipToContent")}
-            </a>
-            <SiteHeader />
-            <main id="content" className="flex-1">
-              {children}
-            </main>
-            <SiteFooter />
-            <Toaster />
-          </NextIntlClientProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <JsonLd data={websiteJsonLd()} />
+      <HtmlLang locale={locale} />
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-3 focus:py-2 focus:text-primary-foreground"
+      >
+        {t("skipToContent")}
+      </a>
+      <SiteHeader />
+      <main id="content" className="flex-1">
+        {children}
+      </main>
+      <SiteFooter />
+      <Toaster />
+    </NextIntlClientProvider>
   );
 }

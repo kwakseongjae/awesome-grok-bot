@@ -59,10 +59,13 @@ component hex outside that file.
 **Exceptions (named, not improvised):** official product marks keep
 trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 `--brand-github-*` so Google/GitHub identity is not flattened into ink.
+Listing avatars use the Grok Bot customizer palette in
+`lib/grok-bot-blob.ts`. The huddle mascot is the raster at
+`/brand/mascot/awesome.png`.
 
 ## Type
 
-- UI + headings: Noto Sans KR (Korean-first). Headings = same sans,
+- UI + headings: Noto Sans KR / JP / SC / TC (script fallbacks). Headings = same sans,
   weight 600, tracking tight, never italic, never serif display.
 - Counts, slugs, eyebrows, overflow `+n`: Geist Mono.
 - Body 16px / 1.5. Directory table 14px.
@@ -81,9 +84,24 @@ trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 - Motion-cut. No bounce, no gradient wash, no glow, no scroll-reveal.
 - Hover: opacity / background only, ≤150ms.
 - Reduced-motion: disable animation and non-essential transition.
-- Home hero: faces fan, then a huddle (CSS/WAAPI). Reduced-motion:
-  static huddle. No bounce, no glow. Decorative, not a second nav.
-- Header mark only: slow float + eye blink (CSS). Reduced-motion: static.
+- Home hero: listings start on a circle and orbit slowly. No orbit
+  guide rings. Teammate faces are smaller than the mascot. Reduced-motion:
+  static circle. No bounce, no glow, no fan-in. Decorative, not a second nav.
+- Header mark: directory mascot raster (white Grok Bot face, black
+  eyes, purple wizard hat). Slow optional. Reduced-motion: static.
+  Site language is a five-way menu (한국어, English, 日本語, 简体中文,
+  繁體中文), not a two-way toggle. Directory listings follow that menu;
+  there is no separate language filter on the index.
+- Directory mascot (home huddle center): same raster, white sphere on the
+  huddle origin, hat overflowing up. Name: 어썸 / Awesome. Light mode: a hairline
+  drop-shadow on the sphere so the white body reads on paper. Not a glow.
+  Dark mode: no extra shadow.
+- Listing faces: Grok Bot avatar skins (shape + colour + expression)
+  with a blink/float on SVG. Huddle faces also wander gaze like the
+  Grok Bot customizer play state. Reduced-motion: static.
+- Grok Bot product mark (migrate lockup): official Grok Bot face
+  (white sphere, black pill eyes) at `/brand/grok-bot-official.png`.
+  Slow idle. Reduced-motion: static.
 
 ## Component voice
 
@@ -117,7 +135,8 @@ data may still use `charter` / `success` as keys.
 
 ## Anti-patterns (Hallmark + UI UX Pro Max)
 
-- No warm beige, orange `#c45c26`, cream oklch, or AI purple/pink.
+- No warm beige, orange `#c45c26`, cream oklch, or AI purple/pink on UI chrome.
+  Listing avatars may use the Grok Bot customizer palette (including violet).
 - No Inter / Roboto / Poppins / system-ui as a display face.
 - No italic headings, bounce, glassmorphism, or gradient CTA.
 - Contrast: body text ≥ 4.5:1. Keyboard focus always visible.

@@ -4,13 +4,16 @@ import { LocaleSwitcher } from "@/components/locale-switcher";
 import { SiteMobileNav } from "@/components/site-mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Link } from "@/i18n/navigation";
+import { GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { useTranslations } from "next-intl";
 
 const NAV_ITEMS = [
+  { href: "/how-to" as const, key: "howTo" as const },
+  { href: "/install" as const, key: "install" as const },
+  { href: "/changelog" as const, key: "changelog" as const },
   { href: "/migrate" as const, key: "migrate" as const },
-  { href: "/from-link" as const, key: "fromLink" as const },
-  { href: "/submit" as const, key: "submit" as const },
-];
+  ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit" as const, key: "submit" as const }] as const) : []),
+] as const;
 
 export function SiteHeader() {
   const t = useTranslations("nav");
@@ -30,9 +33,17 @@ export function SiteHeader() {
               {t(item.key)}
             </Link>
           ))}
+          <a
+            href={GROK_BOT.getStarted}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {t("docs")}
+          </a>
           <LocaleSwitcher />
           <ThemeToggle />
-          <AuthButtons />
+          {SHOW_ACCOUNT_CHROME ? <AuthButtons /> : null}
         </nav>
         <div className="md:hidden">
           <SiteMobileNav />

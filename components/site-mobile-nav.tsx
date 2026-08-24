@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { AuthButtons } from "@/components/auth-buttons";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -17,10 +18,12 @@ import {
 } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
+  { href: "/how-to" as const, key: "howTo" as const },
+  { href: "/install" as const, key: "install" as const },
+  { href: "/changelog" as const, key: "changelog" as const },
   { href: "/migrate" as const, key: "migrate" as const },
-  { href: "/from-link" as const, key: "fromLink" as const },
-  { href: "/submit" as const, key: "submit" as const },
-];
+  ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit" as const, key: "submit" as const }] as const) : []),
+] as const;
 
 export function SiteMobileNav() {
   const t = useTranslations("nav");
@@ -59,11 +62,21 @@ export function SiteMobileNav() {
               </Link>
             </SheetClose>
           ))}
+          <SheetClose asChild>
+            <a
+              href={GROK_BOT.getStarted}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md px-2 py-3 text-base hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              {t("docs")}
+            </a>
+          </SheetClose>
         </nav>
         <div className="mt-auto flex items-center gap-1 border-t p-4">
           <LocaleSwitcher appearance="icon" />
           <ThemeToggle />
-          <AuthButtons appearance="icon" />
+          {SHOW_ACCOUNT_CHROME ? <AuthButtons appearance="icon" /> : null}
         </div>
       </SheetContent>
     </Sheet>

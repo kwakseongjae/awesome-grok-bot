@@ -1,0 +1,566 @@
+{
+  "meta": {
+    "title": "Awesome Grok Bot",
+    "description": "Grok Bot に入れる専門家とチームの一覧です。詳細ページの Copy で設定文を貼ります。Hermes や OpenClaw からの引き継ぎもできます。"
+  },
+  "seo": {
+    "faqTitle": "よくある質問",
+    "faq": {
+      "what": {
+        "q": "Awesome Grok Bot とは？",
+        "a": "スポンサーなしの Grok Bot ディレクトリです。専門家やチームの設定文を Copy して Grok Bot に貼ります。xAI 公式製品ではありません。"
+      },
+      "importer": {
+        "q": "Grok Bot に公式の移行ボタンはありますか？",
+        "a": "ありません。Bot を作ったり記憶を書いたりする公開 API もありません。このサイトはカタログと Hermes / OpenClaw 用スキルです。"
+      },
+      "updates": {
+        "q": "Grok Bot のアップデートや新機能はどこで見られますか？",
+        "a": "getgrokbot.com/changelog の更新履歴で見られます。各項目に日付、短い説明、xAI 公式発表やドキュメントへのリンクを手でまとめています。"
+      },
+      "inside": {
+        "q": "Grok Bot 内で Claude Code、Codex、OpenClaw を動かせますか？",
+        "a": "はい。Grok Bot には専用コンピュータがあるため、Claude Code や Codex などのコーディングエージェントを入れて操作させられます。getgrokbot.com/install にそのまま貼れるプロンプトがあります。ログインは人が行います。"
+      },
+      "copy": {
+        "q": "掲載はどう使いますか？",
+        "a": "詳細ページで Copy した設定文を Grok Bot に貼ります。最初の Bot は Chief 一つ。ログインと 2FA は人がやります。"
+      },
+      "migrate": {
+        "q": "Hermes や OpenClaw から移すには？",
+        "a": "getgrokbot.com/migrate の一行を使っているエージェントに貼ります。そのエージェントがスキルを読み、パケットを渡します。キーと .env は移しません。"
+      },
+      "free": {
+        "q": "有料ですか？",
+        "a": "ディレクトリと移行スキルは無料で MIT です。Grok Bot アプリの権限は xAI または Cursor のプランです。"
+      }
+    }
+  },
+  "brand": {
+    "name": "Awesome Grok Bot",
+    "product": "Grok Bot"
+  },
+  "nav": {
+    "directory": "ディレクトリ",
+    "submit": "登録",
+    "fromLink": "リンクから作る",
+    "howTo": "使い方",
+    "install": "エージェント導入",
+    "changelog": "更新履歴",
+    "migrate": "移行",
+    "docs": "Docs",
+    "signIn": "ログイン",
+    "signOut": "ログアウト",
+    "skipToContent": "本文へスキップ"
+  },
+  "home": {
+    "eyebrow": "Get your grok bot.",
+    "title": "Awesome Grok Bot",
+    "lead": "Grok Bot に入れる専門家とチームの一覧です。詳細ページの Copy で設定文を貼ります。Hermes や OpenClaw からの引き継ぎもできます。",
+    "search": "名前、要約、プラグインで検索",
+    "searchLabel": "検索",
+    "viewTable": "表",
+    "viewCards": "カード",
+    "filters": "フィルタ",
+    "clearFilters": "フィルタを消す",
+    "results": "{count, plural, other {#件}}",
+    "empty": "条件に合う掲載がありません。",
+    "emptyHint": "検索語かフィルタを変えてください。",
+    "pagination": "一覧のページ",
+    "prevPage": "前へ",
+    "nextPage": "次へ",
+    "pageStatus": "{page} / {pages}",
+    "mascotName": "Awesome"
+  },
+  "filters": {
+    "category": "分野",
+    "integration": "プラグイン",
+    "locale": "言語",
+    "kind": "種類",
+    "all": "すべて",
+    "anyCategory": "すべての分野",
+    "anyIntegration": "すべてのプラグイン",
+    "anyLocale": "すべての言語",
+    "anyKind": "ボットとチーム"
+  },
+  "kind": {
+    "bot": "ボット",
+    "team": "チーム"
+  },
+  "category": {
+    "productivity": "生産性",
+    "sales": "営業",
+    "marketing": "マーケティング",
+    "ops": "運用",
+    "success": "カスタマーサポート",
+    "personal": "個人"
+  },
+  "table": {
+    "name": "名前",
+    "category": "分野",
+    "integrations": "プラグイン",
+    "contributor": "投稿者",
+    "copies": "インストール"
+  },
+  "bot": {
+    "charter": "設定文",
+    "members": "メンバー",
+    "integrations": "プラグイン",
+    "copy": "Copy",
+    "copyAll": "Copy all",
+    "copied": "Copied",
+    "copyHint": "この掲載の設定文だけをコピーします。",
+    "copyAllHint": "チーム全体の設定文を一度にコピーします。",
+    "memberCopyHint": "このメンバーの設定文だけをコピーします。",
+    "copyFailed": "クリップボードに入れられませんでした。ブラウザの権限を確認してください。",
+    "pasteHint": "この文を Grok Bot の設定画面に貼ってください。どのサービスを繋ぐか聞いたあと、設定を保存します。",
+    "share": "共有",
+    "shareCopied": "URL をコピーしました。",
+    "source": "出典",
+    "contributor": "投稿者",
+    "added": "追加日",
+    "locale": "言語",
+    "related": "同じ分野のほかの掲載",
+    "notFound": "この掲載は見つかりませんでした。",
+    "back": "ディレクトリに戻る"
+  },
+  "submit": {
+    "title": "ボットを登録",
+    "lead": "項目を埋めて、準備できたら自分で公開します。v1 に審査はありません。",
+    "name": "名前",
+    "slug": "スラッグ",
+    "kind": "種類",
+    "category": "分野",
+    "locale": "言語",
+    "summary": "一行の要約",
+    "prompt": "設定文",
+    "integrations": "プラグイン（カンマ区切り）",
+    "sourceUrl": "出典 URL（任意）",
+    "publish": "今すぐ公開",
+    "saveDraft": "下書き保存",
+    "savePublish": "保存して公開",
+    "teamMembers": "メンバー",
+    "addMember": "メンバーを追加",
+    "memberRole": "役割",
+    "removeMember": "削除",
+    "memberName": "名前",
+    "memberCharter": "設定文",
+    "saved": "保存しました。",
+    "error": "保存できませんでした。",
+    "slugHint": "URL に使います。小文字・数字・ハイフンのみ。",
+    "promptHint": "役割、担当、できたときの姿、聞かずにやってはいけないこと、最初の作業を書いてください。"
+  },
+  "fromLink": {
+    "title": "リンクから設定文を作る",
+    "lead": "公開 URL を貼ると、タイトルと本文を決まったテンプレートに入れます。有料 LLM キーは不要です。",
+    "url": "ページ URL",
+    "fetch": "取得",
+    "fetching": "取得中…",
+    "fetched": "ページを読みました。下の下書きを直してからコピーまたは登録してください。",
+    "fetchFailed": "そのページを取得できませんでした。URL を確認するか、フォームを自分で埋めてください。",
+    "extractedTitle": "取り出したタイトル",
+    "splitTeam": "チームに分ける（チーフ + 専門家）",
+    "fillAnyway": "空のテンプレートで続ける"
+  },
+  "migrate": {
+    "eyebrow": "引き継ぎ",
+    "hubTitle": "以前のエージェントから Grok Bot へ",
+    "hubLead": "使っているエージェントに一行を貼ると、そのエージェントがスキルを読み、Grok Bot へ渡します。サイトは Grok に書きません。最初の Bot は Chief 一つ。ログイン壁だけ人がやります。",
+    "ruleMemory": "記憶はプレビューしてから確定します。日次ノートと DREAMS は作業レイヤーなので、選ばない限りキューに入れません。",
+    "ruleRoutines": "スキルは how、ルーチンは when。公式の順: 一度やる → スキルに保存 → それからルーチン。Bot あたりルーチン 50。Duplicate Bot は学習した記憶をコピーしません。",
+    "ruleSecrets": ".env、auth.json、apiKey、botToken、SecretRef、キーらしい文字列は常に削除します。セッション・state.db・トランスクリプトは記憶ではありません。",
+    "backHub": "移行ハブ",
+    "hermesTitle": "Hermes → Grok Bot",
+    "hermesLead": "Hermes にスキルを入れて「マイグレーションして」と言います。SOUL・USER・MEMORY・skills・cron を読み、パケットで渡します。",
+    "hermesPageLead": "下の一行を Hermes に貼るか、スキルを入れます。Grok アプリを操作できれば貼り、できなければ Copy を一つずつ出します。キーは移しません。",
+    "openclawTitle": "OpenClaw → Grok Bot",
+    "openclawLead": "OpenClaw にスキルを入れて「マイグレーションして」と言います。zip または AGENTS・HEARTBEAT・openclaw.json を読みます。",
+    "openclawPageLead": "下の一行を OpenClaw に貼るか、SKILL.md を skills/ に置きます。キーは移しません。hermes claw migrate は任意の整理です。",
+    "files": "ファイル",
+    "accept": {
+      "hermes": "zip/tar.gz プロファイル、または SOUL.md、USER.md、MEMORY.md、memories/*、skills/*/SKILL.md、cron。",
+      "openclaw": "zip、または SOUL.md、AGENTS.md、USER.md、MEMORY.md、memory/*.md、HEARTBEAT.md、openclaw.json、cron/jobs.json、skills。clawdbot/moltbot 名も可。"
+    },
+    "preview": "プレビュー",
+    "parsing": "読み取り中…",
+    "needFiles": "先にファイルを選んでください。",
+    "parseFailed": "ファイルを読めませんでした。",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyPacket": "{title} パケットをコピー",
+    "prev": "前のパケット",
+    "next": "次のパケット",
+    "remaining": "残りのキュー",
+    "emptyQueue": "パケットがありません。",
+    "includeOptional": "日次ノート / DREAMS {count} 件をキューに入れる（既定オフ）",
+    "stripped": "秘密らしい文字列 {redacted} 件を伏せる · スキップしたファイル {skipped} 件",
+    "honesty": "これは API キーを移したり {source} を Grok 上で動かしたりしません。次の Grok Bot に次の断片を渡すだけです。記憶・スキル・ルーチンはチャットへの Copy です。xAI メモリ API には書けません。",
+    "saveListing": "掲載として保存",
+    "saveListingHint": "プロファイルパケットで登録を開きます。",
+    "draftReady": "登録フォームにプロファイルを入れました。",
+    "step": {
+      "profile": "プロファイル",
+      "memory": "記憶",
+      "skill": "スキル",
+      "routine": "ルーチン"
+    },
+    "kind": {
+      "profile": "プロファイル",
+      "memory": "記憶",
+      "skill": "スキル",
+      "routine": "ルーチン"
+    },
+    "desk": {
+      "notMagic": "Grok Bot に公式の取り込みボタンはありません。使っているエージェントがこのスキルを実行します。ゴールドタスク・ログイン・署名は人です。",
+      "cardBody": "一行を貼って、マイグレーションしてと言えば十分です。",
+      "cardLead": {
+        "hermes": "Hermes に一行を貼ると、スキルを入れて引き継ぎを進めます。",
+        "openclaw": "OpenClaw に一行を貼ると、スキルを入れて引き継ぎを進めます。"
+      },
+      "cardReads": {
+        "hermes": "読むもの: SOUL、USER、MEMORY、skills、cron。",
+        "openclaw": "読むもの: zip、または AGENTS、HEARTBEAT、openclaw.json。"
+      },
+      "cardChief": "最初の Grok Bot は Chief 一つ。Nexus は後です。",
+      "cardSecrets": "キー・セッション・.env は移しません。",
+      "pasteOnce": "Copy は一回です。その中にインストール先と「マイグレーションして」が入っています。",
+      "pageLead": "下を一度 Copy して、使っているエージェントに貼ってください。あとはそのエージェントがスキルどおりに進めます。",
+      "afterSkill": "エージェントがスキルを読み、まず目録を出します。",
+      "afterGold": "通すべき作業 3–5 件（ゴールドタスク）をチャットで聞きます。",
+      "afterGate": "ログイン・2FA では止まり、人だけがその壁を処理します。",
+      "copyStarter": "{source} に貼る一行",
+      "copyStarterAria": "{source} スターターを Copy",
+      "copySkill": "SKILL.md",
+      "copySkillAria": "SKILL.md を Copy",
+      "installTitle": "インストールコマンド",
+      "installAria": "インストールコマンドを Copy",
+      "installHint": {
+        "hermes": "ターミナルで実行するか、スターターを貼れば Hermes が入れます。",
+        "openclaw": "ワークスペースの skills/ に置きます。curl 一行で足ります。"
+      },
+      "waitingOrigin": "このページのアドレスを読み取り中…",
+      "goldInChat": "ゴールドタスクはウェブフォームではありません。エージェントがチャットで 3–5 件聞きます。",
+      "runbookLink": "フェーズランブック — エージェントが一段だけ再読するとき",
+      "runbookBanner": "このページはエージェント用ランブックです。人がここでチェックする必要はありません。スキル着陸の一行を使っているエージェントに貼ってください。",
+      "backSkill": "スキル着陸へ",
+      "openHermes": "Hermes スキルを開く",
+      "openOpenclaw": "OpenClaw スキルを開く"
+    },
+    "home": {
+      "eyebrow": "これ、本当にできます",
+      "hermes": "Hermes → Grok Bot",
+      "openclaw": "OpenClaw → Grok Bot",
+      "body": "空の Bot を作り、使っていたエージェントに引き継がせます。キーは残します。",
+      "cta": "引き継ぎを始める",
+      "hermesMark": "Hermes Agent",
+      "openclawMark": "OpenClaw",
+      "destMark": "Grok Bot"
+    },
+    "handover": {
+      "createBotTitle": "空の Grok Bot を作る",
+      "createBotBody": "Grok Bot アプリで Bot を一つ作る。設定文は空。名前だけ付ける。それが引き継ぎ窓口。",
+      "copyPromptTitle": "下のプロンプトを Copy する",
+      "copyPromptBody": "運用ルール、パケット順、ログイン壁の扱いが入っている。書き換えずそのまま使う。",
+      "pasteSourceTitle": "使っているエージェントに貼る",
+      "pasteSourceBody": "Hermes または OpenClaw。空の Bot 名を伝え、インベントリを出してから操作を始める。",
+      "gatesTitle": "ログインで止まったら",
+      "gatesBody": "プロンプトが Grok Bot を止める。パスワード・SSO・2FA は人が打つ。「続けて」と言うまで次のパケットへ行かない。",
+      "promptTitle": "引き継ぎプロンプト",
+      "copyAria": "引き継ぎプロンプトを Copy",
+      "playbookTitle": "想定するゲート",
+      "gatePassword": "パスワードは人が打つ。ファイルや記憶から取り出さない。",
+      "gateSso": "会社 SSO・SAML・Okta は人が IdP を通る。",
+      "gateOauth": "OAuth のスコープが広すぎれば先に聞く。",
+      "gateSecond": "2FA、パスキー、マジックリンク、CAPTCHA は人だけ。",
+      "gateShare": "Grok Bot がコンピュータを共有するとログインも共有される。一度だけ伝える。",
+      "exportTitle": "すでにエクスポートがある場合（任意）",
+      "exportLead": "zip や SOUL.md があればここでパケットに分けられます。既定の道は上のプロンプトです。"
+    },
+    "playbook": {
+      "loading": "プレイブックを読み込み中…",
+      "banner": "この URL のフェーズだけ。飛ばさない。人が Done を付ける前に保存・ルーチン・カットオーバーしない。",
+      "actor": "今動く人",
+      "fail": "失敗条件",
+      "copyA": "{source} に貼る Copy",
+      "copyB": "Grok Chief に貼る Copy",
+      "copyAAria": "{source} フェーズプロンプトを Copy",
+      "copyBAria": "Grok Chief フェーズプロンプトを Copy",
+      "noChiefYet": "フェーズ 0 に Chief Copy はありません。目録とアップロードだけです。",
+      "done": "Done",
+      "complete": "次のフェーズ",
+      "finish": "カットオーバー完了",
+      "completeNeed": "このフェーズの Done をすべて付けてください。",
+      "needParse": "フェーズ 0 でファイルを上げてプレビューを作ってください。",
+      "finished": "ゴールドタスクは通り、ソースはオフです。Floor Nexus はカットオーバー後にディレクトリから選びます。",
+      "locked": "ロック中のフェーズ",
+      "lockedBody": "前のフェーズを終えるまで、ここの Copy は使いません。",
+      "backPhase": "開いているフェーズへ",
+      "phaseNav": "移行フェーズ",
+      "phaseOf": "{source} · フェーズ {phase}",
+      "goldTitle": "ゴールドタスク",
+      "goldLead": "始める前に 3–5 件。カットオーバーの唯一の得点です。記憶の復元率ではありません。",
+      "goldName": "名前",
+      "goldInput": "入力",
+      "goldExpect": "期待する出力",
+      "goldPlugins": "プラグイン",
+      "goldNever": "やってはいけないこと",
+      "goldAdd": "タスクを追加",
+      "goldRemove": "削除",
+      "goldNeed": "ゴールドタスクを 3–5 件書いてから始めます。",
+      "goldRange": "{min}–{max} · いま {count}",
+      "startHermes": "Hermes フェーズ 0",
+      "startOpenclaw": "OpenClaw フェーズ 0",
+      "startDisabled": "ゴールドタスクが揃うまで開始できません。",
+      "limitsTitle": "公式の上限",
+      "limitBots": "アカウントあたり Bot + グループ 50。",
+      "limitRoutines": "Bot あたりルーチン 50。",
+      "limitHistory": "履歴 20。",
+      "limitDelete": "削除は取り消せません。",
+      "limitDuplicate": "Duplicate Bot は学習した記憶・履歴・添付をコピーしません。",
+      "limitComputer": "Bot はコンピュータを一台共有します。セッションも共有です。",
+      "limitTeach": "Teach a task はブラウザ実演、約 10 分。",
+      "exportTitle": "このサイトにだけある状態",
+      "export": "JSON を書き出す",
+      "import": "JSON を読み込む",
+      "exportHint": "この JSON をエージェントに渡さないでください。人だけが保管します。",
+      "importFailed": "プレイブック JSON を読めませんでした。",
+      "imported": "プレイブックを入れました。",
+      "reset": "リセット",
+      "resetConfirm": "ゴールドタスクと進行を消しますか？",
+      "resume": "{source} コンソールに戻る",
+      "inventoryHermes": "目録: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron。.env と state.db は記憶ではありません。",
+      "inventoryOpenclaw": "目録: zip 優先。SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills。",
+      "tidyOpenclaw": "任意: ローカルで hermes claw migrate して整理できます。既定は OpenClaw zip の直接アップロードです。--migrate-secrets は使いません。",
+      "factsNote": "事実は FACTS.md に置き、ファイルを引用します。Remember these だけは失敗です。",
+      "skillsTitle": "スキル分類",
+      "routinesTitle": "ルーチン対応",
+      "routinesLead": "保存済みスキル名だけ。空なら保留。ソース cron はオフ、こちらは Test run だけ。",
+      "mapTo": "保存済みスキル名",
+      "portLabel": "{name} の移し方",
+      "port": {
+        "portable": "そのまま移す",
+        "needs-connector": "コネクタが必要",
+        "wont-port": "移さない"
+      },
+      "goldOnConsole": "ゴールドタスク",
+      "leftoverTitle": "残すもの",
+      "leftoverLead": "won't-port、HEARTBEAT、アーカイブ記憶。黙って消さず署名します。",
+      "appendix": "一括引き継ぎプロンプト（付録）",
+      "appendixLead": "基本はこのフェーズの Copy です。{source} が順序を忘れたときだけこの全文を使います。",
+      "phases": {
+        "0": {
+          "title": "目録",
+          "actor": "{source} が走査し、表をこの会話に出す。人はバックアップだけ確認する。",
+          "fail": "本文にキーが残る、またはセッション DB を記憶と呼ぶこと。"
+        },
+        "1": {
+          "title": "Chief",
+          "actor": "人が Grok Bot に Chief を一つ作り、プロファイルを貼る。",
+          "fail": "この段階で専門 Bot や Nexus を作ること。"
+        },
+        "2": {
+          "title": "事実ファイル",
+          "actor": "人が FACTS.md を共有コンピュータに置く。Chief はファイルを引用する。",
+          "fail": "ファイルなしの Remember these。Honcho やセッション全体。"
+        },
+        "3": {
+          "title": "スキル",
+          "actor": "人と Chief。優先スキルを一度動かしてから保存する。",
+          "fail": "一度も動かさずにルーチンへ上げること。"
+        },
+        "4": {
+          "title": "ルーチン",
+          "actor": "人と所有 Bot（既定は Chief）。ソース cron はオフ。",
+          "fail": "両側ライブ。スキルのないルーチン。50 超。"
+        },
+        "5": {
+          "title": "コネクタ",
+          "actor": "ログインは人だけ。サイトはチェックリストだけ。",
+          "fail": "秘密ファイルのアップロード。Bot を分ければセッションが分かれると思うこと。"
+        },
+        "6": {
+          "title": "カットオーバー",
+          "actor": "人がゴールドタスクを確認し、残すものに署名する。",
+          "fail": "記憶が似て見えるから移すこと。ソースがまだオン。"
+        }
+      },
+      "checks": {
+        "0": {
+          "backup": "ソースのバックアップがある。",
+          "secretsZero": "プレビューのシークレットは 0。",
+          "listOk": "目録が一致する。セッション DB は記憶ではない。"
+        },
+        "1": {
+          "chiefCreated": "Chief Bot が一つある。",
+          "neverDo": "description に役割と禁止がある。"
+        },
+        "2": {
+          "factsFile": "FACTS.md が共有コンピュータにある。",
+          "citesFile": "Chief がそのファイルを引用する。"
+        },
+        "3": {
+          "ranOnce": "優先スキルを一度ずつ動かした。",
+          "inSlash": "保存したスキルが / に見える。",
+          "wontPortListed": "won't-port を残すものに書いた。"
+        },
+        "4": {
+          "testRun": "Test run が通った。Test run は本番動作。",
+          "sourceCronOff": "ソースの cron / スケジュールはオフ。",
+          "underFifty": "この Bot のルーチンは 50 以下。"
+        },
+        "5": {
+          "pluginsLinked": "ゴールドタスクに必要なプラグインがつながった。",
+          "allowlistOnly": "許可リストだけ上げた。秘密ファイルなし。"
+        },
+        "6": {
+          "goldPassed": "ゴールドタスクが Grok で通った。",
+          "leftoverSigned": "残すものに署名した。",
+          "sourceArchived": "ソースはオフにしてアーカイブした。"
+        }
+      }
+    }
+  },
+  "guide": {
+    "title": "ゼロから Grok Bot を使う",
+    "body": "権限、最初の Bot、プラグインログイン、スキル、ルーチンまで一ページ。",
+    "cta": "チュートリアルを開く",
+    "videoTitle": "Grok Bot セットアップガイド",
+    "videoBody": "Nate Herk が 20 分で Bot チームを組む手順。",
+    "videoCta": "見る"
+  },
+  "howTo": {
+    "eyebrow": "チュートリアル",
+    "title": "How to use Grok Bot",
+    "lead": "チャット欄を開くより、同僚を雇う作業に近いです。空の Bot 一つから始め、一度見せて、それからチームを増やします。",
+    "download": "デスクトップアプリは公式オンボーディングから入れます。",
+    "downloadCta": "macOS を入れる",
+    "linkGetStarted": "始める · docs.x.ai",
+    "linkPricing": "料金 · x.ai/bot",
+    "linkPlans": "権限 · Cursor プランヘルプ",
+    "linkCursorPricing": "Cursor 料金",
+    "linkMac": "macOS インストール · cursor.com/bot/onboarding",
+    "linkIos": "iOS · App Store",
+    "linkDirectory": "ディレクトリから設定文を Copy",
+    "linkComputer": "コンピュータとアプリ · ハンドブック",
+    "linkSkills": "スキルとルーチン · ハンドブック",
+    "linkNexus": "Floor Nexus の設定",
+    "linkOrchestrator": "Run Orchestrator の設定",
+    "figureLaunchAlt": "xAI 公式 Introducing Grok Bot の画像。白い球体の顔と Grok Bot の文字。",
+    "figureLaunchCaption": "公式ローンチ画像。",
+    "figureHandbookAlt": "xAI Developer Docs、Grok Bot ハンドブックの表紙。",
+    "figureHandbookCaption": "公式ハンドブックの表紙。",
+    "refsTitle": "原文 · ハンドブック",
+    "refsLead": "アプリ画面の原本は xAI ハンドブックです。ここにある画像はその表紙とローンチ記事からです。X では公式アカウントと Grok Bot スレッドを追ってください。",
+    "refGetStarted": "ハンドブック · Get started",
+    "refBots": "ハンドブック · Create and manage Bots",
+    "refComputer": "ハンドブック · Computer and apps",
+    "refSkills": "ハンドブック · Skills and routines",
+    "refLaunch": "ローンチ記事 · Introducing Grok Bot",
+    "refOnboarding": "ダウンロード · cursor.com/bot/onboarding",
+    "refXAccount": "X · @xai",
+    "refX": "X · Grok Bot handbook / guide 検索",
+    "refVideo": "動画 · Nate Herk 20 分ウォークスルー",
+    "next": "次へ",
+    "directory": "ディレクトリから設定文を Copy",
+    "migrate": "Hermes または OpenClaw から引き継ぐ",
+    "steps": {
+      "accessTitle": "権限を確認する",
+      "accessBody": "早期ベータは SuperGrok Heavy、Cursor Ultra、Cursor Teams Premium に付きます。エンタープライズはウェイティングリストです。アプリが開かないときはプランから見ます。",
+      "installTitle": "アプリを入れる",
+      "installBody": "デスクトップ（macOS）または iOS。同じスレッドを両方で続けられます。Bot はクラウドコンピュータを持つので、ノート PC を閉じても仕事は止まりません。",
+      "createTitle": "空の Bot を一つ作る",
+      "createBody": "名前を付けます。設定文は短くて構いません。初日にチーム全体を作らない。最初の Bot は受信箱や朝のブリーフなど、毎日見る仕事一つがよいです。",
+      "setupTitle": "設定文を貼る",
+      "setupBody": "ディレクトリ詳細の Copy を貼ります。担当、できたときの姿、聞かずにやってはいけないこと、最初の作業が入っています。",
+      "taskTitle": "最初の作業は下書きだけ",
+      "taskBody": "送信・削除・支払いはしない、とすでに書いてあります。結果を見て、正しければそのあと範囲を広げます。",
+      "loginTitle": "ツールのログインは人が打つ",
+      "loginBody": "Bot がメール・CRM・カレンダーに入ろうとするとログイン壁が出ます。パスワード、SSO、2FA、CAPTCHA は人が処理します。セッションはコンピュータに残り、Bot がコンピュータを共有するとセッションも共有されます。",
+      "skillTitle": "一度見せてスキルに保存する",
+      "skillBody": "ワークフローを横で見させて how として保存します。ルーチン（when）はスキルのあとだけ。Bot あたりルーチン 50。Duplicate Bot は学習した記憶をコピーしません。",
+      "teamTitle": "そのあと Nexus または Orchestrator",
+      "teamBody": "人が途中で貼り付けないよう、ルータ（Nexus）か順序設計（Orchestrator）を置きます。専門家は一つのレーンだけ。グループチャットで渡し合い、判断だけ人に来ます。"
+    }
+  },
+  "changelog": {
+    "eyebrow": "新着",
+    "title": "Grok Bot 更新履歴",
+    "lead": "Grok Bot に何が入ったかを一箇所で。日付と短い説明、各アップデートの公式ソースへのリンクを手でまとめます。",
+    "note": "公式発表とドキュメントから手で選びます。最速の情報源は",
+    "homeTitle": "最近の Grok Bot アップデート",
+    "homeLead": "新機能を短くまとめました。全体は更新履歴へ。",
+    "viewAll": "すべて見る",
+    "updatedAt": "最終更新"
+  },
+  "install": {
+    "eyebrow": "中で動くエージェント",
+    "title": "Grok Bot 内でコーディングエージェントを動かす",
+    "lead": "Grok Bot 専用のクラウドコンピュータにコーディングエージェントを置きます。プロンプトを一つ貼って導入を任せ、ログインはすべて人が行います。",
+    "note": "xAI 公式ではなく、コミュニティによるガイドです。認証情報や API キーをエージェントに渡さないでください。Grok Bot はログイン画面ごとに止まり、人へ引き継ぎます。",
+    "hardRule": "認証情報や API キーは絶対に入力しません。ログインまたは API キーの段階で止まり、人に依頼します。ログインは人が行います。",
+    "officialDocs": "{tool} 公式ドキュメント",
+    "homeTitle": "Grok Bot のコンピュータにコーディングエージェントを置く",
+    "homeLead": "4つのツール向け、そのまま貼れる導入プロンプト。設定は Bot、ログインは人が担当します。",
+    "viewAll": "エージェント導入",
+    "tools": {
+      "claudeCode": "Claude Code を導入・確認し、README を読み取り専用で要約します。",
+      "codex": "Codex CLI を導入・確認し、リポジトリの README で小さく試します。",
+      "openclaw": "OpenClaw を入れる前に、Grok Bot が公式ソースを探して提示します。",
+      "hermes": "導入前に、Grok Bot が Hermes の公式手順を確認します。"
+    }
+  },
+  "reading": {
+    "eyebrow": "シャウトアウト",
+    "title": "Elon が飛ばした Grok Bot の読み物",
+    "lead": "xAI 公式ローンチと、その週の報道です。原文へ行きます。"
+  },
+  "signIn": {
+    "title": "ログイン",
+    "lead": "GitHub または Google で登録し、掲載を残せます。",
+    "github": "GitHub で続ける",
+    "google": "Google で続ける",
+    "pending": "接続中",
+    "error": "ログインできませんでした。",
+    "back": "ディレクトリに戻る"
+  },
+  "footer": {
+    "note": "Get your grok bot.",
+    "license": "MIT License",
+    "licenseHint": "コードと掲載は MIT です。コピーと改変ができます。",
+    "star": "GitHub",
+    "github": "GitHub",
+    "mail": "Mail",
+    "mailAria": "メールを送る",
+    "howToUse": "使い方",
+    "colUse": "How to use",
+    "colMove": "移行",
+    "migrate": "移行",
+    "colDirectory": "分野",
+    "colLegal": "ライセンス",
+    "llms": "llms.txt",
+    "copyright": "© {year} Awesome Grok Bot"
+  },
+  "license": {
+    "title": "ライセンス",
+    "lead": "このリポジトリと掲載は MIT です。設定文はコピーと改変ができます。他ディレクトリの文をそのまま貼らないでください。",
+    "source": "GitHub で LICENSE を見る"
+  },
+  "theme": {
+    "toggle": "テーマ切替",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
+  "a11y": {
+    "copyPrompt": "{name} の設定文を Copy",
+    "copyAll": "{name} チームの設定文を Copy all",
+    "openFilters": "フィルタを開く",
+    "localeSwitch": "言語を変える",
+    "view": "表示を切り替える",
+    "mainNav": "メイン",
+    "installCount": "インストール {count} 回",
+    "huddle": "中央はマスコット Awesome です。装飾です。ほかの顔を押すとその掲載へ行きます。",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる"
+  }
+}

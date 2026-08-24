@@ -1,14 +1,14 @@
 "use client";
 
-import { useMemo, useState, type MouseEvent } from "react";
-import { LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { ChevronLeftIcon, ChevronRightIcon, LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { directoryViewHref, type DirectoryView } from "@/lib/directory-view";
+import { directoryHref, type DirectoryView } from "@/lib/directory-view";
 import { integrationLabel } from "@/lib/integrations";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,21 +36,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { trackDirectorySearch } from "@/lib/analytics";
 import { CATEGORIES, type BotListing, type BotKind, type Category, type ListingLocale } from "@/lib/types";
+
+const ALL = "all";
+const PAGE_SIZE = 20;
 
 type Props = {
   bots: BotListing[];
   integrations: string[];
-  uiLocale: ListingLocale;
   view: DirectoryView;
+  category: Category | typeof ALL;
 };
 
-const ALL = "all";
+const isModifiedClick = (event: MouseEvent) =>
+  event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
 
-export function Directory({ bots, integrations, uiLocale, view: serverView }: Props) {
+export function Directory({
+  bots,
+  integrations,
+  view: serverView,
+  category: serverCategory,
+}: Props) {
   const t = useTranslations();
-  const router = useRouter();
-  const pathname = usePathname();
   const [view, setView] = useState(serverView);
   const [prevServerView, setPrevServerView] = useState(serverView);
   if (prevServerView !== serverView) {
@@ -58,17 +66,21 @@ export function Directory({ bots, integrations, uiLocale, view: serverView }: Pr
     setView(serverView);
   }
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<Category | typeof ALL>(ALL);
+  const [category, setCategory] = useState<Category | typeof ALL>(serverCategory);
+  const [prevServerCategory, setPrevServerCategory] = useState(serverCategory);
+  if (prevServerCategory !== serverCategory) {
+    setPrevServerCategory(serverCategory);
+    setCategory(serverCategory);
+  }
   const [integration, setIntegration] = useState(ALL);
-  const [locale, setLocale] = useState<ListingLocale | typeof ALL>(uiLocale);
   const [kind, setKind] = useState<BotKind | typeof ALL>(ALL);
+  const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return bots.filter((bot) => {
       if (category !== ALL && bot.category !== category) return false;
       if (integration !== ALL && !bot.integrations.includes(integration)) return false;
-      if (locale !== ALL && bot.locale !== locale) return false;
       if (kind !== ALL && bot.kind !== kind) return false;
       if (!needle) return true;
       const haystack = [
@@ -81,37 +93,78 @@ export function Directory({ bots, integrations, uiLocale, view: serverView }: Pr
         .toLowerCase();
       return haystack.includes(needle);
     });
-  }, [bots, category, integration, kind, locale, query]);
+  }, [bots, category, integration, kind, query]);
+
+  useEffect(() => {
+    const needle = query.trim();
+    if (!needle) return;
+    const timer = window.setTimeout(() => {
+      trackDirectorySearch({
+        queryLen: needle.length,
+        resultCount: filtered.length,
+        category,
+        integration,
+        kind,
+      });
+    }, 800);
+    return () => window.clearTimeout(timer);
+  }, [query, filtered.length, category, integration, kind]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, category, integration, kind, view]);
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(page, pageCount);
+  const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const handlePageChange = (next: number) => {
+    setPage(next);
+  };
+
+  const replaceDirectoryUrl = (next: {
+    view?: DirectoryView;
+    category?: Category | typeof ALL;
+  }) => {
+    const url = new URL(window.location.href);
+    const nextView = next.view ?? view;
+    const nextCategory = next.category ?? category;
+    if (nextView === "cards") url.searchParams.set("view", "cards");
+    else url.searchParams.delete("view");
+    if (nextCategory === ALL) url.searchParams.delete("category");
+    else url.searchParams.set("category", nextCategory);
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  };
 
   const handleClear = () => {
     setQuery("");
     setCategory(ALL);
     setIntegration(ALL);
-    setLocale(ALL);
     setKind(ALL);
+    replaceDirectoryUrl({ category: ALL });
   };
 
-  const handleViewClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    next: DirectoryView,
-  ) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-      return;
-    }
+  const handleViewClick = (event: MouseEvent<HTMLAnchorElement>, next: DirectoryView) => {
+    if (isModifiedClick(event)) return;
     event.preventDefault();
-    router.replace(next === "cards" ? `${pathname}?view=cards` : pathname);
+    if (next === view) return;
     setView(next);
+    replaceDirectoryUrl({ view: next });
+  };
+
+  const handleCategoryChange = (value: string) => {
+    const next = value as Category | typeof ALL;
+    setCategory(next);
+    replaceDirectoryUrl({ category: next });
   };
 
   const filterFieldProps = {
     category,
     integration,
-    locale,
     kind,
     integrations,
-    onCategoryChange: (value: string) => setCategory(value as Category | typeof ALL),
+    onCategoryChange: handleCategoryChange,
     onIntegrationChange: setIntegration,
-    onLocaleChange: (value: string) => setLocale(value as ListingLocale | typeof ALL),
     onKindChange: (value: string) => setKind(value as BotKind | typeof ALL),
   };
 
@@ -147,7 +200,7 @@ export function Directory({ bots, integrations, uiLocale, view: serverView }: Pr
           </Sheet>
           <div className="inline-flex rounded-md border p-0.5" role="group" aria-label={t("a11y.view")}>
             <Link
-              href={directoryViewHref("table")}
+              href={directoryHref({ view: "table", category })}
               replace
               scroll={false}
               className={cn(buttonVariants({ size: "sm", variant: view === "table" ? "secondary" : "ghost" }))}
@@ -159,7 +212,7 @@ export function Directory({ bots, integrations, uiLocale, view: serverView }: Pr
               {t("home.viewTable")}
             </Link>
             <Link
-              href={directoryViewHref("cards")}
+              href={directoryHref({ view: "cards", category })}
               replace
               scroll={false}
               className={cn(buttonVariants({ size: "sm", variant: view === "cards" ? "secondary" : "ghost" }))}
@@ -178,23 +231,55 @@ export function Directory({ bots, integrations, uiLocale, view: serverView }: Pr
         <FilterFields idPrefix="filters-desktop" {...filterFieldProps} />
       </div>
 
-      <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
-        <p className="font-mono tabular-nums">{t("home.results", { count: filtered.length })}</p>
-        <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-          {t("home.clearFilters")}
-        </Button>
-      </div>
-
-      {filtered.length === 0 ? (
-        <div className="rounded-lg border border-dashed px-6 py-16 text-center">
-          <p className="font-medium">{t("home.empty")}</p>
-          <p className="mt-1 text-sm text-muted-foreground">{t("home.emptyHint")}</p>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+          <p className="font-mono tabular-nums">{t("home.results", { count: filtered.length })}</p>
+          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+            {t("home.clearFilters")}
+          </Button>
         </div>
-      ) : view === "table" ? (
-        <DirectoryTable bots={filtered} />
-      ) : (
-        <DirectoryCards bots={filtered} />
-      )}
+
+        {filtered.length === 0 ? (
+          <div className="rounded-lg border border-dashed px-6 py-16 text-center">
+            <p className="font-medium">{t("home.empty")}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t("home.emptyHint")}</p>
+          </div>
+        ) : view === "table" ? (
+          <DirectoryTable bots={paged} />
+        ) : (
+          <DirectoryCards bots={paged} />
+        )}
+
+        {filtered.length > PAGE_SIZE ? (
+          <nav className="flex items-center justify-center gap-2 pt-1" aria-label={t("home.pagination")}>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage <= 1}
+              aria-label={t("home.prevPage")}
+            >
+              <ChevronLeftIcon />
+              {t("home.prevPage")}
+            </Button>
+            <p className="font-mono text-xs tabular-nums text-muted-foreground">
+              {t("home.pageStatus", { page: currentPage, pages: pageCount })}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage >= pageCount}
+              aria-label={t("home.nextPage")}
+            >
+              {t("home.nextPage")}
+              <ChevronRightIcon />
+            </Button>
+          </nav>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -203,30 +288,26 @@ function FilterFields({
   idPrefix,
   category,
   integration,
-  locale,
   kind,
   integrations,
   onCategoryChange,
   onIntegrationChange,
-  onLocaleChange,
   onKindChange,
 }: {
   idPrefix: string;
   category: string;
   integration: string;
-  locale: string;
   kind: string;
   integrations: string[];
   onCategoryChange: (value: string) => void;
   onIntegrationChange: (value: string) => void;
-  onLocaleChange: (value: string) => void;
   onKindChange: (value: string) => void;
 }) {
   const t = useTranslations();
   const uiLocale = useLocale() as ListingLocale;
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       <FilterSelect
         id={`${idPrefix}-category`}
         label={t("filters.category")}
@@ -254,18 +335,6 @@ function FilterFields({
             label: integrationLabel(item, uiLocale),
             plugin: item,
           })),
-        ]}
-      />
-      <FilterSelect
-        id={`${idPrefix}-locale`}
-        label={t("filters.locale")}
-        value={locale}
-        onChange={onLocaleChange}
-        placeholder={t("filters.anyLocale")}
-        options={[
-          { value: ALL, label: t("filters.anyLocale") },
-          { value: "ko", label: "한국어" },
-          { value: "en", label: "English" },
         ]}
       />
       <FilterSelect
@@ -308,7 +377,7 @@ function FilterSelect({
         <SelectTrigger id={id} className="w-full cursor-pointer">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent side="bottom" avoidCollisions={false} className="max-h-72">
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value} className="cursor-pointer">
               {option.plugin ? (
@@ -326,9 +395,24 @@ function FilterSelect({
   );
 }
 
+function listingHref(slug: string) {
+  return `/bots/${slug}` as const;
+}
+
 function DirectoryTable({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
   const locale = useLocale() as ListingLocale;
+  const router = useRouter();
+
+  const handleRowActivate = (slug: string) => {
+    router.push(listingHref(slug));
+  };
+
+  const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, slug: string) => {
+    if ((event.target as HTMLElement).closest("a,button")) return;
+    if (isModifiedClick(event)) return;
+    handleRowActivate(slug);
+  };
 
   return (
     <div className="overflow-x-clip rounded-lg border bg-card [&_[data-slot=table-container]]:overflow-x-clip">
@@ -344,14 +428,18 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
         </TableHeader>
         <TableBody>
           {bots.map((bot) => (
-            <TableRow key={bot.id}>
+            <TableRow
+              key={bot.id}
+              className="cursor-pointer"
+              onClick={(event) => handleRowClick(event, bot.slug)}
+            >
               <TableCell className="max-w-[18rem] whitespace-normal">
                 <div className="flex min-w-0 items-center gap-2">
-                  <ListingFace slug={bot.slug} name={bot.name} size={36} decorative />
+                  <ListingFace slug={bot.slug} name={bot.name} size={40} decorative motion />
                   <div className="min-w-0">
                     <div className="flex min-w-0 items-center gap-2">
                       <Link
-                        href={`/bots/${bot.slug}`}
+                        href={listingHref(bot.slug)}
                         className="block truncate font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
                       >
                         {bot.name}
@@ -394,40 +482,40 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {bots.map((bot) => (
-        <Card key={bot.id} className="rounded-lg">
-          <CardHeader>
-            <div className="flex items-start gap-3">
-              <ListingFace slug={bot.slug} name={bot.name} size={48} decorative />
-              <div className="min-w-0 flex-1 space-y-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-                  <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+        <Link
+          key={bot.id}
+          href={listingHref(bot.slug)}
+          className="rounded-lg focus-visible:ring-3 focus-visible:ring-ring/50"
+          aria-label={bot.name}
+        >
+          <Card className="h-full rounded-lg transition-colors hover:bg-muted/40">
+            <CardHeader>
+              <div className="flex items-start gap-3">
+                <ListingFace slug={bot.slug} name={bot.name} size={56} decorative motion />
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+                    <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                  </div>
+                  <CardTitle>{bot.name}</CardTitle>
+                  <CardDescription>{bot.summary}</CardDescription>
                 </div>
-                <CardTitle>
-                  <Link
-                    href={`/bots/${bot.slug}`}
-                    className="underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {bot.name}
-                  </Link>
-                </CardTitle>
-                <CardDescription>{bot.summary}</CardDescription>
               </div>
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <PluginChipList items={bot.integrations} locale={locale} />
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
-              <span
-                className="font-mono text-xs tabular-nums text-muted-foreground"
-                aria-label={t("a11y.installCount", { count: bot.copy_count })}
-              >
-                {t("a11y.installCount", { count: bot.copy_count })}
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <PluginChipList items={bot.integrations} locale={locale} />
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
+                <span
+                  className="font-mono text-xs tabular-nums text-muted-foreground"
+                  aria-label={t("a11y.installCount", { count: bot.copy_count })}
+                >
+                  {t("a11y.installCount", { count: bot.copy_count })}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );

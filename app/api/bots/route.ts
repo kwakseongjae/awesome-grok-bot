@@ -3,6 +3,7 @@ import { ensureListingSlug } from "@/lib/charter";
 import { getAuthStatus } from "@/lib/env";
 import { getServerSession } from "@/lib/session";
 import { CATEGORIES, type BotDraftInput, type BotKind, type Category, type ListingLocale } from "@/lib/types";
+import { isAppLocale } from "@/lib/locales";
 
 function isKind(value: unknown): value is BotKind {
   return value === "bot" || value === "team";
@@ -13,15 +14,10 @@ function isCategory(value: unknown): value is Category {
 }
 
 function isLocale(value: unknown): value is ListingLocale {
-  return value === "ko" || value === "en";
+  return isAppLocale(value);
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession();
-  if (!session?.user) {
-    return Response.json({ error: "Sign in required." }, { status: 401 });
-  }
-
   const status = getAuthStatus();
   if (!status.canPersistListings) {
     return Response.json(
@@ -44,11 +40,19 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid kind, category, or locale." }, { status: 400 });
   }
 
-  const profile = await ensureProfile({
-    id: session.user.id,
-    name: session.user.name,
-    email: session.user.email,
-  });
+  const session = await getServerSession();
+  const author = session?.user
+    ? {
+        id: session.user.id,
+        handle: (
+          await ensureProfile({
+            id: session.user.id,
+            name: session.user.name,
+            email: session.user.email,
+          })
+        ).handle,
+      }
+    : undefined;
 
   try {
     const listing = await createBotListing(
@@ -65,7 +69,7 @@ export async function POST(request: Request) {
         status: body.status === "published" ? "published" : "draft",
         team_members: Array.isArray(body.team_members) ? body.team_members : [],
       },
-      { id: session.user.id, handle: profile.handle },
+      author,
     );
     return Response.json({ listing });
   } catch (error) {

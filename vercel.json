@@ -1,0 +1,21 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.getgrokbot.com"
+        }
+      ],
+      "destination": "https://getgrokbot.com/:path*",
+      "permanent": true
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/indexnow",
+      "schedule": "0 4 * * *"
+    }
+  ]
+}

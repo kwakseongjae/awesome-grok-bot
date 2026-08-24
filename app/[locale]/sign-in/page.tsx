@@ -1,11 +1,26 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { SignInActions } from "@/components/sign-in-actions";
+import { pageSeo } from "@/lib/seo";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const appLocale = toAppLocale(locale);
+  const t = await getTranslations({ locale: appLocale, namespace: "signIn" });
+  return pageSeo({
+    locale: appLocale,
+    path: "sign-in",
+    title: t("title"),
+    description: t("lead"),
+    index: false,
+  });
+}
 
 export default async function SignInPage({ params }: Props) {
   const { locale } = await params;

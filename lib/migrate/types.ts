@@ -1,3 +1,5 @@
+import type { ListingLocale } from "@/lib/types";
+
 export const MIGRATE_DRAFT_KEY = "grok-bot-migrate-draft";
 
 export type HandoffSource = "hermes" | "openclaw";
@@ -23,7 +25,7 @@ export type HandoffListingDraft = {
   slug: string;
   kind: "bot";
   category: "productivity";
-  locale: "ko" | "en";
+  locale: ListingLocale;
   summary: string;
   prompt: string;
   integrations: string[];

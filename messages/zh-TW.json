@@ -1,0 +1,566 @@
+{
+  "meta": {
+    "title": "Awesome Grok Bot",
+    "description": "放進 Grok Bot 的專家與團隊目錄。在詳情頁 Copy 設定文再貼進去。也可以從 Hermes 或 OpenClaw 交接。"
+  },
+  "seo": {
+    "faqTitle": "常見問題",
+    "faq": {
+      "what": {
+        "q": "Awesome Grok Bot 是什麼？",
+        "a": "無贊助的 Grok Bot 目錄。把專家或團隊設定文 Copy 後貼進 Grok Bot。不是 xAI 官方產品。"
+      },
+      "importer": {
+        "q": "Grok Bot 有官方匯入嗎？",
+        "a": "沒有。也沒有建立 Bot 或寫入記憶的公開 API。本站是目錄，外加 Hermes / OpenClaw 技能。"
+      },
+      "updates": {
+        "q": "在哪裡可以看到 Grok Bot 的更新和新功能？",
+        "a": "在 getgrokbot.com/changelog 的更新日誌查看。每條更新都有日期、簡短說明，以及 xAI 官方發布或文件的連結，人工整理。"
+      },
+      "inside": {
+        "q": "可以在 Grok Bot 內執行 Claude Code、Codex 或 OpenClaw 嗎？",
+        "a": "可以。Grok Bot 有自己的電腦，所以你可以讓它安裝並操作 Claude Code、Codex 等程式設計代理。getgrokbot.com/install 提供可直接貼上的提示詞。登入由人完成。"
+      },
+      "copy": {
+        "q": "條目怎麼用？",
+        "a": "在詳情頁 Copy 設定文，貼進 Grok Bot。第一個 Bot 只做 Chief。登入和 2FA 由人處理。"
+      },
+      "migrate": {
+        "q": "怎麼從 Hermes 或 OpenClaw 遷過來？",
+        "a": "把 getgrokbot.com/migrate 的一行貼進正在用的智能體。它會依技能交接。金鑰與 .env 不遷移。"
+      },
+      "free": {
+        "q": "收費嗎？",
+        "a": "目錄與遷移技能免費，採用 MIT。Grok Bot 應用權限屬於 xAI 或 Cursor 方案。"
+      }
+    }
+  },
+  "brand": {
+    "name": "Awesome Grok Bot",
+    "product": "Grok Bot"
+  },
+  "nav": {
+    "directory": "目錄",
+    "submit": "提交",
+    "fromLink": "從連結建立",
+    "howTo": "用法",
+    "install": "安裝代理",
+    "changelog": "更新日誌",
+    "migrate": "遷移",
+    "docs": "Docs",
+    "signIn": "登入",
+    "signOut": "登出",
+    "skipToContent": "跳到正文"
+  },
+  "home": {
+    "eyebrow": "Get your grok bot.",
+    "title": "Awesome Grok Bot",
+    "lead": "放進 Grok Bot 的專家與團隊目錄。在詳情頁 Copy 設定文再貼進去。也可以從 Hermes 或 OpenClaw 交接。",
+    "search": "依名稱、摘要或外掛搜尋",
+    "searchLabel": "搜尋",
+    "viewTable": "表格",
+    "viewCards": "卡片",
+    "filters": "篩選",
+    "clearFilters": "清除篩選",
+    "results": "{count, plural, other {# 筆}}",
+    "empty": "沒有符合條件的條目。",
+    "emptyHint": "換一個搜尋詞或重設篩選。",
+    "pagination": "目錄分頁",
+    "prevPage": "上一頁",
+    "nextPage": "下一頁",
+    "pageStatus": "{page} / {pages}",
+    "mascotName": "Awesome"
+  },
+  "filters": {
+    "category": "領域",
+    "integration": "外掛",
+    "locale": "語言",
+    "kind": "類型",
+    "all": "全部",
+    "anyCategory": "所有領域",
+    "anyIntegration": "所有外掛",
+    "anyLocale": "所有語言",
+    "anyKind": "機器人與團隊"
+  },
+  "kind": {
+    "bot": "機器人",
+    "team": "團隊"
+  },
+  "category": {
+    "productivity": "生產力",
+    "sales": "業務",
+    "marketing": "行銷",
+    "ops": "營運",
+    "success": "客戶成功",
+    "personal": "個人"
+  },
+  "table": {
+    "name": "名稱",
+    "category": "領域",
+    "integrations": "外掛",
+    "contributor": "貢獻者",
+    "copies": "安裝"
+  },
+  "bot": {
+    "charter": "設定文",
+    "members": "成員",
+    "integrations": "外掛",
+    "copy": "Copy",
+    "copyAll": "Copy all",
+    "copied": "Copied",
+    "copyHint": "只複製此條目的設定文。",
+    "copyAllHint": "一次複製團隊全部設定文。",
+    "memberCopyHint": "只複製此成員的設定文。",
+    "copyFailed": "無法寫入剪貼簿。請檢查瀏覽器權限。",
+    "pasteHint": "把這段貼進 Grok Bot 設定。它會先問要連接什麼，再儲存。",
+    "share": "分享",
+    "shareCopied": "已複製網址。",
+    "source": "來源",
+    "contributor": "貢獻者",
+    "added": "新增日期",
+    "locale": "語言",
+    "related": "同領域的其他條目",
+    "notFound": "找不到此條目。",
+    "back": "返回目錄"
+  },
+  "submit": {
+    "title": "提交機器人",
+    "lead": "填好欄位，準備好就自己發布。v1 沒有審核板。",
+    "name": "名稱",
+    "slug": "別名",
+    "kind": "類型",
+    "category": "領域",
+    "locale": "語言",
+    "summary": "一句話摘要",
+    "prompt": "設定文",
+    "integrations": "外掛（逗號分隔）",
+    "sourceUrl": "來源 URL（選填）",
+    "publish": "立即發布",
+    "saveDraft": "儲存草稿",
+    "savePublish": "儲存並發布",
+    "teamMembers": "成員",
+    "addMember": "新增成員",
+    "memberRole": "職稱",
+    "removeMember": "刪除",
+    "memberName": "名稱",
+    "memberCharter": "設定文",
+    "saved": "已儲存。",
+    "error": "無法儲存。",
+    "slugHint": "用於網址。小寫字母、數字、連字號。",
+    "promptHint": "寫職責、負責事項、做好的樣子、不問不能做的事，以及第一項任務。"
+  },
+  "fromLink": {
+    "title": "從連結起草設定文",
+    "lead": "貼上公開 URL。v1 把標題與正文填進固定範本。不需要付費 LLM 金鑰。",
+    "url": "頁面 URL",
+    "fetch": "擷取",
+    "fetching": "擷取中…",
+    "fetched": "已讀頁面。編輯下方草稿，再複製或提交。",
+    "fetchFailed": "無法擷取該頁面。請檢查網址，或自己填寫表單。",
+    "extractedTitle": "擷取的標題",
+    "splitTeam": "拆成團隊（主管 + 專家）",
+    "fillAnyway": "用空白範本繼續"
+  },
+  "migrate": {
+    "eyebrow": "交接",
+    "hubTitle": "從先前的智能體遷到 Grok Bot",
+    "hubLead": "把一行貼進正在用的智能體，它會讀取技能並遷到 Grok Bot。本站不寫入 Grok。第一個 Bot 只做 Chief。登入牆由人處理。",
+    "ruleMemory": "記憶先預覽再確認。日記與 DREAMS 是工作層，預設不進佇列。",
+    "ruleRoutines": "技能是 how，例程是 when。官方順序：先做一次 → 存成技能 → 再排例程。每個 Bot 最多 50 條例程。Duplicate Bot 不複製已學記憶。",
+    "ruleSecrets": ".env、auth.json、apiKey、botToken、SecretRef 以及像金鑰的字串一律去掉。工作階段、state.db、逐字稿不是記憶。",
+    "backHub": "遷移中心",
+    "hermesTitle": "Hermes → Grok Bot",
+    "hermesLead": "在 Hermes 安裝技能並說「幫我遷移」。它讀取 SOUL、USER、MEMORY、skills、cron，再按包交接。",
+    "hermesPageLead": "把下面一行貼進 Hermes，或安裝技能。能操作 Grok 應用就貼上；不能就一次給一個 Copy。金鑰留下。",
+    "openclawTitle": "OpenClaw → Grok Bot",
+    "openclawLead": "把技能放進 OpenClaw 並說「幫我遷移」。它讀取 zip 或 AGENTS、HEARTBEAT、openclaw.json。",
+    "openclawPageLead": "把下面一行貼進 OpenClaw，或把 SKILL.md 放到 skills/。金鑰留下。hermes claw migrate 只是選填整理。",
+    "files": "檔案",
+    "accept": {
+      "hermes": "zip/tar.gz 檔案，或 SOUL.md、USER.md、MEMORY.md、memories/*、skills/*/SKILL.md、cron。",
+      "openclaw": "zip，或 SOUL.md、AGENTS.md、USER.md、MEMORY.md、memory/*.md、HEARTBEAT.md、openclaw.json、cron/jobs.json、skills。舊名 clawdbot/moltbot 也可用。"
+    },
+    "preview": "預覽",
+    "parsing": "讀取中…",
+    "needFiles": "請先選擇檔案。",
+    "parseFailed": "無法讀取這些檔案。",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyPacket": "複製資料包 {title}",
+    "prev": "上一包",
+    "next": "下一包",
+    "remaining": "剩餘佇列",
+    "emptyQueue": "沒有資料包。",
+    "includeOptional": "把 {count} 則日記 / DREAMS 加入佇列（預設關閉）",
+    "stripped": "遮蓋疑似金鑰 {redacted} 處 · 跳過檔案 {skipped} 個",
+    "honesty": "這不會遷移 API 金鑰，也不會在 Grok 上執行 {source}。只把下一片交給下一個 Grok Bot。記憶、技能、例程只能 Copy 進聊天。我們寫不了 xAI 記憶 API。",
+    "saveListing": "存為條目",
+    "saveListingHint": "用檔案包開啟提交頁。",
+    "draftReady": "已把檔案放進提交表單。",
+    "step": {
+      "profile": "檔案",
+      "memory": "記憶",
+      "skill": "技能",
+      "routine": "例程"
+    },
+    "kind": {
+      "profile": "檔案",
+      "memory": "記憶",
+      "skill": "技能",
+      "routine": "例程"
+    },
+    "desk": {
+      "notMagic": "Grok Bot 沒有官方匯入按鈕。由你正在用的智能體執行此技能。金任務、登入與簽字仍由人完成。",
+      "cardBody": "貼一行，讓它幫你遷移即可。",
+      "cardLead": {
+        "hermes": "把一行貼進 Hermes，它會裝上技能並開始交接。",
+        "openclaw": "把一行貼進 OpenClaw，它會裝上技能並開始交接。"
+      },
+      "cardReads": {
+        "hermes": "讀取：SOUL、USER、MEMORY、skills、cron。",
+        "openclaw": "讀取：zip，或 AGENTS、HEARTBEAT、openclaw.json。"
+      },
+      "cardChief": "第一個 Grok Bot 只做 Chief。Nexus 以後再說。",
+      "cardSecrets": "金鑰、工作階段與 .env 不遷移。",
+      "pasteOnce": "只 Copy 一次。安裝位址與「幫我遷移」都在這一行裡。",
+      "pageLead": "Copy 一次，貼進正在用的智能體。其餘按技能進行。",
+      "afterSkill": "智能體先讀取技能並列出清單。",
+      "afterGold": "它會在聊天裡問 3–5 個必須通過的金任務。",
+      "afterGate": "遇到登入和 2FA 會停，只由人處理那些牆。",
+      "copyStarter": "貼給 {source} 的一行",
+      "copyStarterAria": "複製 {source} 起始提示",
+      "copySkill": "SKILL.md",
+      "copySkillAria": "複製 SKILL.md",
+      "installTitle": "安裝命令",
+      "installAria": "複製安裝命令",
+      "installHint": {
+        "hermes": "在終端機執行，或把起始提示貼給 Hermes 讓它安裝。",
+        "openclaw": "放到工作區 skills/。一行 curl 即可。"
+      },
+      "waitingOrigin": "正在讀取本頁位址…",
+      "goldInChat": "金任務不是網頁表單。智能體會在聊天裡問 3–5 項。",
+      "runbookLink": "階段手冊 — 智能體只需重讀一步時",
+      "runbookBanner": "本頁是給智能體的手冊。你不必在此勾選。把技能頁的一行貼進正在用的智能體。",
+      "backSkill": "回到技能頁",
+      "openHermes": "開啟 Hermes 技能",
+      "openOpenclaw": "開啟 OpenClaw 技能"
+    },
+    "home": {
+      "eyebrow": "這真的做得到",
+      "hermes": "Hermes → Grok Bot",
+      "openclaw": "OpenClaw → Grok Bot",
+      "body": "建一個空 Bot，讓原來的智能體來交接。金鑰留下。",
+      "cta": "開始交接",
+      "hermesMark": "Hermes Agent",
+      "openclawMark": "OpenClaw",
+      "destMark": "Grok Bot"
+    },
+    "handover": {
+      "createBotTitle": "建一個空 Grok Bot",
+      "createBotBody": "在 Grok Bot 應用裡建一個 Bot。設定留空。只命名。它就是交接台。",
+      "copyPromptTitle": "複製下面的提示",
+      "copyPromptBody": "含操作規則、包順序、登入牆處理。整段使用，不要改。",
+      "pasteSourceTitle": "貼進你正在用的智能體",
+      "pasteSourceBody": "Hermes 或 OpenClaw。告訴它空 Bot 的名字。先印出清單，再開始操縱。",
+      "gatesTitle": "登入擋住電腦時",
+      "gatesBody": "提示會讓 Grok Bot 停下。密碼、SSO、2FA 由人輸入。你說繼續之前，不進入下一包。",
+      "promptTitle": "交接提示",
+      "copyAria": "複製交接提示",
+      "playbookTitle": "會遇到的關卡",
+      "gatePassword": "密碼由人輸入。絕不從檔案或記憶裡取。",
+      "gateSso": "公司 SSO、SAML、Okta 由人在 IdP 完成。",
+      "gateOauth": "OAuth 範圍過大時先詢問。",
+      "gateSecond": "2FA、通行金鑰、魔法連結、驗證碼只由人處理。",
+      "gateShare": "若 Grok Bot 共用一台電腦，登入也會共用。只說一次。",
+      "exportTitle": "已有匯出檔（選填）",
+      "exportLead": "zip 或 SOUL.md 仍可在此拆包。預設路徑是上面的提示。"
+    },
+    "playbook": {
+      "loading": "正在讀取手冊…",
+      "banner": "只做本 URL 的階段。不要跳。人勾選 Done 之前，不要儲存、排程或切換。",
+      "actor": "誰來做",
+      "fail": "失敗條件",
+      "copyA": "貼給 {source} 的 Copy",
+      "copyB": "貼給 Grok Chief 的 Copy",
+      "copyAAria": "複製 {source} 階段提示",
+      "copyBAria": "複製 Grok Chief 階段提示",
+      "noChiefYet": "階段 0 沒有 Chief Copy。只做清單與上傳。",
+      "done": "Done",
+      "complete": "下一階段",
+      "finish": "完成切換",
+      "completeNeed": "請勾選本階段全部 Done。",
+      "needParse": "請在階段 0 上傳檔案並產生預覽。",
+      "finished": "金任務已通過，來源端保持關閉。Floor Nexus 只在切換後再從目錄選擇。",
+      "locked": "鎖定的階段",
+      "lockedBody": "未完成上一階段時，不要使用這裡的 Copy。",
+      "backPhase": "回到已解鎖階段",
+      "phaseNav": "遷移階段",
+      "phaseOf": "{source} · 階段 {phase}",
+      "goldTitle": "金任務",
+      "goldLead": "開始前寫 3–5 項。這是切換的唯一分數，不是記憶還原率。",
+      "goldName": "名稱",
+      "goldInput": "輸入",
+      "goldExpect": "期望輸出",
+      "goldPlugins": "外掛",
+      "goldNever": "禁止事項",
+      "goldAdd": "新增任務",
+      "goldRemove": "刪除",
+      "goldNeed": "填滿 3–5 個金任務後再開始。",
+      "goldRange": "{min}–{max} · 現在 {count}",
+      "startHermes": "Hermes 階段 0",
+      "startOpenclaw": "OpenClaw 階段 0",
+      "startDisabled": "金任務未就緒時不能開始。",
+      "limitsTitle": "官方上限",
+      "limitBots": "每帳戶 Bot + 群組 50。",
+      "limitRoutines": "每 Bot 例程 50。",
+      "limitHistory": "歷史 20。",
+      "limitDelete": "刪除不可復原。",
+      "limitDuplicate": "Duplicate Bot 不複製已學記憶、歷史或附件。",
+      "limitComputer": "Bot 共用一台電腦，工作階段也共用。",
+      "limitTeach": "Teach a task 是瀏覽器示範，約 10 分鐘。",
+      "exportTitle": "只存在本站的狀態",
+      "export": "匯出 JSON",
+      "import": "匯入 JSON",
+      "exportHint": "不要把這份 JSON 交給智能體。只給人保存。",
+      "importFailed": "無法讀取手冊 JSON。",
+      "imported": "已載入手冊。",
+      "reset": "重設",
+      "resetConfirm": "清除金任務與階段進度？",
+      "resume": "回到 {source} 控制台",
+      "inventoryHermes": "清單：SOUL.md、USER.md、MEMORY.md、memories/*、skills/*/SKILL.md、cron。.env 與 state.db 不是記憶。",
+      "inventoryOpenclaw": "清單：優先 zip。SOUL、AGENTS、USER、MEMORY、memory/*、HEARTBEAT、openclaw.json、cron/jobs.json、skills。",
+      "tidyOpenclaw": "選填：本機用 hermes claw migrate 先整理。預設路徑是直接上傳 OpenClaw zip。不要用 --migrate-secrets。",
+      "factsNote": "事實放進 FACTS.md 並引用檔案。只說 Remember these 算失敗。",
+      "skillsTitle": "技能分類",
+      "routinesTitle": "例程對應",
+      "routinesLead": "只填已儲存的技能名。留空即暫緩。來源 cron 關閉，這邊只做 Test run。",
+      "mapTo": "已儲存技能名",
+      "portLabel": "{name} 的遷移方式",
+      "port": {
+        "portable": "原樣遷移",
+        "needs-connector": "需要連接器",
+        "wont-port": "不遷移"
+      },
+      "goldOnConsole": "金任務",
+      "leftoverTitle": "留下的項",
+      "leftoverLead": "won't-port、HEARTBEAT、封存記憶。簽字，不要默默刪除。",
+      "appendix": "整段交接提示（附錄）",
+      "appendixLead": "預設用目前階段 Copy。只有 {source} 忘了順序時才用這段全文。",
+      "phases": {
+        "0": {
+          "title": "清單",
+          "actor": "{source} 掃描並把表打在對話裡。人只確認備份。",
+          "fail": "正文留下金鑰，或把工作階段資料庫叫作記憶。"
+        },
+        "1": {
+          "title": "Chief",
+          "actor": "人在 Grok Bot 建一個 Chief 並貼上檔案。",
+          "fail": "在此階段建立專家 Bot 或 Nexus。"
+        },
+        "2": {
+          "title": "事實檔",
+          "actor": "人把 FACTS.md 放到共用電腦。Chief 引用該檔。",
+          "fail": "沒有檔案只說 Remember these。Honcho 或整段工作階段。"
+        },
+        "3": {
+          "title": "技能",
+          "actor": "人與 Chief。優先技能先跑一次再儲存。",
+          "fail": "從未執行就提升為例程。"
+        },
+        "4": {
+          "title": "例程",
+          "actor": "人與所屬 Bot（預設 Chief）。來源 cron 關閉。",
+          "fail": "兩側同時上線。沒有技能的例程。超過 50。"
+        },
+        "5": {
+          "title": "連接器",
+          "actor": "只有人輸入登入。站點只提供清單。",
+          "fail": "上傳秘密檔。以為拆分 Bot 就能隔離工作階段。"
+        },
+        "6": {
+          "title": "切換",
+          "actor": "人核對金任務，並為留下的項簽字。",
+          "fail": "因為記憶看起來一樣就切換。來源端仍在執行。"
+        }
+      },
+      "checks": {
+        "0": {
+          "backup": "已有來源備份。",
+          "secretsZero": "預覽中機密為 0。",
+          "listOk": "清單吻合。工作階段資料庫不是記憶。"
+        },
+        "1": {
+          "chiefCreated": "已有且僅有一個 Chief Bot。",
+          "neverDo": "description 含角色與禁止事項。"
+        },
+        "2": {
+          "factsFile": "FACTS.md 已在共用電腦上。",
+          "citesFile": "Chief 引用該檔。"
+        },
+        "3": {
+          "ranOnce": "優先技能各跑過一次。",
+          "inSlash": "已儲存技能出現在 /。",
+          "wontPortListed": "won't-port 已寫入留下的項。"
+        },
+        "4": {
+          "testRun": "Test run 通過。Test run 是真實執行。",
+          "sourceCronOff": "來源 cron/行程已關閉。",
+          "underFifty": "此 Bot 例程不超過 50。"
+        },
+        "5": {
+          "pluginsLinked": "金任務所需外掛已連線。",
+          "allowlistOnly": "只上傳允許清單，無秘密檔。"
+        },
+        "6": {
+          "goldPassed": "金任務已在 Grok 通過。",
+          "leftoverSigned": "留下的項已簽字。",
+          "sourceArchived": "來源端已關閉並封存。"
+        }
+      }
+    }
+  },
+  "guide": {
+    "title": "從零使用 Grok Bot",
+    "body": "權限、第一個 Bot、外掛登入、技能再到例程，一頁說完。",
+    "cta": "打開教學",
+    "videoTitle": "Grok Bot 設定指南",
+    "videoBody": "Nate Herk 用 20 分鐘組一支 Bot 團隊。",
+    "videoCta": "觀看"
+  },
+  "howTo": {
+    "eyebrow": "教學",
+    "title": "How to use Grok Bot",
+    "lead": "更像雇用一位同事，而不是打開聊天框。從一隻空 Bot 開始，示範一次工作，再擴大團隊。",
+    "download": "桌面應用在官方引導頁下載。",
+    "downloadCta": "安裝 macOS",
+    "linkGetStarted": "開始使用 · docs.x.ai",
+    "linkPricing": "定價 · x.ai/bot",
+    "linkPlans": "權限 · Cursor 方案說明",
+    "linkCursorPricing": "Cursor 定價",
+    "linkMac": "macOS 安裝 · cursor.com/bot/onboarding",
+    "linkIos": "iOS · App Store",
+    "linkDirectory": "從目錄 Copy 設定文",
+    "linkComputer": "電腦與應用 · 手冊",
+    "linkSkills": "技能與例程 · 手冊",
+    "linkNexus": "Floor Nexus 設定",
+    "linkOrchestrator": "Run Orchestrator 設定",
+    "figureLaunchAlt": "xAI 官方 Introducing Grok Bot 圖像。白色球體面容與 Grok Bot 字樣。",
+    "figureLaunchCaption": "官方發布圖像。",
+    "figureHandbookAlt": "xAI Developer Docs，Grok Bot 手冊封面。",
+    "figureHandbookCaption": "官方手冊封面。",
+    "refsTitle": "原文 · 手冊",
+    "refsLead": "應用畫面以 xAI 手冊為準。這裡的圖像來自手冊封面與發布文。在 X 上追蹤官方帳號與 Grok Bot 串文。",
+    "refGetStarted": "手冊 · Get started",
+    "refBots": "手冊 · Create and manage Bots",
+    "refComputer": "手冊 · Computer and apps",
+    "refSkills": "手冊 · Skills and routines",
+    "refLaunch": "發布文 · Introducing Grok Bot",
+    "refOnboarding": "下載 · cursor.com/bot/onboarding",
+    "refXAccount": "X · @xai",
+    "refX": "X · 搜尋 Grok Bot handbook / guide",
+    "refVideo": "影片 · Nate Herk 20 分鐘示範",
+    "next": "下一步",
+    "directory": "從目錄 Copy 設定文",
+    "migrate": "從 Hermes 或 OpenClaw 交接",
+    "steps": {
+      "accessTitle": "確認權限",
+      "accessBody": "早期測試版隨 SuperGrok Heavy、Cursor Ultra 與 Cursor Teams Premium 提供。企業需排隊。應用打不開時先看方案。",
+      "installTitle": "安裝應用",
+      "installBody": "桌面（macOS）或 iOS。同一條對話可兩邊接著聊。Bot 有雲端電腦，闔上筆電工作也不會停。",
+      "createTitle": "建一隻空 Bot",
+      "createBody": "命名。設定可以很短。第一天不要組整支團隊。第一隻 Bot 適合收件匣或晨報這類每天會看的工作。",
+      "setupTitle": "貼上設定文",
+      "setupBody": "從目錄詳情 Copy 再貼上。裡面已有職責、做好的標準、不問不能做的事，以及第一項任務。",
+      "taskTitle": "第一項任務只出草稿",
+      "taskBody": "傳送、刪除、付款已經關掉。先看結果，對了再放大範圍。",
+      "loginTitle": "工具登入由人輸入",
+      "loginBody": "Bot 要進郵件、CRM 或日曆時會出現登入牆。密碼、SSO、2FA、驗證碼由你處理。工作階段留在電腦上。Bot 共用電腦時，工作階段也共用。",
+      "skillTitle": "示範一次，再存成技能",
+      "skillBody": "讓它看著做一遍，再把 how 存下來。例程（when）要等技能有了才排。每隻 Bot 最多 50 條例程。Duplicate Bot 不複製已學記憶。",
+      "teamTitle": "然後加 Nexus 或 Orchestrator",
+      "teamBody": "放一個路由（Nexus）或編排（Orchestrator），你就不用當貼上中間人。專家各守一條線。他們在群組聊天裡交接，只把判斷交給你。"
+    }
+  },
+  "changelog": {
+    "eyebrow": "最新動態",
+    "title": "Grok Bot 更新日誌",
+    "lead": "Grok Bot 上線了什麼，一處看全。日期、簡短說明，以及每次更新的官方來源連結，人工整理。",
+    "note": "從官方發布與文件人工挑選。最快的資訊源是",
+    "homeTitle": "Grok Bot 最近更新",
+    "homeLead": "新功能的簡短筆記。完整時間線在更新日誌。",
+    "viewAll": "查看全部",
+    "updatedAt": "最後更新"
+  },
+  "install": {
+    "eyebrow": "內部代理",
+    "title": "在 Grok Bot 內執行程式設計代理",
+    "lead": "在 Grok Bot 自己的雲端電腦上放一個程式設計代理。貼上一段提示詞，讓 Bot 完成安裝；所有登入都由人處理。",
+    "note": "這是社群指南，不是 xAI 官方指導。切勿把憑證或 API 金鑰交給代理；Grok Bot 應在每個登入環節停下，請你接手。",
+    "hardRule": "絕不輸入憑證或 API 金鑰。遇到登入或 API 金鑰步驟就停下，請人來完成。登入由人處理。",
+    "officialDocs": "{tool} 官方文件",
+    "homeTitle": "把程式設計代理放進 Grok Bot 的電腦",
+    "homeLead": "四款工具的可直接貼上安裝提示詞。Bot 負責設定，你負責每次登入。",
+    "viewAll": "安裝代理",
+    "tools": {
+      "claudeCode": "安裝並驗證 Claude Code，再以唯讀方式摘要 README。",
+      "codex": "安裝並驗證 Codex CLI，再用儲存庫 README 做一個小測試。",
+      "openclaw": "安裝 OpenClaw 前，讓 Grok Bot 先找到並展示官方來源。",
+      "hermes": "開始設定前，讓 Grok Bot 先核驗 Hermes 的官方說明。"
+    }
+  },
+  "reading": {
+    "eyebrow": "推薦閱讀",
+    "title": "Elon 推上軌道的 Grok Bot 讀物",
+    "lead": "xAI 官方發布，以及當週報導。連結指向原文。"
+  },
+  "signIn": {
+    "title": "登入",
+    "lead": "用 GitHub 或 Google 提交條目。",
+    "github": "繼續使用 GitHub",
+    "google": "繼續使用 Google",
+    "pending": "連線中",
+    "error": "無法登入。",
+    "back": "返回目錄"
+  },
+  "footer": {
+    "note": "Get your grok bot.",
+    "license": "MIT License",
+    "licenseHint": "程式與條目採用 MIT，可複製與改寫。",
+    "star": "GitHub",
+    "github": "GitHub",
+    "mail": "Mail",
+    "mailAria": "傳送郵件",
+    "howToUse": "使用方法",
+    "colUse": "How to use",
+    "colMove": "遷移",
+    "migrate": "遷移",
+    "colDirectory": "分類",
+    "colLegal": "授權",
+    "llms": "llms.txt",
+    "copyright": "© {year} Awesome Grok Bot"
+  },
+  "license": {
+    "title": "授權",
+    "lead": "本倉庫與目錄條目採用 MIT。設定文可複製與改寫。請勿原樣貼上其他目錄的提示。",
+    "source": "在 GitHub 查看 LICENSE"
+  },
+  "theme": {
+    "toggle": "切換主題",
+    "light": "淺色",
+    "dark": "深色",
+    "system": "系統"
+  },
+  "a11y": {
+    "copyPrompt": "Copy {name} 的設定文",
+    "copyAll": "Copy all {name} 團隊設定文",
+    "openFilters": "開啟篩選",
+    "localeSwitch": "變更語言",
+    "view": "切換檢視",
+    "mainNav": "主導覽",
+    "installCount": "{count, plural, other {# 次安裝}}",
+    "huddle": "中間是吉祥物 Awesome，僅裝飾。點其他面孔會打開對應條目。",
+    "openMenu": "開啟選單",
+    "closeMenu": "關閉選單"
+  }
+}

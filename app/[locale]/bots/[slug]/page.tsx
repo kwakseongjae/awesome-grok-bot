@@ -8,10 +8,11 @@ import { CategoryBadge, KindBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
-import { Badge } from "@/components/ui/badge";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
-import { getAppUrl } from "@/lib/env";
+import { JsonLd } from "@/components/json-ld";
+import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
 import type { ListingLocale } from "@/lib/types";
 
 type Props = {
@@ -20,12 +21,15 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const bot = await getPublishedBot(slug, locale as ListingLocale);
-  if (!bot) return { title: "Awesome Grok Bot" };
-  return {
+  const appLocale = toAppLocale(locale);
+  const bot = await getPublishedBot(slug, appLocale);
+  if (!bot) return { title: SITE_NAME };
+  return pageSeo({
+    locale: appLocale,
+    path: `bots/${slug}`,
     title: bot.name,
     description: bot.summary,
-  };
+  });
 }
 
 export default async function BotDetailPage({ params }: Props) {
@@ -40,10 +44,27 @@ export default async function BotDetailPage({ params }: Props) {
     new Date(bot.added_at),
   );
   const listingLocale = locale as ListingLocale;
-  const shareUrl = `${getAppUrl()}/${locale}/bots/${bot.slug}`;
+  const appLocale = toAppLocale(locale);
+  const shareUrl = absoluteUrl(localePath(appLocale, `bots/${bot.slug}`));
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
+      <JsonLd
+        data={listingJsonLd({
+          name: bot.name,
+          summary: bot.summary,
+          url: shareUrl,
+          locale: appLocale,
+          plugins: bot.integrations,
+          author: bot.contributor_handle,
+        })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: SITE_NAME, path: localePath(appLocale) },
+          { name: bot.name, path: localePath(appLocale, `bots/${bot.slug}`) },
+        ])}
+      />
       <Link
         href="/"
         className="text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
@@ -53,14 +74,11 @@ export default async function BotDetailPage({ params }: Props) {
 
       <header className="mt-8 space-y-4">
         <div className="flex items-start gap-4">
-          <ListingFace slug={bot.slug} name={bot.name} size={72} />
+          <ListingFace slug={bot.slug} name={bot.name} size={72} motion />
           <div className="min-w-0 flex-1 space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
               <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-              <Badge variant="outline" className="rounded-md font-normal">
-                {bot.locale === "ko" ? "한국어" : "English"}
-              </Badge>
             </div>
             <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
             <p className="text-lg text-muted-foreground">{bot.summary}</p>
@@ -73,6 +91,7 @@ export default async function BotDetailPage({ params }: Props) {
             copiedLabel={t("bot.copied")}
             ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
             botId={bot.id}
+            copyKind="listing"
           />
           {bot.kind === "team" ? (
             <CopyButton
@@ -81,6 +100,7 @@ export default async function BotDetailPage({ params }: Props) {
               copiedLabel={t("bot.copied")}
               ariaLabel={t("a11y.copyAll", { name: bot.name })}
               botId={bot.id}
+              copyKind="team"
               variant="ghost"
             />
           ) : null}
@@ -118,7 +138,7 @@ export default async function BotDetailPage({ params }: Props) {
             {bot.team_members.map((member) => (
               <article key={member.name} className="rounded-lg border bg-card p-4">
                 <div className="flex items-start gap-3">
-                  <ListingFace slug={bot.slug} name={member.name} size={40} decorative />
+                  <ListingFace slug={bot.slug} seed={member.name} name={member.name} size={40} decorative motion />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-2">
                       <h3 className="font-semibold">{member.name}</h3>
@@ -131,6 +151,7 @@ export default async function BotDetailPage({ params }: Props) {
                         label={t("bot.copy")}
                         copiedLabel={t("bot.copied")}
                         ariaLabel={t("a11y.copyPrompt", { name: member.name })}
+                        copyKind="member"
                         size="sm"
                       />
                       <p className="text-xs text-muted-foreground">{t("bot.memberCopyHint")}</p>
@@ -178,7 +199,7 @@ export default async function BotDetailPage({ params }: Props) {
           <ul className="space-y-2">
             {related.map((item) => (
               <li key={item.id} className="flex items-center gap-2">
-                <ListingFace slug={item.slug} name={item.name} size={28} decorative />
+                <ListingFace slug={item.slug} name={item.name} size={32} decorative motion />
                 <span className="min-w-0">
                   <Link
                     href={`/bots/${item.slug}`}

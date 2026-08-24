@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ensureListingSlug, slugify } from "@/lib/charter";
+import { LOCALES, LOCALE_LABELS } from "@/lib/locales";
 import { CATEGORIES, type BotDraftInput, type BotKind, type Category, type ListingLocale, type TeamMember } from "@/lib/types";
 
 type Props = {
@@ -35,7 +36,7 @@ export function BotForm({ initial }: Props) {
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [kind, setKind] = useState<BotKind>(initial?.kind ?? "bot");
   const [category, setCategory] = useState<Category>(initial?.category ?? "productivity");
-  const [locale, setLocale] = useState<ListingLocale>(initial?.locale ?? "ko");
+  const [locale, setLocale] = useState<ListingLocale>(initial?.locale ?? "en");
   const [summary, setSummary] = useState(initial?.summary ?? "");
   const [prompt, setPrompt] = useState(initial?.prompt ?? "");
   const [integrations, setIntegrations] = useState((initial?.integrations ?? []).join(", "));
@@ -151,8 +152,11 @@ export function BotForm({ initial }: Props) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ko">한국어</SelectItem>
-              <SelectItem value="en">English</SelectItem>
+              {LOCALES.map((item) => (
+                <SelectItem key={item} value={item}>
+                  {LOCALE_LABELS[item]}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </Field>

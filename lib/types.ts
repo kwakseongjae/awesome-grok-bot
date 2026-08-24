@@ -1,3 +1,5 @@
+import type { AppLocale } from "@/lib/locales";
+
 export const CATEGORIES = [
   "productivity",
   "sales",
@@ -10,7 +12,7 @@ export const CATEGORIES = [
 export type Category = (typeof CATEGORIES)[number];
 export type BotKind = "bot" | "team";
 export type BotStatus = "draft" | "published";
-export type ListingLocale = "ko" | "en";
+export type ListingLocale = AppLocale;
 
 export type TeamMember = {
   name: string;

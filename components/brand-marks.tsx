@@ -33,6 +33,51 @@ export function GoogleGMark(props: MarkProps) {
   );
 }
 
+export function MailMark(props: MarkProps) {
+  return (
+    <svg {...svgProps(props)}>
+      <path
+        fill="currentColor"
+        d="M3.2 6.4A1.7 1.7 0 0 1 4.9 5h14.2c.9 0 1.7.7 1.7 1.4v11.2c0 .8-.8 1.4-1.7 1.4H4.9c-.9 0-1.7-.6-1.7-1.4zm1.8.3 6.4 4.5c.4.3.8.3 1.2 0l6.4-4.5H5zm14.1 1.5-5.8 4.1c-.8.6-1.8.6-2.6 0L4.9 8.2v9.3h14.2z"
+      />
+    </svg>
+  );
+}
+
+export function LlmsMark(props: MarkProps) {
+  return (
+    <svg {...svgProps(props)}>
+      <path
+        fill="currentColor"
+        d="M7 3.2A1.8 1.8 0 0 0 5.2 5v14c0 1 .8 1.8 1.8 1.8h10c1 0 1.8-.8 1.8-1.8V8.4L13.6 3.2zm6.4.9 4.2 4.1h-3.3a.9.9 0 0 1-.9-.9zm-4.6 7.4h6.4v1.3H8.8zm0 2.8h6.4V15H8.8zm0-5.6h3.2v1.3H8.8z"
+      />
+    </svg>
+  );
+}
+
+export function MailAppMark(props: MarkProps) {
+  return (
+    <svg viewBox="0 0 24 24" role="img" aria-hidden {...props}>
+      <defs>
+        <linearGradient id="mail-app-bg" x1="12" x2="12" y1="0" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stopColor="var(--mark-mail-top)" />
+          <stop offset="1" stopColor="var(--mark-mail-bottom)" />
+        </linearGradient>
+      </defs>
+      <rect width="24" height="24" rx="6" fill="url(#mail-app-bg)" />
+      <path
+        fill="#fff"
+        d="M4.6 8.2c0-.7.5-1.2 1.2-1.2h12.4c.7 0 1.2.5 1.2 1.2v8.1c0 .8-.6 1.4-1.4 1.4H6c-.8 0-1.4-.6-1.4-1.4z"
+      />
+      <path fill="rgba(15,23,42,0.12)" d="M4.6 8.15 12 13.2 19.4 8.15V7H4.6z" />
+      <path
+        fill="#fff"
+        d="M5.2 7.15 12 12.05 18.8 7.15A1.1 1.1 0 0 0 18.2 7H5.8a1.1 1.1 0 0 0-.6.15z"
+      />
+    </svg>
+  );
+}
+
 export function GitHubMark(props: MarkProps) {
   return (
     <svg {...svgProps(props)}>
@@ -44,12 +89,19 @@ export function GitHubMark(props: MarkProps) {
   );
 }
 
-function GmailMark(props: MarkProps) {
+export function GmailMark(props: MarkProps) {
   return (
-    <svg {...svgProps(props)}>
+    <svg viewBox="0 0 48 48" role="img" aria-hidden {...props}>
+      <path fill="#4caf50" d="M45 16.2 40 18.95 35 23.7V40h7c1.657 0 3-1.343 3-3V16.2z" />
+      <path fill="#1e88e5" d="M3 16.2 6.614 17.91 13 23.7V40H6c-1.657 0-3-1.343-3-3V16.2z" />
+      <path fill="#e53935" d="m35 11.2-11 8.25-11-8.25L12 17l1 6.7 11 8.25L35 23.7l1-6.7z" />
       <path
-        fill="var(--mark-gmail)"
-        d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"
+        fill="#c62828"
+        d="M3 12.298V16.2l10 7.5V11.2L9.876 8.273C9.132 7.502 8.012 7.4 7.057 8.025 4.656 9.448 3 12.298 3 12.298z"
+      />
+      <path
+        fill="#fbc02d"
+        d="M45 12.298V16.2l-10 7.5V11.2l3.124-2.927c.744-.771 1.864-.873 2.819-.248C43.344 9.448 45 12.298 45 12.298z"
       />
     </svg>
   );

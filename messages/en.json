@@ -1,7 +1,40 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "A listing is a specialist or a team you put into Grok Bot. On a detail page, Copy puts setup text on the clipboard. A team has a chief plus specialists."
+    "description": "Specialists and teams you put into Grok Bot. Copy setup text from a listing and paste it in. You can also hand off from Hermes or OpenClaw."
+  },
+  "seo": {
+    "faqTitle": "Questions",
+    "faq": {
+      "what": {
+        "q": "What is Awesome Grok Bot?",
+        "a": "A sponsor-free Grok Bot directory. Copy specialist or team setup text and paste it into Grok Bot. It is not an official xAI product."
+      },
+      "importer": {
+        "q": "Does Grok Bot have an official importer?",
+        "a": "No. There is also no public API to create Bots or write memory. This site is a catalog plus a Hermes and OpenClaw skill."
+      },
+      "updates": {
+        "q": "Where can I see Grok Bot updates and new features?",
+        "a": "The changelog at getgrokbot.com/changelog is a hand-curated timeline of Grok Bot updates — each entry has a date, a short note, and a link to the official xAI post or doc."
+      },
+      "inside": {
+        "q": "Can I run Claude Code, Codex, or OpenClaw inside Grok Bot?",
+        "a": "Yes — Grok Bot has its own computer, so you can tell it to install coding agents like Claude Code or Codex and drive them. getgrokbot.com/install has paste-ready prompts. Logins stay human."
+      },
+      "copy": {
+        "q": "How do I use a listing?",
+        "a": "Copy the setup text from a detail page and paste it into Grok Bot. Start with one Chief. Login and 2FA stay human."
+      },
+      "migrate": {
+        "q": "How do I move from Hermes or OpenClaw?",
+        "a": "Paste one line from getgrokbot.com/migrate into the agent you already use. That agent reads the skill and hands over packets. Keys and .env stay behind."
+      },
+      "free": {
+        "q": "Is this paid?",
+        "a": "The directory and migrate skill are free and MIT. Grok Bot app access is an xAI or Cursor plan."
+      }
+    }
   },
   "brand": {
     "name": "Awesome Grok Bot",
@@ -11,15 +44,19 @@
     "directory": "Directory",
     "submit": "Submit",
     "fromLink": "From a link",
+    "howTo": "How to",
+    "install": "Install agents",
+    "changelog": "Changelog",
     "migrate": "Migrate",
+    "docs": "Docs",
     "signIn": "Sign in",
     "signOut": "Sign out",
     "skipToContent": "Skip to content"
   },
   "home": {
-    "eyebrow": "Into Grok Bot",
-    "title": "Bots and teams",
-    "lead": "A listing is a specialist or a team you put into Grok Bot. On a detail page, Copy puts setup text on the clipboard. A team has a chief plus specialists.",
+    "eyebrow": "Get your grok bot.",
+    "title": "Awesome Grok Bot",
+    "lead": "Specialists and teams you put into Grok Bot. Copy setup text from a listing and paste it in. You can also hand off from Hermes or OpenClaw.",
     "search": "Search by name, summary, or plugin",
     "searchLabel": "Search",
     "viewTable": "Table",
@@ -29,7 +66,11 @@
     "results": "{count, plural, one {# listing} other {# listings}}",
     "empty": "No listings match these filters.",
     "emptyHint": "Try another search or reset the filters.",
-    "mascotName": "Directory mascot"
+    "pagination": "Directory pages",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pageStatus": "{page} / {pages}",
+    "mascotName": "Awesome"
   },
   "filters": {
     "category": "Category",
@@ -124,17 +165,17 @@
   "migrate": {
     "eyebrow": "Handoff",
     "hubTitle": "From a previous agent into Grok Bot",
-    "hubLead": "This is not a one-shot dump. Grok Bot receives one packet at a time. Copy the profile, then memory, skills, and routines. This does not move API keys or run Hermes on Grok.",
+    "hubLead": "Paste one line into the agent you already use. It loads the skill and moves the profile into Grok Bot. This site does not write to Grok. First Bot is one Chief. You only handle login walls.",
     "ruleMemory": "Memory is preview-then-confirm. Daily notes and DREAMS are a working layer, so they stay off the queue unless you opt in.",
     "ruleRoutines": "A skill is how; a routine is when. Official order: do the task once → save as a skill → then schedule a routine. Cap 50 routines per Bot. Duplicate Bot does not copy learned memory.",
     "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef values, and key-looking strings are always stripped. Sessions, state.db, and transcripts are not memory.",
     "backHub": "Migration hub",
     "hermesTitle": "Hermes → Grok Bot",
-    "hermesLead": "A profile export (zip/tar.gz) or loose SOUL.md, MEMORY.md, skills, and cron.",
-    "hermesPageLead": "Hermes profiles become setup text, memory, skill, and routine packets. Always preview, then confirm — like hermes claw migrate. Cron is recreated. Secrets are never taken.",
+    "hermesLead": "Install the skill in Hermes and say migrate. It reads SOUL, USER, MEMORY, skills, and cron, then hands packets across.",
+    "hermesPageLead": "Paste the one-liner into Hermes or install the skill. If it can operate the Grok app it pastes packets; if not, it gives you Copy one packet at a time. Keys stay behind.",
     "openclawTitle": "OpenClaw → Grok Bot",
-    "openclawLead": "A ~/.openclaw zip, a workspace, or SOUL.md / AGENTS.md / MEMORY.md / cron.",
-    "openclawPageLead": "OpenClaw (or clawdbot/moltbot) workspaces become packets. Markdown only, like Import Memory. Files are not merged blindly into bootstrap MEMORY.md.",
+    "openclawLead": "Put the skill in OpenClaw and say migrate. It reads a zip or AGENTS, HEARTBEAT, and openclaw.json.",
+    "openclawPageLead": "Paste the one-liner into OpenClaw or drop SKILL.md into skills/. Keys stay behind. hermes claw migrate is optional tidy only.",
     "files": "Files",
     "accept": {
       "hermes": "zip/tar.gz profile, or SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
@@ -169,21 +210,309 @@
       "skill": "Skill",
       "routine": "Routine"
     },
+    "desk": {
+      "notMagic": "Grok Bot has no official import button. The agent you already use runs this skill. You still give gold tasks, logins, and leftover sign-off.",
+      "cardBody": "Paste one line and ask it to migrate.",
+      "cardLead": {
+        "hermes": "Paste one line into Hermes. It installs the skill and runs the handoff.",
+        "openclaw": "Paste one line into OpenClaw. It takes the skill and runs the handoff."
+      },
+      "cardReads": {
+        "hermes": "It reads SOUL, USER, MEMORY, skills, and cron.",
+        "openclaw": "It reads a zip, or AGENTS, HEARTBEAT, and openclaw.json."
+      },
+      "cardChief": "The first Grok Bot is one Chief. Nexus comes later.",
+      "cardSecrets": "Keys, sessions, and .env stay behind.",
+      "pasteOnce": "Copy once. That paste already has the install URL and “migrate this.”",
+      "pageLead": "Copy once and paste it into the agent you already use. That agent follows the skill.",
+      "afterSkill": "The agent loads the skill and prints an inventory first.",
+      "afterGold": "It asks in chat for 3–5 gold tasks that must pass.",
+      "afterGate": "It stops at login and 2FA. You only handle those walls.",
+      "copyStarter": "One line for {source}",
+      "copyStarterAria": "Copy the {source} starter",
+      "copySkill": "SKILL.md",
+      "copySkillAria": "Copy SKILL.md",
+      "installTitle": "Install command",
+      "installAria": "Copy the install command",
+      "installHint": {
+        "hermes": "Run it in a terminal, or paste the starter and let Hermes install.",
+        "openclaw": "Drop it into workspace skills/. The curl line is enough."
+      },
+      "waitingOrigin": "Reading this page’s address…",
+      "goldInChat": "Gold tasks are not a web form. The agent asks for 3–5 in chat.",
+      "runbookLink": "Phase runbook — when the agent needs one step again",
+      "runbookBanner": "This page is an agent runbook. You do not have to check boxes here. Paste the one-liner from the skill landing into the agent you already use.",
+      "backSkill": "Back to the skill",
+      "openHermes": "Open the Hermes skill",
+      "openOpenclaw": "Open the OpenClaw skill"
+    },
     "home": {
       "eyebrow": "Wait — this actually works",
       "hermes": "Hermes → Grok Bot",
       "openclaw": "OpenClaw → Grok Bot",
-      "body": "Hands off the profile as packets. Keys stay behind.",
+      "body": "Paste the skill into the agent you already use and say migrate. Keys stay behind.",
       "cta": "Start the handoff",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw",
       "destMark": "Grok Bot"
+    },
+    "handover": {
+      "createBotTitle": "Create an empty Grok Bot",
+      "createBotBody": "In the Grok Bot app, make one Bot. Leave setup blank. Name it. That Bot is the handoff desk.",
+      "copyPromptTitle": "Copy the prompt below",
+      "copyPromptBody": "It has operating rules, packet order, and login-wall handling. Use it whole.",
+      "pasteSourceTitle": "Paste it into the agent you already use",
+      "pasteSourceBody": "Hermes or OpenClaw. Tell it the empty Bot’s name. Let it print an inventory before it drives anything.",
+      "gatesTitle": "When login blocks the computer",
+      "gatesBody": "The prompt stops Grok Bot. You type passwords, SSO, and 2FA. It does not start the next packet until you say continue.",
+      "promptTitle": "Handoff prompt",
+      "copyAria": "Copy the handoff prompt",
+      "playbookTitle": "Gates to expect",
+      "gatePassword": "Passwords are typed by a human. Never taken from a file or from memory.",
+      "gateSso": "Company SSO, SAML, and Okta stay with the human at the IdP.",
+      "gateOauth": "If OAuth scopes look too broad, it asks before continuing.",
+      "gateSecond": "2FA, passkeys, magic links, and CAPTCHAs are human-only.",
+      "gateShare": "If Grok Bots share a computer, logins are shared. It says that once.",
+      "exportTitle": "Already have an export (optional)",
+      "exportLead": "A zip or SOUL.md can still be split into packets here. The default path is the prompt above."
+    },
+    "playbook": {
+      "loading": "Loading the playbook…",
+      "banner": "This URL’s phase only. Do not skip. Do not save, schedule, or cut over before the human marks Done.",
+      "actor": "Who acts",
+      "fail": "Fail condition",
+      "copyA": "Copy for {source}",
+      "copyB": "Copy for the Grok Chief",
+      "copyAAria": "Copy the {source} phase prompt",
+      "copyBAria": "Copy the Grok Chief phase prompt",
+      "noChiefYet": "Phase 0 has no Chief Copy. Inventory and upload only.",
+      "done": "Done",
+      "complete": "Next phase",
+      "finish": "Mark cutover done",
+      "completeNeed": "Turn on every Done checkbox for this phase.",
+      "needParse": "Upload files on phase 0 so a preview exists.",
+      "finished": "Gold tasks passed and the source stays off. Pick Floor Nexus from the directory only after cutover.",
+      "locked": "Locked phase",
+      "lockedBody": "Finish the previous phase before using Copy here.",
+      "backPhase": "Open the unlocked phase",
+      "phaseNav": "Migration phases",
+      "phaseOf": "{source} · phase {phase}",
+      "goldTitle": "Gold tasks",
+      "goldLead": "Write 3–5 before you start. They are the only cutover score. Memory-restore rate is not.",
+      "goldName": "Name",
+      "goldInput": "Input",
+      "goldExpect": "Expected output",
+      "goldPlugins": "Plugins",
+      "goldNever": "Never do",
+      "goldAdd": "Add a task",
+      "goldRemove": "Remove",
+      "goldNeed": "Fill 3–5 gold tasks before you start.",
+      "goldRange": "{min}–{max} · {count} now",
+      "startHermes": "Hermes phase 0",
+      "startOpenclaw": "OpenClaw phase 0",
+      "startDisabled": "Start stays off until gold tasks are ready.",
+      "limitsTitle": "Official limits",
+      "limitBots": "50 Bots + groups per account.",
+      "limitRoutines": "50 routines per Bot.",
+      "limitHistory": "20 history items.",
+      "limitDelete": "Delete is permanent.",
+      "limitDuplicate": "Duplicate Bot does not copy learned memory, history, or attachments.",
+      "limitComputer": "Bots share one computer. Sessions are shared.",
+      "limitTeach": "Teach a task is a browser demo, about 10 minutes.",
+      "exportTitle": "State that lives only on this site",
+      "export": "Export JSON",
+      "import": "Import JSON",
+      "exportHint": "Do not give this JSON to an agent. Keep it for yourself.",
+      "importFailed": "Could not read that playbook JSON.",
+      "imported": "Playbook loaded.",
+      "reset": "Reset",
+      "resetConfirm": "Clear gold tasks and phase progress?",
+      "resume": "Back to the {source} console",
+      "inventoryHermes": "Inventory: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron. .env and state.db are not memory.",
+      "inventoryOpenclaw": "Inventory: zip first. SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills.",
+      "tidyOpenclaw": "Optional: tidy locally with hermes claw migrate. The default path is an OpenClaw zip. Do not use --migrate-secrets.",
+      "factsNote": "Standing facts live in FACTS.md. Quote the file. “Remember these” with no file is a fail.",
+      "skillsTitle": "Skill tags",
+      "routinesTitle": "Routine map",
+      "routinesLead": "Name a saved skill only. Empty means hold. Source cron off; this side Test run only.",
+      "mapTo": "Saved skill name",
+      "portLabel": "How {name} moves",
+      "port": {
+        "portable": "Port as-is",
+        "needs-connector": "Needs a connector",
+        "wont-port": "Will not port"
+      },
+      "goldOnConsole": "Gold tasks",
+      "leftoverTitle": "Leftovers",
+      "leftoverLead": "won't-port, HEARTBEAT, archived memory. Sign them. Do not silent-delete.",
+      "appendix": "Full handoff prompt (appendix)",
+      "appendixLead": "The phase Copy is the default. Use this whole prompt only if {source} loses the order.",
+      "phases": {
+        "0": {
+          "title": "Inventory",
+          "actor": "{source} scans and prints the table in chat. The human only confirms a backup.",
+          "fail": "Keys left in the body, or calling a session DB memory."
+        },
+        "1": {
+          "title": "Chief",
+          "actor": "The human creates one Grok Bot Chief and pastes the profile.",
+          "fail": "Creating specialist Bots or a Nexus here."
+        },
+        "2": {
+          "title": "Fact file",
+          "actor": "The human puts FACTS.md on the shared computer. The Chief quotes it.",
+          "fail": "“Remember these” with no file. Honcho or full sessions."
+        },
+        "3": {
+          "title": "Skills",
+          "actor": "Human and Chief. Run each priority skill once, then save.",
+          "fail": "Promoting an unrun skill to a routine."
+        },
+        "4": {
+          "title": "Routines",
+          "actor": "Human and the owning Bot (Chief by default). Source cron off.",
+          "fail": "Both sides live. A routine with no skill. More than 50."
+        },
+        "5": {
+          "title": "Connectors",
+          "actor": "Only the human types logins. The site is a checklist.",
+          "fail": "Uploading secret files. Assuming split Bots isolate sessions."
+        },
+        "6": {
+          "title": "Cutover",
+          "actor": "The human checks gold tasks and signs leftovers.",
+          "fail": "Cutting over because memory looks the same. Source still on."
+        }
+      },
+      "checks": {
+        "0": {
+          "backup": "A source backup exists.",
+          "secretsZero": "The preview shows zero secrets.",
+          "listOk": "The inventory list matches. A session DB is not memory."
+        },
+        "1": {
+          "chiefCreated": "Exactly one Chief Bot exists.",
+          "neverDo": "The description has the role and never-do."
+        },
+        "2": {
+          "factsFile": "FACTS.md is on the shared computer.",
+          "citesFile": "The Chief quotes that file."
+        },
+        "3": {
+          "ranOnce": "Each priority skill ran once.",
+          "inSlash": "Saved skills show under /.",
+          "wontPortListed": "won't-port items are on the leftover list."
+        },
+        "4": {
+          "testRun": "A Test run passed. Test run is real.",
+          "sourceCronOff": "Source cron/schedules are off.",
+          "underFifty": "This Bot has 50 routines or fewer."
+        },
+        "5": {
+          "pluginsLinked": "Plugins needed by gold tasks are connected.",
+          "allowlistOnly": "Only allowlisted files were uploaded. No secret files."
+        },
+        "6": {
+          "goldPassed": "Gold tasks passed on Grok.",
+          "leftoverSigned": "Leftovers are signed.",
+          "sourceArchived": "The source is off and archived."
+        }
+      }
     }
   },
   "guide": {
-    "title": "Grok Bot setup guide",
-    "body": "Nate Herk’s 20-minute walkthrough for a Bot team.",
-    "cta": "Watch the guide"
+    "title": "Use Grok Bot from zero",
+    "body": "Access, first Bot, plugin logins, skills, then routines — one page.",
+    "cta": "Open the tutorial",
+    "videoTitle": "Grok Bot setup guide",
+    "videoBody": "Nate Herk’s 20-minute walkthrough for a Bot team.",
+    "videoCta": "Watch"
+  },
+  "howTo": {
+    "eyebrow": "Tutorial",
+    "title": "How to use Grok Bot",
+    "lead": "Closer to hiring a teammate than opening a chat box. Start with one empty Bot, show a job once, then grow the team.",
+    "download": "The desktop app is on the official onboarding page.",
+    "downloadCta": "Install for macOS",
+    "linkGetStarted": "Get started · docs.x.ai",
+    "linkPricing": "Pricing · x.ai/bot",
+    "linkPlans": "Access · Cursor plan help",
+    "linkCursorPricing": "Cursor pricing",
+    "linkMac": "macOS install · cursor.com/bot/onboarding",
+    "linkIos": "iOS · App Store",
+    "linkDirectory": "Copy setup text from the directory",
+    "linkComputer": "Computer and apps · handbook",
+    "linkSkills": "Skills and routines · handbook",
+    "linkNexus": "Floor Nexus setup",
+    "linkOrchestrator": "Run Orchestrator setup",
+    "figureLaunchAlt": "Official xAI Introducing Grok Bot art. White sphere face and the words Grok Bot.",
+    "figureLaunchCaption": "Official launch image.",
+    "figureHandbookAlt": "xAI Developer Docs cover for the Grok Bot handbook.",
+    "figureHandbookCaption": "Official handbook cover.",
+    "refsTitle": "Source · handbook",
+    "refsLead": "The app screens live in the xAI handbook. Images here are from that handbook cover and the launch post. On X, follow the official account and Grok Bot threads.",
+    "refGetStarted": "Handbook · Get started",
+    "refBots": "Handbook · Create and manage Bots",
+    "refComputer": "Handbook · Computer and apps",
+    "refSkills": "Handbook · Skills and routines",
+    "refLaunch": "Launch post · Introducing Grok Bot",
+    "refOnboarding": "Download · cursor.com/bot/onboarding",
+    "refXAccount": "X · @xai",
+    "refX": "X · search Grok Bot handbook / guide",
+    "refVideo": "Video · Nate Herk 20-minute walkthrough",
+    "next": "Next",
+    "directory": "Copy setup text from the directory",
+    "migrate": "Hand off from Hermes or OpenClaw",
+    "steps": {
+      "accessTitle": "Check access",
+      "accessBody": "Early beta ships with SuperGrok Heavy, Cursor Ultra, and Cursor Teams Premium. Enterprise is a waitlist. If the app will not open, start with the plan.",
+      "installTitle": "Install the app",
+      "installBody": "Desktop (macOS) or iOS. The same thread continues on both. Bots keep a cloud computer, so work does not stall when you close the laptop.",
+      "createTitle": "Make one empty Bot",
+      "createBody": "Name it. Setup can be short. Do not build a whole team on day one. Pick a daily job: inbox or a morning brief.",
+      "setupTitle": "Paste setup text",
+      "setupBody": "Copy a listing from the directory. It already has the job, the bar for good work, the never-do list, and a first task.",
+      "taskTitle": "First task is drafts only",
+      "taskBody": "Send, delete, and pay stay off. Read the result. Widen the scope only after that looks right.",
+      "loginTitle": "Humans type tool logins",
+      "loginBody": "When a Bot reaches mail, CRM, or calendar, a login wall appears. Passwords, SSO, 2FA, and CAPTCHAs stay with you. Sessions live on the computer. If Bots share that computer, they share sessions.",
+      "skillTitle": "Show it once, then save a skill",
+      "skillBody": "Let it watch a workflow, then save how. Routines (when) wait until the skill exists. Cap 50 routines per Bot. Duplicate Bot does not copy learned memory.",
+      "teamTitle": "Then add a Nexus or an Orchestrator",
+      "teamBody": "Put a router (Nexus) or a sequencer (Orchestrator) in so you are not the paste middleman. Specialists keep one lane. They pass work in a group chat and pull you in for judgment only."
+    }
+  },
+  "changelog": {
+    "eyebrow": "What's new",
+    "title": "Grok Bot Changelog",
+    "lead": "What shipped in Grok Bot, in one place. Dates, plain-language notes, and links to the official source for every update.",
+    "note": "Curated by hand from official posts and docs. The fastest firehose is",
+    "homeTitle": "Latest Grok Bot updates",
+    "homeLead": "New features, short notes. The full timeline lives on the changelog.",
+    "viewAll": "All updates",
+    "updatedAt": "Last updated"
+  },
+  "install": {
+    "eyebrow": "Agents inside",
+    "title": "Run coding agents inside Grok Bot",
+    "lead": "Give Grok Bot a coding agent on its own cloud computer. Copy one prompt, let the Bot install it, then keep every login in human hands.",
+    "note": "This is community guidance, not official xAI guidance. Never hand credentials or API keys to an agent; Grok Bot should stop at every login wall and ask you to take over.",
+    "hardRule": "Never type credentials or API keys. Stop at every login or API-key step and ask the human to do it. Logins stay human.",
+    "officialDocs": "Official {tool} docs",
+    "homeTitle": "Put a coding agent on Grok Bot's computer",
+    "homeLead": "Paste-ready install prompts for four tools. The Bot handles setup; you handle every login.",
+    "viewAll": "Install agents",
+    "tools": {
+      "claudeCode": "Install Claude Code, verify it, and run a read-only README smoke task.",
+      "codex": "Install Codex CLI, verify it, and test it on a repository README.",
+      "openclaw": "Make Grok Bot find and show the official source before it installs OpenClaw.",
+      "hermes": "Make Grok Bot verify the official Hermes instructions before setup begins."
+    }
+  },
+  "reading": {
+    "eyebrow": "Shoutouts",
+    "title": "Reading Elon put in orbit",
+    "lead": "The official xAI launch post, plus coverage of that week. Links go to the original."
   },
   "signIn": {
     "title": "Sign in",
@@ -195,8 +524,26 @@
     "back": "Back to the directory"
   },
   "footer": {
-    "note": "No ads, affiliates, or sponsor rails. Write and share setup text yourself.",
-    "license": "Listings are free to copy and adapt."
+    "note": "Get your grok bot.",
+    "license": "MIT License",
+    "licenseHint": "Code and listings are MIT. Copy and adapt them.",
+    "star": "GitHub",
+    "github": "GitHub",
+    "mail": "Mail",
+    "mailAria": "Send email",
+    "howToUse": "How to use",
+    "colUse": "How to use",
+    "colMove": "Migration",
+    "migrate": "Migrate",
+    "colDirectory": "Directory",
+    "colLegal": "Legal",
+    "llms": "llms.txt",
+    "copyright": "© {year} Awesome Grok Bot"
+  },
+  "license": {
+    "title": "License",
+    "lead": "This repository and its directory listings are MIT. Copy and adapt the setup text. Do not paste other directories' prompts verbatim.",
+    "source": "View LICENSE on GitHub"
   },
   "theme": {
     "toggle": "Toggle theme",
@@ -212,7 +559,7 @@
     "view": "Change view",
     "mainNav": "Main",
     "installCount": "{count, plural, one {# install} other {# installs}}",
-    "huddle": "Directory faces. Decorative. A face opens that listing.",
+    "huddle": "The center face is Awesome, the directory mascot. Decorative. A listing face opens that listing.",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   }

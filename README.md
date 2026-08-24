@@ -1,8 +1,10 @@
 # awesome-grok-bot
 
-스폰서 없는 Grok Bot 디렉터리. 한국어 우선, 영문 병기.
+Grok Bot 디렉터리. 기본 언어는 영어. 한국어 및 다른 로케일 병기.
 
-A sponsor-free [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. Korean-first, with English.
+Live: [getgrokbot.com](https://getgrokbot.com). Agents: [/llms.txt](https://getgrokbot.com/llms.txt), [/llms-full.txt](https://getgrokbot.com/llms-full.txt). Each locale page also has `/llms.txt`.
+
+A [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. English default, with Korean and other locales.
 
 This repo is the public catalog of **bots** (named specialists you put into Grok Bot) and **teams** (a Chief plus specialists). On a listing page, **Copy** puts paste-ready setup text on the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
 
@@ -61,7 +63,7 @@ X / Twitter sign-in is not wired. Better Auth can add a `twitter` social provide
 
 - **In the app:** sign in → Submit. Markdown-like fields. You can publish immediately.
 - **From a public URL:** `/from-link` fetches title/text (no LLM key) and fills a setup-text template. If fetch fails, fill the form yourself.
-- **In seed data:** edit `data/seed-bots.json` (local fallback) and keep `supabase/migrations/20260819000002_seed.sql` in sync for Postgres.
+- **In seed data:** existing listings live in `data/seed-bots.json`. New official-role listings live in `data/catalog.ts` (local fallback). Keep `supabase/migrations/20260819000002_seed.sql` in sync for the original seed if you use Postgres.
 
 Setup text should include: name and title, what it owns, what good looks like, what it must never do without asking, plugins, and a first task. Teams add member roles.
 
@@ -71,4 +73,4 @@ Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `e
 
 ## License
 
-Listings are free to copy and adapt. Do not paste other directories' prompts verbatim.
+[MIT](LICENSE). Code and listings are free to copy and adapt. Do not paste other directories' prompts verbatim.

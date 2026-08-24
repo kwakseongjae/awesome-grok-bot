@@ -1,7 +1,10 @@
 import seedFile from "@/data/seed-bots.json";
+import { expandCatalog } from "@/lib/catalog";
 import { ensureListingSlug } from "@/lib/charter";
 import { createAdminClient, createAnonClient } from "@/lib/supabase";
 import { isSupabaseConfigured } from "@/lib/env";
+import { CONTRIBUTOR_HANDLE } from "@/lib/site";
+import { localeCollator } from "@/lib/locales";
 import type {
   BotDraftInput,
   BotFilters,
@@ -14,7 +17,22 @@ import type {
 
 type SeedFile = { bots: BotListing[] };
 
-const seedBots = (seedFile as SeedFile).bots;
+const seedBots = dedupeSlugLocale([
+  ...(seedFile as SeedFile).bots,
+  ...expandCatalog(),
+]);
+
+function dedupeSlugLocale(bots: BotListing[]) {
+  const seen = new Set<string>();
+  const out: BotListing[] = [];
+  for (const bot of bots) {
+    const key = `${bot.slug}:${bot.locale}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(bot);
+  }
+  return out;
+}
 
 type BotRow = {
   id: string;
@@ -81,7 +99,7 @@ function mapRow(row: BotRow, members: TeamMember[] = []): BotListing {
     prompt: row.prompt,
     integrations: row.integrations ?? [],
     source_url: row.source_url,
-    contributor_handle: row.contributor_handle ?? "anonymous",
+    contributor_handle: row.contributor_handle ?? CONTRIBUTOR_HANDLE,
     status: row.status,
     created_by: row.created_by,
     added_at: row.added_at,
@@ -123,18 +141,42 @@ async function attachMembers(rows: BotRow[]): Promise<BotListing[]> {
 }
 
 export function listSeedBots(filters: BotFilters = {}) {
-  return seedBots
-    .filter((bot) => matchesFilters(bot, filters))
+  const wanted = filters.locale && filters.locale !== "all" ? filters.locale : null;
+  const published = seedBots.filter((bot) => bot.status === "published");
+  const unique = wanted
+    ? pickLocaleRows(published, wanted)
+    : published;
+
+  return unique
+    .filter((bot) => matchesFilters(bot, { ...filters, locale: "all" }))
     .slice()
-    .sort((a, b) => a.name.localeCompare(b.name, filters.locale === "en" ? "en" : "ko"));
+    .sort((a, b) => a.name.localeCompare(b.name, localeCollator(wanted ?? "ko")));
+}
+
+function pickLocaleRows(bots: BotListing[], wanted: ListingLocale) {
+  const rank = (locale: string) => {
+    if (locale === wanted) return 0;
+    if (locale === "en") return 1;
+    if (locale === "ko") return 2;
+    return 3;
+  };
+  const bySlug = new Map<string, BotListing>();
+  for (const bot of bots) {
+    const existing = bySlug.get(bot.slug);
+    if (!existing || rank(bot.locale) < rank(existing.locale)) {
+      bySlug.set(bot.slug, bot);
+    }
+  }
+  return [...bySlug.values()];
 }
 
 export function getSeedBot(slug: string, locale: ListingLocale) {
-  return (
-    seedBots.find((bot) => bot.slug === slug && bot.locale === locale) ??
-    seedBots.find((bot) => bot.slug === slug) ??
-    null
-  );
+  const order: ListingLocale[] = [locale, "en", "ko"];
+  for (const item of order) {
+    const hit = seedBots.find((bot) => bot.slug === slug && bot.locale === item);
+    if (hit) return hit;
+  }
+  return seedBots.find((bot) => bot.slug === slug) ?? null;
 }
 
 export function listSeedIntegrations() {
@@ -172,7 +214,29 @@ export async function listPublishedBots(filters: BotFilters = {}): Promise<BotLi
   }
 
   const listings = await attachMembers(data as BotRow[]);
-  return listings.filter((bot) => matchesFilters(bot, { query: filters.query }));
+  const filtered = listings.filter((bot) => matchesFilters(bot, { query: filters.query }));
+  const locale = filters.locale;
+  if (
+    filtered.length === 0 &&
+    locale &&
+    locale !== "all" &&
+    locale !== "ko" &&
+    locale !== "en"
+  ) {
+    return listSeedBots(filters);
+  }
+  return mergeSeedGaps(filtered, filters);
+}
+
+function mergeSeedGaps(dbListings: BotListing[], filters: BotFilters) {
+  const seed = listSeedBots(filters);
+  const slugs = new Set(dbListings.map((bot) => bot.slug));
+  const extras = seed.filter((bot) => !slugs.has(bot.slug));
+  if (extras.length === 0) return dbListings;
+  const locale = filters.locale && filters.locale !== "all" ? filters.locale : "ko";
+  return [...dbListings, ...extras].sort((a, b) =>
+    a.name.localeCompare(b.name, localeCollator(locale)),
+  );
 }
 
 export async function getPublishedBot(slug: string, locale: ListingLocale) {
@@ -191,9 +255,25 @@ export async function getPublishedBot(slug: string, locale: ListingLocale) {
     .eq("status", "published")
     .maybeSingle();
 
-  const row =
-    preferred.data ??
-    (
+  const fallbackLocales: ListingLocale[] = locale === "en" ? ["ko"] : ["en", "ko"];
+  let row = preferred.data;
+  if (!row) {
+    for (const item of fallbackLocales) {
+      const next = await client
+        .from("bots")
+        .select("*")
+        .eq("slug", slug)
+        .eq("locale", item)
+        .eq("status", "published")
+        .maybeSingle();
+      if (next.data) {
+        row = next.data;
+        break;
+      }
+    }
+  }
+  if (!row) {
+    row = (
       await client
         .from("bots")
         .select("*")
@@ -202,6 +282,7 @@ export async function getPublishedBot(slug: string, locale: ListingLocale) {
         .limit(1)
         .maybeSingle()
     ).data;
+  }
 
   if (!row) return getSeedBot(slug, locale);
   const [listing] = await attachMembers([row as BotRow]);
@@ -238,10 +319,13 @@ export async function incrementCopyCount(botId: string) {
   await admin.from("bots").update({ copy_count: next }).eq("id", botId);
 }
 
-export async function createBotListing(input: BotDraftInput, user: {
-  id: string;
-  handle: string;
-}) {
+export async function createBotListing(
+  input: BotDraftInput,
+  user?: {
+    id: string;
+    handle: string;
+  },
+) {
   const admin = createAdminClient();
   if (!admin) {
     throw new Error("SUPABASE_UNAVAILABLE");
@@ -259,9 +343,9 @@ export async function createBotListing(input: BotDraftInput, user: {
       prompt: input.prompt,
       integrations: input.integrations,
       source_url: input.source_url || null,
-      contributor_handle: user.handle,
+      contributor_handle: CONTRIBUTOR_HANDLE,
       status: input.status,
-      created_by: user.id,
+      created_by: user?.id ?? null,
     })
     .select("*")
     .single();
@@ -318,7 +402,7 @@ export async function ensureProfile(user: {
     id: user.id,
     handle,
     display_name: user.name || handle,
-    locale: "ko",
+    locale: "en",
   });
 
   return { handle };

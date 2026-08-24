@@ -1,4 +1,4 @@
-import type { BotListing, TeamMember } from "@/lib/types";
+import type { BotListing, ListingLocale, TeamMember } from "@/lib/types";
 
 const HANGUL_CHO = [
   "g",
@@ -131,12 +131,30 @@ export function formatTeamCopy(bot: BotListing) {
     .map((member) => formatMemberBlock(member, bot.locale))
     .join("\n\n");
 
-  const divider = bot.locale === "ko" ? "팀원 설정 문구" : "Member setup text";
+  const divider =
+    bot.locale === "ko"
+      ? "팀원 설정 문구"
+      : bot.locale === "ja"
+        ? "メンバー設定"
+        : bot.locale === "zh-CN"
+          ? "成员设定"
+          : bot.locale === "zh-TW"
+            ? "成員設定"
+            : "Member setup text";
   return `${bot.prompt}\n\n---\n\n# ${divider}\n\n${members}`;
 }
 
-export function formatMemberBlock(member: TeamMember, locale: "ko" | "en") {
-  const roleLabel = locale === "ko" ? "역할" : "Role";
+export function formatMemberBlock(member: TeamMember, locale: ListingLocale) {
+  const roleLabel =
+    locale === "ko"
+      ? "역할"
+      : locale === "ja"
+        ? "役割"
+        : locale === "zh-CN"
+          ? "职责"
+          : locale === "zh-TW"
+            ? "職稱"
+            : "Role";
   return `## ${member.name}\n${roleLabel}: ${member.role}\n\n${member.charter}`;
 }
 
@@ -144,7 +162,7 @@ type PageExtract = {
   url: string;
   title: string;
   text: string;
-  locale: "ko" | "en";
+  locale: ListingLocale;
   splitTeam: boolean;
 };
 

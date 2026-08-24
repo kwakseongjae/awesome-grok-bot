@@ -62,7 +62,7 @@ function createAuth() {
               id: user.id,
               handle,
               display_name: user.name || handle,
-              locale: "ko",
+              locale: "en",
             });
           },
         },
