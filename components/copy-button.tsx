@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { trackListingCopy, type CopyKind } from "@/lib/analytics";
 
 type Props = {
   text: string;
@@ -12,6 +13,7 @@ type Props = {
   copiedLabel: string;
   ariaLabel: string;
   botId?: string;
+  copyKind?: CopyKind;
   size?: "default" | "sm" | "lg";
   variant?: "default" | "outline" | "secondary" | "ghost";
   className?: string;
@@ -24,6 +26,7 @@ export function CopyButton({
   copiedLabel,
   ariaLabel,
   botId,
+  copyKind,
   size = "default",
   variant = "default",
   className,
@@ -36,6 +39,9 @@ export function CopyButton({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      if (copyKind) {
+        trackListingCopy({ kind: copyKind, has_bot_id: Boolean(botId) });
+      }
       onCopied?.();
       if (botId) {
         void fetch("/api/copy", {

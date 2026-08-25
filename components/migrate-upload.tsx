@@ -12,9 +12,11 @@ import type { ListingLocale } from "@/lib/types";
 
 type Props = {
   source: HandoffSource;
+  onParsed?: (result: ParseResult) => void;
+  showQueue?: boolean;
 };
 
-export function MigrateUpload({ source }: Props) {
+export function MigrateUpload({ source, onParsed, showQueue = true }: Props) {
   const t = useTranslations("migrate");
   const locale = useLocale() as ListingLocale;
   const [pending, setPending] = useState(false);
@@ -51,6 +53,7 @@ export function MigrateUpload({ source }: Props) {
         return;
       }
       setResult(payload);
+      onParsed?.(payload);
     } catch {
       toast.error(t("parseFailed"));
     } finally {
@@ -77,7 +80,7 @@ export function MigrateUpload({ source }: Props) {
         </Button>
       </form>
 
-      {result ? (
+      {showQueue && result ? (
         <HandoffQueue
           source={result.source}
           packets={result.packets}

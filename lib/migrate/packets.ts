@@ -70,15 +70,11 @@ export function splitMemoryChunks(text: string, source: string) {
 
 export function memoryPaste(chunk: string, locale: ListingLocale) {
   if (locale === "ko") {
-    return `Remember this. It is a durable fact from the previous agent. Do not treat it as a live source of truth; cite current systems for decisions.
-
-아래는 이전 에이전트의 기억 조각입니다. 한 번에 이것만 저장하세요.
+    return `공유 컴퓨터에 FACTS.md가 있으면 그 파일에 이 사실을 넣으세요. 질문에는 파일을 인용하세요. Remember these만 하고 파일을 두지 마세요. 변하는 값은 소스 시스템에서 다시 읽으세요.
 
 ${chunk.trim()}`;
   }
-  return `Remember this. It is a durable fact from the previous agent. Do not treat it as a live source of truth; cite current systems for decisions.
-
-This is one memory packet from the previous agent. Save only this packet now.
+  return `If FACTS.md exists on the shared computer, add this standing fact to that file. Quote the file when asked. Do not only say “remember these.” Re-read source systems for values that change.
 
 ${chunk.trim()}`;
 }

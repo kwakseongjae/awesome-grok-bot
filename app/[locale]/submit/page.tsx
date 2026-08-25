@@ -1,11 +1,27 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
 import { SubmitForm } from "@/components/submit-form";
+import { pageSeo } from "@/lib/seo";
+import { SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import type { ListingLocale } from "@/lib/types";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const appLocale = toAppLocale(locale);
+  const t = await getTranslations({ locale: appLocale, namespace: "submit" });
+  return pageSeo({
+    locale: appLocale,
+    path: "submit",
+    title: t("title"),
+    description: t("lead"),
+    index: SHOW_ACCOUNT_CHROME,
+  });
+}
 
 export default async function SubmitPage({ params }: Props) {
   const { locale } = await params;

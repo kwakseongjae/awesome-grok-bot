@@ -2,6 +2,7 @@
   "name": "awesome-grok-bot",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "description": "Sponsor-free Grok Bot directory",
   "repository": {
     "type": "git",

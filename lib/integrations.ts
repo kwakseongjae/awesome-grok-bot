@@ -29,35 +29,57 @@ type CatalogEntry = {
   labels: Record<ListingLocale, string>;
 };
 
+const same = (value: string): Record<ListingLocale, string> => ({
+  ko: value,
+  en: value,
+  ja: value,
+  "zh-CN": value,
+  "zh-TW": value,
+});
+
 const CATALOG: CatalogEntry[] = [
-  { id: "gmail", aliases: ["gmail"], labels: { ko: "Gmail", en: "Gmail" } },
-  { id: "slack", aliases: ["slack"], labels: { ko: "Slack", en: "Slack" } },
+  { id: "gmail", aliases: ["gmail"], labels: same("Gmail") },
+  { id: "slack", aliases: ["slack"], labels: same("Slack") },
   {
     id: "googlecalendar",
     aliases: ["googlecalendar", "gcal", "gcalendar"],
-    labels: { ko: "캘린더", en: "Calendar" },
+    labels: {
+      ko: "캘린더",
+      en: "Calendar",
+      ja: "カレンダー",
+      "zh-CN": "日历",
+      "zh-TW": "日曆",
+    },
   },
-  {
-    id: "salesforce",
-    aliases: ["salesforce"],
-    labels: { ko: "Salesforce", en: "Salesforce" },
-  },
-  { id: "notion", aliases: ["notion"], labels: { ko: "Notion", en: "Notion" } },
+  { id: "salesforce", aliases: ["salesforce"], labels: same("Salesforce") },
+  { id: "notion", aliases: ["notion"], labels: same("Notion") },
   {
     id: "googledocs",
     aliases: ["googledocs", "gdocs"],
-    labels: { ko: "문서", en: "Docs" },
+    labels: {
+      ko: "문서",
+      en: "Docs",
+      ja: "ドキュメント",
+      "zh-CN": "文档",
+      "zh-TW": "文件",
+    },
   },
-  { id: "github", aliases: ["github"], labels: { ko: "GitHub", en: "GitHub" } },
-  { id: "zendesk", aliases: ["zendesk"], labels: { ko: "Zendesk", en: "Zendesk" } },
+  { id: "github", aliases: ["github"], labels: same("GitHub") },
+  { id: "zendesk", aliases: ["zendesk"], labels: same("Zendesk") },
   {
     id: "googleslides",
     aliases: ["googleslides", "gslides"],
-    labels: { ko: "슬라이드", en: "Slides" },
+    labels: {
+      ko: "슬라이드",
+      en: "Slides",
+      ja: "スライド",
+      "zh-CN": "幻灯片",
+      "zh-TW": "簡報",
+    },
   },
-  { id: "youtube", aliases: ["youtube"], labels: { ko: "YouTube", en: "YouTube" } },
-  { id: "linear", aliases: ["linear"], labels: { ko: "Linear", en: "Linear" } },
-  { id: "google", aliases: ["google"], labels: { ko: "Google", en: "Google" } },
+  { id: "youtube", aliases: ["youtube"], labels: same("YouTube") },
+  { id: "linear", aliases: ["linear"], labels: same("Linear") },
+  { id: "google", aliases: ["google"], labels: same("Google") },
 ];
 
 const BY_ALIAS = new Map<string, CatalogEntry>();
@@ -98,10 +120,11 @@ export function resolveIntegration(raw: string): ResolvedIntegration {
     known: false,
     mark: "unknown",
     monogram: monogramFrom(raw),
-    labels: { ko: fallback, en: fallback },
+    labels: same(fallback),
   };
 }
 
 export function integrationLabel(raw: string, locale: ListingLocale) {
-  return resolveIntegration(raw).labels[locale];
+  const labels = resolveIntegration(raw).labels;
+  return labels[locale] ?? labels.en;
 }

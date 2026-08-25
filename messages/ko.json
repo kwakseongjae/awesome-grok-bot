@@ -1,7 +1,40 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 상세 페이지에서 Copy로 설정 문구를 복사해 붙여 넣습니다. 팀은 치프와 전문 봇으로 이루어집니다."
+    "description": "Grok Bot에 넣는 전문가와 팀 목록입니다. 상세 페이지에서 Copy로 설정 문구를 붙입니다. Hermes·OpenClaw에서 이어 받을 수도 있습니다."
+  },
+  "seo": {
+    "faqTitle": "자주 묻는 질문",
+    "faq": {
+      "what": {
+        "q": "Awesome Grok Bot은 뭔가요?",
+        "a": "스폰서 없는 Grok Bot 디렉터리입니다. 전문가나 팀 설정 문구를 Copy해서 Grok Bot에 붙입니다. xAI 공식 제품이 아닙니다."
+      },
+      "importer": {
+        "q": "Grok Bot에 공식 이전 버튼이 있나요?",
+        "a": "없습니다. 봇을 만들거나 기억을 쓰는 공개 API도 없습니다. 이 사이트는 목록과 Hermes·OpenClaw용 스킬을 제공합니다."
+      },
+      "updates": {
+        "q": "Grok Bot 업데이트와 새 기능은 어디서 보나요?",
+        "a": "getgrokbot.com/changelog 체인지로그에서 봅니다. 항목마다 날짜, 짧은 설명, xAI 공식 발표·문서 링크를 손으로 정리합니다."
+      },
+      "inside": {
+        "q": "Grok Bot 안에서 Claude Code, Codex, OpenClaw를 실행할 수 있나요?",
+        "a": "네. Grok Bot에는 전용 컴퓨터가 있으므로 Claude Code나 Codex 같은 코딩 에이전트를 설치하고 조종하게 할 수 있습니다. getgrokbot.com/install에 바로 붙이는 프롬프트가 있습니다. 로그인은 사람이 합니다."
+      },
+      "copy": {
+        "q": "목록은 어떻게 쓰나요?",
+        "a": "상세 페이지에서 Copy한 설정 문구를 Grok Bot에 붙입니다. 첫 봇은 Chief 하나부터 두고, 로그인·2FA는 사람이 합니다."
+      },
+      "migrate": {
+        "q": "Hermes나 OpenClaw에서 옮기려면?",
+        "a": "getgrokbot.com/migrate에서 한 줄을 쓰던 에이전트에 붙입니다. 그 에이전트가 스킬을 읽고 패킷으로 넘깁니다. 키와 .env는 옮기지 않습니다."
+      },
+      "free": {
+        "q": "유료인가요?",
+        "a": "디렉터리와 이전 스킬은 무료이고 MIT입니다. Grok Bot 앱 권한은 xAI 또는 Cursor 요금제입니다."
+      }
+    }
   },
   "brand": {
     "name": "Awesome Grok Bot",
@@ -11,15 +44,19 @@
     "directory": "디렉터리",
     "submit": "등록",
     "fromLink": "링크에서 만들기",
+    "howTo": "쓰는 법",
+    "install": "에이전트 설치",
+    "changelog": "체인지로그",
     "migrate": "이전",
+    "docs": "Docs",
     "signIn": "로그인",
     "signOut": "로그아웃",
     "skipToContent": "본문으로 건너뛰기"
   },
   "home": {
-    "eyebrow": "Grok Bot에 넣기",
-    "title": "봇과 팀 디렉터리",
-    "lead": "목록은 Grok Bot에 넣는 전문가 또는 팀입니다. 상세 페이지에서 Copy로 설정 문구를 복사해 붙여 넣습니다. 팀은 치프와 전문 봇으로 이루어집니다.",
+    "eyebrow": "Get your grok bot.",
+    "title": "Awesome Grok Bot",
+    "lead": "Grok Bot에 넣는 전문가와 팀 목록입니다. 상세 페이지에서 Copy로 설정 문구를 붙입니다. Hermes·OpenClaw에서 이어 받을 수도 있습니다.",
     "search": "이름, 요약, 플러그인으로 검색",
     "searchLabel": "검색",
     "viewTable": "표",
@@ -29,7 +66,11 @@
     "results": "{count, plural, other {#개}}",
     "empty": "조건에 맞는 목록이 없습니다.",
     "emptyHint": "검색어나 필터를 바꿔 보세요.",
-    "mascotName": "디렉터리 마스코트"
+    "pagination": "목록 페이지",
+    "prevPage": "이전",
+    "nextPage": "다음",
+    "pageStatus": "{page} / {pages}",
+    "mascotName": "어썸"
   },
   "filters": {
     "category": "분야",
@@ -124,17 +165,17 @@
   "migrate": {
     "eyebrow": "인수인계",
     "hubTitle": "이전 에이전트에서 Grok Bot으로",
-    "hubLead": "한 번에 쏟아붓지 않습니다. Grok Bot은 패킷을 하나씩 받습니다. 프로필을 복사한 뒤, 기억·스킬·루틴을 차례로 붙여 넣으세요. API 키는 옮기지 않고, Hermes를 Grok 위에서 실행하지도 않습니다.",
+    "hubLead": "쓰던 에이전트에 한 줄을 붙이면, 그 에이전트가 스킬을 읽고 Grok Bot으로 넘깁니다. 사이트가 Grok에 쓰지 않습니다. 첫 봇은 Chief 하나, 로그인 벽만 사람이 합니다.",
     "ruleMemory": "기억은 미리보기 후 확인합니다. 일일 노트와 DREAMS는 작업 레이어라서 기본으로 넣지 않습니다.",
     "ruleRoutines": "스킬은 how, 루틴은 when. 공식 순서: 한 번 하기 → 스킬로 저장 → 그다음 루틴. 봇당 루틴 50개. Duplicate Bot은 학습된 기억을 복사하지 않습니다.",
     "ruleSecrets": ".env, auth.json, apiKey, botToken, SecretRef, 키처럼 보이는 문자열은 항상 제거합니다. 세션·state.db·트랜스크립트는 기억이 아닙니다.",
     "backHub": "이전 허브",
     "hermesTitle": "Hermes → Grok Bot",
-    "hermesLead": "프로필 export(zip/tar.gz) 또는 SOUL.md, MEMORY.md, 스킬, cron.",
-    "hermesPageLead": "Hermes 프로필을 받아 설정 문구·기억·스킬·루틴 패킷으로 나눕니다. hermes claw migrate처럼 항상 미리보기 후 확인합니다. 크론은 재작성하고, 비밀은 가져오지 않습니다.",
+    "hermesLead": "Hermes에 스킬을 설치하고 「마이그레이션 해줘」라고 합니다. SOUL·USER·MEMORY·skills·cron을 읽어 패킷으로 넘깁니다.",
+    "hermesPageLead": "아래 한 줄을 Hermes에 붙이거나 스킬을 설치합니다. Grok 앱을 조작할 수 있으면 붙이고, 못 하면 Copy를 한 패킷씩 줍니다. 키는 옮기지 않습니다.",
     "openclawTitle": "OpenClaw → Grok Bot",
-    "openclawLead": "~/.openclaw zip, 워크스페이스, 또는 SOUL.md / AGENTS.md / MEMORY.md / cron.",
-    "openclawPageLead": "OpenClaw(또는 clawdbot/moltbot) 워크스페이스를 패킷으로 나눕니다. Import Memory처럼 마크다운만 다루고, 부트스트랩 MEMORY.md에 몰래 합치지 않습니다.",
+    "openclawLead": "OpenClaw에 스킬을 넣고 「마이그레이션 해줘」라고 합니다. zip 또는 AGENTS·HEARTBEAT·openclaw.json을 읽습니다.",
+    "openclawPageLead": "아래 한 줄을 OpenClaw에 붙이거나 SKILL.md를 skills/에 넣습니다. 키는 옮기지 않습니다. hermes claw migrate는 선택 정리입니다.",
     "files": "파일",
     "accept": {
       "hermes": "zip/tar.gz 프로필, 또는 SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
@@ -169,21 +210,309 @@
       "skill": "스킬",
       "routine": "루틴"
     },
+    "desk": {
+      "notMagic": "Grok Bot에는 공식 이전 버튼이 없습니다. 쓰던 에이전트가 이 스킬을 실행합니다. 골드 태스크·로그인·서명은 사람입니다.",
+      "cardBody": "한 줄을 붙이고 마이그레이션 해 달라고 하면 됩니다.",
+      "cardLead": {
+        "hermes": "Hermes에 한 줄을 붙이면 스킬을 설치·읽고 이전을 진행합니다.",
+        "openclaw": "OpenClaw에 한 줄을 붙이면 스킬을 넣고 이전을 진행합니다."
+      },
+      "cardReads": {
+        "hermes": "읽는 것: SOUL, USER, MEMORY, skills, cron.",
+        "openclaw": "읽는 것: zip 또는 AGENTS, HEARTBEAT, openclaw.json."
+      },
+      "cardChief": "첫 Grok Bot은 Chief 하나. Nexus는 나중에.",
+      "cardSecrets": "키·세션·.env는 옮기지 않습니다.",
+      "pasteOnce": "Copy는 한 번입니다. 그 안에 설치 주소와 「마이그레이션 해줘」가 들어 있습니다.",
+      "pageLead": "아래를 한 번 Copy해 쓰던 에이전트에 붙이세요. 나머지는 그 에이전트가 스킬대로 합니다.",
+      "afterSkill": "에이전트가 스킬을 읽고 인벤토리 표를 먼저 보여 줍니다.",
+      "afterGold": "통과해야 할 작업 3–5개(골드 태스크)를 채팅에서 묻습니다.",
+      "afterGate": "로그인·2FA에서는 멈추고, 사람은 그때만 처리합니다.",
+      "copyStarter": "{source}에 붙일 한 줄",
+      "copyStarterAria": "{source} 스타터 Copy",
+      "copySkill": "SKILL.md",
+      "copySkillAria": "SKILL.md Copy",
+      "installTitle": "설치 커맨드",
+      "installAria": "설치 커맨드 Copy",
+      "installHint": {
+        "hermes": "터미널에서 실행하거나, 스타터를 붙이면 Hermes가 설치합니다.",
+        "openclaw": "워크스페이스 skills/에 넣습니다. curl 한 줄이면 됩니다."
+      },
+      "waitingOrigin": "페이지 주소를 읽는 중…",
+      "goldInChat": "골드 태스크는 웹 폼이 아닙니다. 에이전트가 채팅에서 3–5개를 묻습니다.",
+      "runbookLink": "페이즈 런북 — 에이전트가 한 단계만 다시 읽을 때",
+      "runbookBanner": "이 페이지는 에이전트용 런북입니다. 사람이 여기를 체크할 필요는 없습니다. 스킬 랜딩의 한 줄을 쓰던 에이전트에 붙이세요.",
+      "backSkill": "스킬 랜딩으로",
+      "openHermes": "Hermes 스킬 열기",
+      "openOpenclaw": "OpenClaw 스킬 열기"
+    },
     "home": {
       "eyebrow": "와우, 이런 게 됩니다",
       "hermes": "Hermes → Grok Bot",
       "openclaw": "OpenClaw → Grok Bot",
-      "body": "쓰던 프로필을 패킷으로 이어 받습니다. 키는 안 옮깁니다.",
+      "body": "쓰던 에이전트에 스킬을 붙이고 마이그레이션 해 달라고 합니다. 키는 안 옮깁니다.",
       "cta": "이전하기",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw",
       "destMark": "Grok Bot"
+    },
+    "handover": {
+      "createBotTitle": "빈 Grok Bot을 만든다",
+      "createBotBody": "Grok Bot 앱에서 봇을 하나 만든다. 설정 문구는 비워 둔다. 이름만 정한다. 이 봇이 인수 창구다.",
+      "copyPromptTitle": "아래 프롬프트를 Copy한다",
+      "copyPromptBody": "운영 규칙, 패킷 순서, 로그인 벽 대응이 들어 있다. 고치지 말고 통째로 쓴다.",
+      "pasteSourceTitle": "쓰던 에이전트에 붙여 넣는다",
+      "pasteSourceBody": "Hermes 또는 OpenClaw 채팅에 붙인다. 빈 봇 이름을 알려 주고, 인벤토리를 받은 뒤에만 조종을 시작한다.",
+      "gatesTitle": "로그인이 막히면",
+      "gatesBody": "프롬프트가 Grok Bot 컴퓨터를 멈추게 한다. 비밀번호·SSO·2FA는 사람이 친다. 「계속」이라고 하기 전에는 다음 패킷으로 가지 않는다.",
+      "promptTitle": "인수인계 프롬프트",
+      "copyAria": "인수인계 프롬프트 Copy",
+      "playbookTitle": "미리 알아둘 게이트",
+      "gatePassword": "비밀번호는 사람이 직접. 파일이나 기억에서 꺼내지 않는다.",
+      "gateSso": "회사 SSO·SAML·Okta는 사람만 IdP를 통과한다.",
+      "gateOauth": "OAuth 동의 화면의 스코프가 과하면 먼저 묻는다.",
+      "gateSecond": "2FA, 패스키, 매직 링크, CAPTCHA는 사람만.",
+      "gateShare": "Grok Bot이 컴퓨터를 공유하면 로그인도 공유된다. 한 번만 알린다.",
+      "exportTitle": "이미 export 파일이 있는 경우 (선택)",
+      "exportLead": "zip이나 SOUL.md가 있으면 여기서 패킷으로 나눌 수 있습니다. 기본 경로는 위 프롬프트입니다."
+    },
+    "playbook": {
+      "loading": "플레이북을 읽는 중…",
+      "banner": "이 URL의 페이즈만 합니다. 건너뛰지 마세요. 사람이 Done을 켜기 전에 저장·루틴·컷오버하지 마세요.",
+      "actor": "지금 하는 이",
+      "fail": "실패 조건",
+      "copyA": "{source}에 붙일 Copy",
+      "copyB": "Grok Chief에 붙일 Copy",
+      "copyAAria": "{source} 페이즈 프롬프트 Copy",
+      "copyBAria": "Grok Chief 페이즈 프롬프트 Copy",
+      "noChiefYet": "페이즈 0에는 Chief Copy가 없습니다. 인벤토리와 업로드만 합니다.",
+      "done": "Done",
+      "complete": "다음 페이즈",
+      "finish": "컷오버 완료",
+      "completeNeed": "이 페이즈의 Done을 모두 켜세요.",
+      "needParse": "페이즈 0에서 파일을 올려 미리보기를 만드세요.",
+      "finished": "골드 태스크가 통과했고 소스는 꺼 둔 상태입니다. Floor Nexus는 컷오버 뒤에만 디렉터리에서 고릅니다.",
+      "locked": "잠긴 페이즈",
+      "lockedBody": "이전 페이즈를 끝내지 않으면 여기 Copy를 쓰지 않습니다.",
+      "backPhase": "열린 페이즈로",
+      "phaseNav": "이전 페이즈",
+      "phaseOf": "{source} · 페이즈 {phase}",
+      "goldTitle": "골드 태스크",
+      "goldLead": "시작하기 전에 3–5개를 적습니다. 컷오버의 유일한 성공 기준입니다. 기억 복원율이 아닙니다.",
+      "goldName": "이름",
+      "goldInput": "입력",
+      "goldExpect": "기대 출력",
+      "goldPlugins": "플러그인",
+      "goldNever": "하지 말 것",
+      "goldAdd": "태스크 추가",
+      "goldRemove": "삭제",
+      "goldNeed": "골드 태스크를 3–5개 채운 뒤에만 시작합니다.",
+      "goldRange": "{min}–{max}개 · 지금 {count}개",
+      "startHermes": "Hermes 페이즈 0",
+      "startOpenclaw": "OpenClaw 페이즈 0",
+      "startDisabled": "골드 태스크가 준비되기 전에는 시작할 수 없습니다.",
+      "limitsTitle": "공식 한도",
+      "limitBots": "계정당 Bot + 그룹 50.",
+      "limitRoutines": "봇당 루틴 50.",
+      "limitHistory": "히스토리 20.",
+      "limitDelete": "삭제는 되돌릴 수 없습니다.",
+      "limitDuplicate": "Duplicate Bot은 학습된 기억·히스토리·첨부파일을 복사하지 않습니다.",
+      "limitComputer": "봇들은 컴퓨터를 하나 공유합니다. 세션도 공유됩니다.",
+      "limitTeach": "Teach a task는 브라우저 시연, 약 10분.",
+      "exportTitle": "이 사이트에만 있는 상태",
+      "export": "JSON 보내기",
+      "import": "JSON 가져오기",
+      "exportHint": "에이전트에게 이 JSON을 주지 마세요. 사람만 보관합니다.",
+      "importFailed": "플레이북 JSON을 읽지 못했습니다.",
+      "imported": "플레이북을 넣었습니다.",
+      "reset": "초기화",
+      "resetConfirm": "골드 태스크와 페이즈 진행을 지울까요?",
+      "resume": "{source} 콘솔로 돌아가기",
+      "inventoryHermes": "인벤토리: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron. .env와 state.db는 기억이 아닙니다.",
+      "inventoryOpenclaw": "인벤토리: zip 우선. SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills.",
+      "tidyOpenclaw": "선택: 로컬에서 hermes claw migrate로 미리 정리할 수 있습니다. 기본 경로는 OpenClaw zip 직접 업로드입니다. --migrate-secrets는 쓰지 않습니다.",
+      "factsNote": "기억은 FACTS.md에 두고 파일을 인용합니다. Remember these만 하면 실패입니다.",
+      "skillsTitle": "스킬 분류",
+      "routinesTitle": "루틴 매핑",
+      "routinesLead": "이미 저장된 스킬 이름만 적습니다. 비우면 보류입니다. 소스 cron은 끄고, 이쪽은 Test run만 합니다.",
+      "mapTo": "저장된 스킬 이름",
+      "portLabel": "{name} 이전 방식",
+      "port": {
+        "portable": "그대로 옮김",
+        "needs-connector": "커넥터 필요",
+        "wont-port": "안 옮김"
+      },
+      "goldOnConsole": "골드 태스크",
+      "leftoverTitle": "남기는 것",
+      "leftoverLead": "won't-port, HEARTBEAT, 아카이브 기억. 침묵 삭제 없이 서명합니다.",
+      "appendix": "통째 인수 프롬프트 (부록)",
+      "appendixLead": "현재 페이즈 Copy가 기본입니다. 이 통째 프롬프트는 {source}가 순서를 잊었을 때만 씁니다.",
+      "phases": {
+        "0": {
+          "title": "인벤토리",
+          "actor": "{source}가 스캔하고 표를 이 대화에 올린다. 사람은 백업만 확인한다.",
+          "fail": "본문에 키가 남거나, 세션 DB를 기억이라고 부르는 것."
+        },
+        "1": {
+          "title": "Chief",
+          "actor": "사람이 Grok Bot에 Chief 하나를 만들고 프로필을 붙인다.",
+          "fail": "이 단계에서 전문 봇이나 Nexus를 만드는 것."
+        },
+        "2": {
+          "title": "사실 파일",
+          "actor": "사람이 FACTS.md를 공유 컴퓨터에 둔다. Chief는 파일을 인용한다.",
+          "fail": "파일 없이 Remember these만 하는 것. Honcho·세션 전체."
+        },
+        "3": {
+          "title": "스킬",
+          "actor": "사람과 Chief. 우선 스킬을 한 번 돌린 뒤 저장한다.",
+          "fail": "한 번도 안 돌리고 루틴으로 올리는 것."
+        },
+        "4": {
+          "title": "루틴",
+          "actor": "사람과 소유 봇(기본 Chief). 소스 cron은 끈다.",
+          "fail": "양쪽 실운전. 스킬 없는 루틴. 50개 초과."
+        },
+        "5": {
+          "title": "커넥터",
+          "actor": "로그인은 사람만. 사이트는 체크리스트만 준다.",
+          "fail": "비밀 파일 업로드. 봇을 나누면 세션이 갈라진다고 가정하는 것."
+        },
+        "6": {
+          "title": "컷오버",
+          "actor": "사람이 골드 태스크를 확인하고 leftover에 서명한다.",
+          "fail": "기억이 비슷해 보여서 넘기는 것. 소스가 아직 켜져 있는 것."
+        }
+      },
+      "checks": {
+        "0": {
+          "backup": "소스 백업이 있다.",
+          "secretsZero": "미리보기에 시크릿이 0이다.",
+          "listOk": "인벤토리 목록이 맞다. 세션 DB는 기억이 아니다."
+        },
+        "1": {
+          "chiefCreated": "Chief 봇이 하나 있다.",
+          "neverDo": "description에 역할과 하지 말 것이 있다."
+        },
+        "2": {
+          "factsFile": "FACTS.md가 공유 컴퓨터에 있다.",
+          "citesFile": "Chief가 그 파일을 인용한다."
+        },
+        "3": {
+          "ranOnce": "우선 스킬을 한 번씩 돌렸다.",
+          "inSlash": "저장된 스킬이 / 에 보인다.",
+          "wontPortListed": "won't-port를 leftover에 적었다."
+        },
+        "4": {
+          "testRun": "Test run이 통과했다. Test run은 실동작이다.",
+          "sourceCronOff": "소스 cron/스케줄이 꺼져 있다.",
+          "underFifty": "이 봇 루틴이 50개 이하다."
+        },
+        "5": {
+          "pluginsLinked": "골드 태스크에 필요한 플러그인이 연결됐다.",
+          "allowlistOnly": "비밀 파일 없이 허용 목록만 올렸다."
+        },
+        "6": {
+          "goldPassed": "골드 태스크가 Grok에서 통과했다.",
+          "leftoverSigned": "남기는 것에 서명했다.",
+          "sourceArchived": "소스는 꺼 두었고 아카이브했다."
+        }
+      }
     }
   },
   "guide": {
-    "title": "Grok Bot 세팅 가이드",
-    "body": "Nate Herk이 20분 만에 봇 팀을 만드는 방법.",
-    "cta": "가이드 보기"
+    "title": "처음부터 Grok Bot 쓰기",
+    "body": "권한, 첫 봇, 플러그인 로그인, 스킬과 루틴까지 한 페이지로 쌓습니다.",
+    "cta": "튜토리얼 보기",
+    "videoTitle": "Grok Bot 세팅 가이드",
+    "videoBody": "Nate Herk이 20분 만에 봇 팀을 만드는 방법.",
+    "videoCta": "영상 보기"
+  },
+  "howTo": {
+    "eyebrow": "튜토리얼",
+    "title": "How to use Grok Bot",
+    "lead": "채팅 창이 아니라 동료를 들이는 일에 가깝습니다. 빈 봇 하나에서 시작해, 한 번 보여 주고, 그다음에 팀을 늘립니다.",
+    "download": "데스크톱 앱은 공식 온보딩에서 받습니다.",
+    "downloadCta": "macOS 설치",
+    "linkGetStarted": "시작하기 · docs.x.ai",
+    "linkPricing": "요금 · x.ai/bot",
+    "linkPlans": "권한 확인 · Cursor 플랜 도움말",
+    "linkCursorPricing": "Cursor 요금",
+    "linkMac": "macOS 설치 · cursor.com/bot/onboarding",
+    "linkIos": "iOS · App Store",
+    "linkDirectory": "디렉터리에서 설정 문구 Copy",
+    "linkComputer": "컴퓨터와 앱 · 핸드북",
+    "linkSkills": "스킬과 루틴 · 핸드북",
+    "linkNexus": "플로어 넥서스 설정",
+    "linkOrchestrator": "런 오케스트레이터 설정",
+    "figureLaunchAlt": "xAI 공식 Introducing Grok Bot 이미지. 흰 구체 얼굴과 Grok Bot 글자.",
+    "figureLaunchCaption": "공식 런칭 이미지.",
+    "figureHandbookAlt": "xAI Developer Docs, Grok Bot 핸드북 표지.",
+    "figureHandbookCaption": "공식 핸드북 표지.",
+    "refsTitle": "원문 · 핸드북",
+    "refsLead": "앱 화면은 xAI 핸드북이 원본입니다. 이미지는 그 페이지와 런칭 글에서 가져왔습니다. X에서는 공식 계정과 Grok Bot 스레드를 따라가면 됩니다.",
+    "refGetStarted": "핸드북 · Get started",
+    "refBots": "핸드북 · Create and manage Bots",
+    "refComputer": "핸드북 · Computer and apps",
+    "refSkills": "핸드북 · Skills and routines",
+    "refLaunch": "런칭 글 · Introducing Grok Bot",
+    "refOnboarding": "다운로드 · cursor.com/bot/onboarding",
+    "refXAccount": "X · @xai",
+    "refX": "X · Grok Bot handbook / guide 검색",
+    "refVideo": "영상 · Nate Herk 20분 워크스루",
+    "next": "다음",
+    "directory": "디렉터리에서 설정 문구 Copy",
+    "migrate": "Hermes·OpenClaw에서 이어 받기",
+    "steps": {
+      "accessTitle": "권한을 확인한다",
+      "accessBody": "얼리 베타는 SuperGrok Heavy, Cursor Ultra, Cursor Teams Premium에 붙어 있습니다. 엔터프라이즈는 대기열입니다. 앱이 안 열리면 요금제부터 봅니다.",
+      "installTitle": "앱을 깐다",
+      "installBody": "데스크톱(macOS) 또는 iOS. 같은 스레드를 양쪽에서 이을 수 있습니다. 봇은 클라우드 컴퓨터를 가지고 있어서, 노트북을 닫아도 일이 멈추지 않습니다.",
+      "createTitle": "빈 봇을 하나 만든다",
+      "createBody": "이름을 짓습니다. 설정 문구는 짧아도 됩니다. 한 번에 팀을 만들지 않습니다. 첫 봇은 수신함이나 브리핑처럼 매일 보는 일 하나가 좋습니다.",
+      "setupTitle": "설정 문구를 넣는다",
+      "setupBody": "디렉터리 상세에서 Copy한 문구를 붙여 넣습니다. 맡는 일, 잘한 기준, 묻지 않고 하지 말 것, 첫 작업이 들어 있습니다.",
+      "taskTitle": "첫 작업은 초안만",
+      "taskBody": "보내기·삭제·결제는 하지 말라고 이미 적혀 있습니다. 결과만 보고, 맞으면 그다음부터 범위를 엽니다.",
+      "loginTitle": "도구 로그인은 사람이 친다",
+      "loginBody": "봇이 메일·CRM·캘린더에 들어가려 하면 로그인 벽이 나옵니다. 비밀번호, SSO, 2FA, CAPTCHA는 사람이 처리합니다. 컴퓨터 세션에 로그인이 남고, 봇들이 컴퓨터를 공유하면 세션도 공유됩니다.",
+      "skillTitle": "한 번 보여 주고 스킬로 저장한다",
+      "skillBody": "워크플로를 옆에서 보게 한 뒤 how로 저장합니다. 루틴(when)은 스킬이 생긴 다음에만 겁니다. 봇당 루틴 50개. Duplicate Bot은 학습된 기억을 복사하지 않습니다.",
+      "teamTitle": "그다음 Nexus 또는 Orchestrator",
+      "teamBody": "사람이 중간에서 붙여 넣지 않게, 라우터(Nexus)나 순서 설계(Orchestrator)를 둡니다. 전문 봇은 한 레인만 맡습니다. 그룹 채팅에서 서로 넘기고, 판단만 사람에게 옵니다."
+    }
+  },
+  "changelog": {
+    "eyebrow": "새 소식",
+    "title": "Grok Bot 체인지로그",
+    "lead": "Grok Bot에 어떤 기능이 생겼는지 한곳에서 봅니다. 날짜, 짧은 설명, 업데이트마다 공식 출처 링크를 손으로 정리합니다.",
+    "note": "공식 발표와 문서를 보고 손으로 고릅니다. 가장 빠른 소식은",
+    "homeTitle": "최근 Grok Bot 업데이트",
+    "homeLead": "새로 생긴 기능을 짧게 정리했습니다. 전체 타임라인은 체인지로그에 있습니다.",
+    "viewAll": "전체 보기",
+    "updatedAt": "마지막 갱신"
+  },
+  "install": {
+    "eyebrow": "컴퓨터 안의 에이전트",
+    "title": "Grok Bot 안에서 코딩 에이전트 실행하기",
+    "lead": "Grok Bot의 전용 클라우드 컴퓨터에 코딩 에이전트를 둡니다. 프롬프트 하나를 붙여 설치를 맡기고, 모든 로그인은 사람이 직접 합니다.",
+    "note": "공식 xAI 안내가 아닌 커뮤니티 가이드입니다. 자격 증명이나 API 키를 에이전트에게 주지 마세요. Grok Bot은 로그인 벽마다 멈추고 사람에게 넘겨야 합니다.",
+    "hardRule": "자격 증명이나 API 키를 절대 입력하지 않습니다. 로그인 또는 API 키 단계마다 멈추고 사람에게 요청합니다. 로그인은 사람이 합니다.",
+    "officialDocs": "{tool} 공식 문서",
+    "homeTitle": "Grok Bot 컴퓨터에 코딩 에이전트 두기",
+    "homeLead": "네 가지 도구의 바로 붙이는 설치 프롬프트입니다. 설정은 봇이, 로그인은 사람이 합니다.",
+    "viewAll": "에이전트 설치",
+    "tools": {
+      "claudeCode": "Claude Code를 설치·확인하고 README를 읽기 전용으로 요약해 봅니다.",
+      "codex": "Codex CLI를 설치·확인하고 저장소 README로 작게 시험합니다.",
+      "openclaw": "OpenClaw 설치 전에 Grok Bot이 공식 출처를 찾아 보여 주게 합니다.",
+      "hermes": "설치를 시작하기 전에 Grok Bot이 Hermes 공식 안내를 확인하게 합니다."
+    }
+  },
+  "reading": {
+    "eyebrow": "샤라웃",
+    "title": "일론이 띄운 Grok Bot 읽을거리",
+    "lead": "xAI 공식 소개와, 그 런칭을 다룬 보도입니다. 원문으로 가서 읽습니다."
   },
   "signIn": {
     "title": "로그인",
@@ -195,8 +524,26 @@
     "back": "디렉터리로 돌아가기"
   },
   "footer": {
-    "note": "광고·제휴·스폰서 레일 없음. 설정 문구는 직접 쓰고 공유하세요.",
-    "license": "목록은 복사·각색해도 됩니다."
+    "note": "Get your grok bot.",
+    "license": "MIT License",
+    "licenseHint": "코드와 목록은 MIT로 복사·각색할 수 있습니다.",
+    "star": "GitHub",
+    "github": "GitHub",
+    "mail": "Mail",
+    "mailAria": "메일 보내기",
+    "howToUse": "사용 방법",
+    "colUse": "사용 방법",
+    "colMove": "마이그레이션",
+    "migrate": "마이그레이션",
+    "colDirectory": "분야",
+    "colLegal": "라이선스",
+    "llms": "llms.txt",
+    "copyright": "© {year} Awesome Grok Bot"
+  },
+  "license": {
+    "title": "라이선스",
+    "lead": "이 저장소와 디렉터리 목록은 MIT 라이선스입니다. 목록 문구는 복사·각색해도 됩니다. 다른 디렉터리의 문구를 그대로 가져오지는 마세요.",
+    "source": "GitHub에서 LICENSE 보기"
   },
   "theme": {
     "toggle": "테마 전환",
@@ -212,7 +559,7 @@
     "view": "보기 전환",
     "mainNav": "주 메뉴",
     "installCount": "설치 {count}회",
-    "huddle": "디렉터리 얼굴. 장식용입니다. 얼굴을 누르면 해당 목록으로 갑니다.",
+    "huddle": "가운데는 마스코트 어썸입니다. 장식용입니다. 다른 얼굴을 누르면 해당 목록으로 갑니다.",
     "openMenu": "메뉴 열기",
     "closeMenu": "메뉴 닫기"
   }

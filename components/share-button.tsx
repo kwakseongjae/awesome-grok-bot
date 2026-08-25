@@ -5,6 +5,7 @@ import { ShareIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { trackShare } from "@/lib/analytics";
 
 type Props = {
   title: string;
@@ -22,12 +23,14 @@ export function ShareButton({ title, url }: Props) {
       if (typeof navigator.share === "function") {
         try {
           await navigator.share({ title, text: title, url: shareUrl });
+          trackShare({ method: "web_share" });
           return;
         } catch (error) {
           if (error instanceof DOMException && error.name === "AbortError") return;
         }
       }
       await navigator.clipboard.writeText(shareUrl);
+      trackShare({ method: "clipboard" });
       toast.success(t("shareCopied"));
     } catch {
       toast.error(t("copyFailed"));

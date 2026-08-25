@@ -1,29 +1,45 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
 import { Directory } from "@/components/directory";
 import { HeroHuddle } from "@/components/hero-huddle";
+import { HomeChangelog } from "@/components/home-changelog";
+import { HomeInstall } from "@/components/home-install";
 import { HomeMigrate } from "@/components/home-migrate";
+import { HomeReading } from "@/components/home-reading";
 import { SetupGuide } from "@/components/setup-guide";
-import { parseDirectoryView } from "@/lib/directory-view";
+import { SiteFaq } from "@/components/site-faq";
+import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
-import type { ListingLocale } from "@/lib/types";
+import { pageSeo } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ view?: string | string[] }>;
+  searchParams: Promise<{ view?: string | string[]; category?: string | string[] }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const appLocale = toAppLocale(locale);
+  const t = await getTranslations({ locale: appLocale, namespace: "home" });
+  return {
+    ...pageSeo({ locale: appLocale, title: SITE_NAME, description: t("lead") }),
+    title: { absolute: SITE_NAME },
+  };
+}
 
 export default async function HomePage({ params, searchParams }: Props) {
   const { locale } = await params;
   const query = await searchParams;
   setRequestLocale(toAppLocale(locale));
   const t = await getTranslations();
-  const bots = await listPublishedBots({ locale: "all" });
+  const uiLocale = toAppLocale(locale);
+  const bots = await listPublishedBots({ locale: uiLocale });
   const integrations = await listIntegrations();
-  const uiLocale = locale as ListingLocale;
   const huddle = LISTING_FACE_SLUGS.map((slug) => {
     const match =
       bots.find((bot) => bot.slug === slug && bot.locale === uiLocale) ??
@@ -33,7 +49,7 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-12 sm:py-16">
-      <section className="space-y-6 border-b pb-12">
+      <section className="space-y-6 overflow-x-clip border-b pb-12">
         <HeroHuddle listings={huddle} />
         <div className="max-w-2xl space-y-4">
           <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
@@ -48,13 +64,17 @@ export default async function HomePage({ params, searchParams }: Props) {
         </div>
       </section>
       <SetupGuide />
+      <HomeChangelog />
       <HomeMigrate />
+      <HomeInstall />
+      <HomeReading />
       <Directory
         bots={bots}
         integrations={integrations}
-        uiLocale={uiLocale}
         view={parseDirectoryView(query.view)}
+        category={parseDirectoryCategory(query.category)}
       />
+      <SiteFaq />
     </div>
   );
 }

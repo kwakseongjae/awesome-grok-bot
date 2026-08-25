@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { GrokBotMark } from "@/components/grok-bot-mark";
 import { MIGRATE_MARKS } from "@/lib/faces";
 import { cn } from "@/lib/utils";
 import type { HandoffSource } from "@/lib/migrate/types";
@@ -14,7 +15,7 @@ function SourceMark({ source }: { source: HandoffSource }) {
   const src = source === "hermes" ? MIGRATE_MARKS.hermes : MIGRATE_MARKS.openclaw;
 
   return (
-    <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted sm:size-12">
+    <span className="mark-idle relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-muted sm:size-12">
       {source === "openclaw" ? (
         // Official OpenClaw SVG; next/image needs extra config for SVG.
         // eslint-disable-next-line @next/next/no-img-element
@@ -27,27 +28,7 @@ function SourceMark({ source }: { source: HandoffSource }) {
 }
 
 function GrokDestMark() {
-  return (
-    <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-background sm:size-12">
-      {/* Official xAI Grok logomarks, unaltered. Dark = black on paper; Light = white on ink. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={MIGRATE_MARKS.grokDark}
-        alt=""
-        width={40}
-        height={40}
-        className="size-7 object-contain sm:size-8 dark:hidden"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={MIGRATE_MARKS.grokLight}
-        alt=""
-        width={40}
-        height={40}
-        className="hidden size-7 object-contain sm:size-8 dark:block"
-      />
-    </span>
-  );
+  return <GrokBotMark motion className="size-10 sm:size-12" />;
 }
 
 export function MigrateLockup({ source, className }: Props) {

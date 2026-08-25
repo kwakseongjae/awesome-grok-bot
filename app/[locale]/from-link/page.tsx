@@ -1,10 +1,26 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
 import { FromLinkForm } from "@/components/from-link-form";
+import { pageSeo } from "@/lib/seo";
+import { SHOW_ACCOUNT_CHROME } from "@/lib/site";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const appLocale = toAppLocale(locale);
+  const t = await getTranslations({ locale: appLocale, namespace: "fromLink" });
+  return pageSeo({
+    locale: appLocale,
+    path: "from-link",
+    title: t("title"),
+    description: t("lead"),
+    index: SHOW_ACCOUNT_CHROME,
+  });
+}
 
 export default async function FromLinkPage({ params }: Props) {
   const { locale } = await params;

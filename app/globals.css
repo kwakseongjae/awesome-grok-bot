@@ -14,7 +14,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-noto), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-noto-kr), var(--font-noto-jp), var(--font-noto-sc), var(--font-noto-tc), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -103,12 +103,17 @@
   --brand-google-border: oklch(0.55 0 0);
   --brand-github-bg: oklch(0.18 0 0);
   --brand-github-text: oklch(0.985 0 0);
-
+  --brand-mail-bg: var(--mark-gmail);
+  --brand-mail-text: oklch(0.985 0 0);
+  --brand-llms-bg: oklch(0.18 0 0);
+  --brand-llms-text: oklch(0.985 0 0);
   --mark-google-blue: #4285f4;
   --mark-google-red: #ea4335;
   --mark-google-yellow: #fbbc05;
   --mark-google-green: #34a853;
   --mark-gmail: #ea4335;
+  --mark-mail-top: #64c8ff;
+  --mark-mail-bottom: #0a84ff;
   --mark-slack-red: #e01e5a;
   --mark-slack-blue: #36c5f0;
   --mark-slack-green: #2eb67d;
@@ -171,6 +176,10 @@
   --brand-google-border: oklch(0.55 0 0);
   --brand-github-bg: oklch(1 0 0);
   --brand-github-text: oklch(0.145 0 0);
+  --brand-mail-bg: var(--mark-gmail);
+  --brand-mail-text: oklch(0.985 0 0);
+  --brand-llms-bg: oklch(1 0 0);
+  --brand-llms-text: oklch(0.145 0 0);
 
   --mark-zendesk: oklch(0.82 0 0);
   --mark-github: var(--color-ink);
@@ -204,6 +213,70 @@
   }
 }
 
+.huddle {
+  container-type: size;
+  overflow: visible;
+  --huddle-r: 32.5cqw;
+  --huddle-face: 16.8cqw;
+  --huddle-mascot: 40cqw;
+}
+
+.huddle-slot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  width: var(--huddle-face);
+  height: var(--huddle-face);
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) rotate(var(--huddle-a)) translateY(calc(-1 * var(--huddle-r)));
+}
+
+.huddle-mascot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  width: var(--huddle-mascot);
+  height: var(--huddle-mascot);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Hairline edge so the white sphere reads on paper. Not a glow. */
+.mascot-edge {
+  filter: drop-shadow(0 1px 1.5px oklch(0 0 0 / 12%)) drop-shadow(0 0 0.45px oklch(0 0 0 / 22%));
+}
+
+.dark .mascot-edge {
+  filter: none;
+}
+
+@keyframes huddle-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes huddle-orbit-face {
+  from {
+    transform: rotate(calc(-1 * var(--huddle-a)));
+  }
+  to {
+    transform: rotate(calc(-1 * var(--huddle-a) - 360deg));
+  }
+}
+
+.huddle-orbit {
+  animation: huddle-orbit 40s linear infinite;
+}
+
+.huddle-orbit-face {
+  transform: rotate(calc(-1 * var(--huddle-a)));
+  animation: huddle-orbit-face 40s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -214,7 +287,14 @@
     scroll-behavior: auto !important;
   }
   .grok-bot-face-motion,
-  .grok-bot-face-motion .grok-bot-eyes {
+  .grok-bot-face-motion .grok-bot-eyes,
+  .grok-bot-blob-motion,
+  .grok-bot-blob-motion .grok-bot-blob-eyes,
+  .grok-bot-mark-motion,
+  .grok-bot-mark-glyph,
+  .mark-idle,
+  .huddle-orbit,
+  .huddle-orbit-face {
     animation: none !important;
   }
 }
@@ -249,4 +329,44 @@
   transform-box: fill-box;
   transform-origin: center;
   animation: grok-bot-blink 5.6s ease-in-out infinite;
+}
+
+.grok-bot-blob-motion {
+  animation: grok-bot-float 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  animation-delay: var(--blob-delay, 0s);
+}
+
+.grok-bot-blob-motion .grok-bot-blob-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: grok-bot-blink 4.4s ease-in-out infinite;
+  animation-delay: var(--blob-delay, 0s);
+}
+
+@keyframes grok-mark-tilt {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+.grok-bot-mark-glyph {
+  animation: grok-mark-tilt 6.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes mark-idle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
+}
+
+.mark-idle {
+  animation: mark-idle 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }

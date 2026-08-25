@@ -2,6 +2,7 @@ import { collectArchiveFiles } from "@/lib/migrate/archive";
 import { buildHandoff } from "@/lib/migrate/parse";
 import type { HandoffSource } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
+import { isAppLocale } from "@/lib/locales";
 
 export const runtime = "nodejs";
 
@@ -13,7 +14,7 @@ function isSource(value: FormDataEntryValue | null): value is HandoffSource {
 }
 
 function isLocale(value: FormDataEntryValue | null): value is ListingLocale {
-  return value === "ko" || value === "en";
+  return isAppLocale(value);
 }
 
 export async function POST(request: Request) {
