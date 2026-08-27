@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T16:36:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-27T17:46:00+09:00";
 
 /** Locked day-one sheet. Headline and fact lines stay English on every locale. */
 export const DAY_ONE_RECEIPT = {
@@ -182,6 +182,30 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-27-shot3-article-live",
+    date: "2026-08-27",
+    title: copy("Article live", {
+      ko: "아티클 게시",
+      ja: "記事公開",
+      "zh-CN": "长文已上线",
+      "zh-TW": "長文已上線",
+    }),
+    body: copy(
+      '@daon_kwak posted X article “One bot. No Hermes.” Elon parent still “Grok @Bot can do a lot!” — quotes 135, views ~22.4M. No new rideable Elon Grok-Bot QT this pulse.',
+      {
+        ko: '@daon_kwak이 X 아티클 “One bot. No Hermes.”를 게시. 일론 원글은 그대로 “Grok @Bot can do a lot!” — 인용 135, 조회 ~22.4M. 이번 펄스에 탈 수 있는 새 일론 Grok-Bot QT 없음.',
+        ja: '@daon_kwak が X 記事「One bot. No Hermes.」を投稿。Elon 原文は「Grok @Bot can do a lot!」のまま — 引用 135、表示 ~22.4M。このパルスに乗れる新しい Elon Grok-Bot QT なし。',
+        "zh-CN": '@daon_kwak 发出 X 长文 “One bot. No Hermes.”。Elon 原文仍是 “Grok @Bot can do a lot!” — 引用 135，浏览 ~22.4M。本脉冲未见可借力的新 Elon Grok-Bot QT。',
+        "zh-TW": '@daon_kwak 發出 X 長文 “One bot. No Hermes.”。Elon 原文仍是 “Grok @Bot can do a lot!” — 引用 135，瀏覽 ~22.4M。本脈衝未見可借力的新 Elon Grok-Bot QT。',
+      },
+    ),
+    links: [
+      { href: "https://x.com/daon_kwak/status/2092880945489539472", label: "x.com/daon_kwak/status/2092880945489539472" },
+      { href: "https://x.com/i/article/2092878245372768257", label: "x.com/i/article/2092878245372768257" },
+      { href: "https://x.com/elonmusk/status/2092038808607084868", label: "x.com/elonmusk/status/2092038808607084868" },
+    ],
+  },
   {
     id: "2026-08-27-first-rank-qt-live",
     date: "2026-08-27",
@@ -404,6 +428,24 @@ export const OPS_LOG: OpsLogEntry[] = [
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
   {
+    id: "2026-08-27-shot3-1h",
+    date: "2026-08-27",
+    kind: "x",
+    headline: copy("1h · article", {
+      ko: "1시간 · 아티클",
+      ja: "1h · 記事",
+      "zh-CN": "1 小时 · 长文",
+      "zh-TW": "1 小時 · 長文",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 4.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 4.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 4。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 4。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 4。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092880945489539472",
+  },
+  {
     id: "2026-08-27-shot2-1h",
     date: "2026-08-27",
     kind: "x",
@@ -420,6 +462,24 @@ export const OPS_RESULTS: OpsResult[] = [
       "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 19。",
     }),
     href: "https://x.com/daon_kwak/status/2092861599325229402",
+  },
+  {
+    id: "2026-08-27-shot1-3h",
+    date: "2026-08-27",
+    kind: "x",
+    headline: copy("3h · first shot", {
+      ko: "3시간 · 첫 샷",
+      ja: "3h · 最初のショット",
+      "zh-CN": "3 小时 · 第一次出手",
+      "zh-TW": "3 小時 · 第一次出手",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 22. Followers 15.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 22. 팔로워 15.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 22。フォロワー 15。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 22。粉丝 15。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 22。追蹤者 15。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092851028647403744",
   },
   {
     id: "2026-08-27-shot1-1h",
