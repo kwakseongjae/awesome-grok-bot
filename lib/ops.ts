@@ -2,7 +2,18 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T19:44:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-28T03:10:00+09:00";
+
+export type OpsDayFact = { readonly text: string; readonly href?: string };
+
+export type OpsDayReceipt = {
+  readonly slug: string;
+  readonly path: string;
+  readonly date: string;
+  readonly headline: string;
+  readonly description: string;
+  readonly facts: readonly OpsDayFact[];
+};
 
 /** Locked day-one sheet. Headline and fact lines stay English on every locale. */
 export const DAY_ONE_RECEIPT = {
@@ -20,7 +31,36 @@ export const DAY_ONE_RECEIPT = {
     { text: "Pulse 10 min, 24h" },
     { text: "Hermes not in the loop" },
   ],
-} as const;
+} as const satisfies OpsDayReceipt & { firstShotHref: string };
+
+/** Locked day-two sheet. Headline and fact lines stay English on every locale. */
+export const DAY_TWO_RECEIPT = {
+  slug: "2026-08-28",
+  path: "ops/2026-08-28",
+  date: "2026-08-28",
+  headline: "Followers 16. Video stopped.",
+  description:
+    "/ still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Earlier follower-jump mixed following with followers. Live @daon_kwak followers = 16 as of 2026-08-28 02:22 KST. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
+  facts: [
+    {
+      text: "/ still redirects to /en (PR #29):",
+      href: "https://github.com/kwakseongjae/awesome-grok-bot/pull/29",
+    },
+    { text: "Reviews persist on Neon. Ranking 5 stays file-based." },
+    { text: "Video work stopped. Nothing posted." },
+    {
+      text: "Earlier follower-jump mixed following with followers. Live @daon_kwak followers = 16 as of 2026-08-28 02:22 KST.",
+    },
+    { text: "Next X is a thought-quote of someone else's post, not a site receipt." },
+    { text: "Screening continues (like+follow+reply). X API still user-not-enrolled." },
+  ],
+} as const satisfies OpsDayReceipt;
+
+/** Newest first. */
+export const OPS_DAY_RECEIPTS: readonly OpsDayReceipt[] = [DAY_TWO_RECEIPT, DAY_ONE_RECEIPT];
+
+export const opsReceiptBySlug = (slug: string) =>
+  OPS_DAY_RECEIPTS.find((receipt) => receipt.slug === slug);
 
 export const OPS_MISSION = {
   deadline: "2026-09-03",
@@ -168,11 +208,11 @@ export const OPS_PROPOSALS: OpsProposal[] = [
       "zh-CN": "不花钱。追踪走连接器，发帖走账户登录。用户于 2026-08-27 完成 X 认证。",
       "zh-TW": "不花錢。追蹤走連接器，發文走帳號登入。使用者於 2026-08-27 完成 X 認證。",
     }),
-    remaining: copy("X console onboarding at console.x.com for API setup.", {
-      ko: "console.x.com에서 X API 콘솔 온보딩.",
-      ja: "console.x.com での X API コンソール・オンボーディング。",
-      "zh-CN": "在 console.x.com 完成 X API 控制台开通。",
-      "zh-TW": "在 console.x.com 完成 X API 控制台開通。",
+    remaining: copy("X API still user-not-enrolled. Console onboarding at console.x.com.", {
+      ko: "X API는 아직 user-not-enrolled. console.x.com에서 콘솔 온보딩.",
+      ja: "X API はまだ user-not-enrolled。console.x.com でコンソール・オンボーディング。",
+      "zh-CN": "X API 仍为 user-not-enrolled。在 console.x.com 完成控制台开通。",
+      "zh-TW": "X API 仍為 user-not-enrolled。在 console.x.com 完成控制台開通。",
     }),
     links: [{ href: "https://console.x.com", label: "console.x.com" }],
   },
@@ -182,6 +222,23 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-28-day-two-receipt",
+    date: "2026-08-28",
+    title: copy("Day-two receipt", {
+      ko: "이틀차 영수증",
+      ja: "2日目のレシート",
+      "zh-CN": "第二天收据",
+      "zh-TW": "第二天收據",
+    }),
+    body: copy("One sheet at /ops/2026-08-28.", {
+      ko: "/ops/2026-08-28에 한 장.",
+      ja: "/ops/2026-08-28 に1枚。",
+      "zh-CN": "一张在 /ops/2026-08-28。",
+      "zh-TW": "一張在 /ops/2026-08-28。",
+    }),
+    links: [{ href: "/ops/2026-08-28", label: "/ops/2026-08-28" }],
+  },
   {
     id: "2026-08-27-shot3-article-live",
     date: "2026-08-27",
@@ -427,6 +484,27 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-28-followers",
+    date: "2026-08-28",
+    kind: "x",
+    headline: copy("Followers · 2026-08-28 02:22 KST", {
+      ko: "팔로워 · 2026-08-28 02:22 KST",
+      ja: "フォロワー · 2026-08-28 02:22 KST",
+      "zh-CN": "粉丝 · 2026-08-28 02:22 KST",
+      "zh-TW": "追蹤者 · 2026-08-28 02:22 KST",
+    }),
+    detail: copy(
+      "X스카우트. Live @daon_kwak followers = 16. Earlier follower-jump mixed following with followers.",
+      {
+        ko: "X스카우트. 실시간 @daon_kwak 팔로워 = 16. 이전에 팔로잉을 팔로워 점프로 혼동함.",
+        ja: "X스카우트。Live @daon_kwak フォロワー = 16。以前のフォロワー急増はフォロー中との取り違え。",
+        "zh-CN": "X스카우트。Live @daon_kwak 粉丝 = 16。此前把正在关注当成粉丝跳增。",
+        "zh-TW": "X스카우트。Live @daon_kwak 追蹤者 = 16。先前把追蹤中當成追蹤者跳增。",
+      },
+    ),
+    href: "https://x.com/daon_kwak",
+  },
   {
     id: "2026-08-27-shot3-3h",
     date: "2026-08-27",

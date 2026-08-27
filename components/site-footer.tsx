@@ -14,6 +14,7 @@ const USE_LINKS: (
   | { href: "/"; nav: "directory" }
   | { href: "/rank"; nav: "rank" }
   | { href: "/visitors"; nav: "visitors" }
+  | { href: "/reviews"; nav: "reviews" }
   | { href: "/ops"; nav: "ops" }
   | { href: "/submit"; nav: "submit" }
 )[] = [
@@ -21,6 +22,7 @@ const USE_LINKS: (
   { href: "/", nav: "directory" },
   { href: "/rank", nav: "rank" },
   { href: "/visitors", nav: "visitors" },
+  { href: "/reviews", nav: "reviews" },
   { href: "/ops", nav: "ops" },
   ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit", nav: "submit" }] as const) : []),
 ];

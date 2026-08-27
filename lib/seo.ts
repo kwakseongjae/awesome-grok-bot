@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BRAND_MARK } from "@/lib/brand";
 import { LOCALES, LOCALE_OG, isAppLocale, type AppLocale } from "@/lib/locales";
-import { DAY_ONE_RECEIPT } from "@/lib/ops";
+import { DAY_ONE_RECEIPT, DAY_TWO_RECEIPT } from "@/lib/ops";
 import { OG_IMAGE, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 
 export const SEO_FAQ_KEYS = ["what", "importer", "updates", "inside", "copy", "migrate", "free"] as const;
@@ -20,9 +20,11 @@ export const STATIC_INDEX_PATHS = [
   "",
   "rank",
   "visitors",
+  "reviews",
   "how-to",
   "changelog",
   "ops",
+  DAY_TWO_RECEIPT.path,
   DAY_ONE_RECEIPT.path,
   "install",
   "migrate",
@@ -341,6 +343,24 @@ export const visitorsJsonLd = ({
   description,
   inLanguage: locale,
   url: absoluteUrl(localePath(locale, "visitors")),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+});
+
+export const reviewsJsonLd = ({
+  locale,
+  name,
+  description,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  description,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "reviews")),
   publisher: { "@id": `${SITE_ORIGIN}/#org` },
 });
 

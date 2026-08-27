@@ -248,6 +248,12 @@ export function Directory({
             >
               {t("nav.visitors")}
             </Link>
+            <Link
+              href="/reviews"
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              {t("nav.reviews")}
+            </Link>
             <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
               {t("home.clearFilters")}
             </Button>

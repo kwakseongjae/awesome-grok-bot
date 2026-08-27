@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-27T17:40:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-28T03:10:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,19 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-28-reviews-index",
+    date: "2026-08-28",
+    source: "This site",
+    title: copy("Setup-bot reviews index"),
+    body: copy(
+      "Setup-bot reviews are listed at /reviews. They still live on each listing. They are not mixed into the locked 에디터 ranking.",
+    ),
+    links: [
+      { href: "/en/reviews", label: "Reviews" },
+      { href: "/en/rank", label: "Ranking" },
+    ],
+  },
   {
     id: "2026-08-27-visitor-reviews",
     date: "2026-08-27",

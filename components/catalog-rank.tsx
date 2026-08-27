@@ -105,12 +105,17 @@ export async function CatalogRank({ rows, variant = "home" }: Props) {
       </ol>
       <p className="text-sm leading-6 text-muted-foreground">{t("reviewsSeparate")}</p>
       <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-        <span className="text-muted-foreground">{t("reviewsJump")}</span>
+        <Link
+          href="/reviews"
+          className="cursor-pointer text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {t("reviewsJump")}
+        </Link>
         {rows.map((row) => (
           <Link
             key={row.slug}
             href={`/bots/${row.slug}#reviews`}
-            className="underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            className="cursor-pointer underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
           >
             {row.name}
           </Link>
