@@ -4,12 +4,13 @@ import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, LayoutGridIcon, ListIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
-import { CategoryBadge, KindBadge } from "@/components/listing-badges";
+import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { directoryHref, type DirectoryView } from "@/lib/directory-view";
 import { integrationLabel } from "@/lib/integrations";
+import { scoreForSlug } from "@/lib/scores";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -169,7 +170,7 @@ export function Directory({
   };
 
   return (
-    <div className="space-y-6">
+    <div id="catalog" className="space-y-6">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
         <div className="min-w-0 flex-1 space-y-2">
           <Label htmlFor="directory-search">{t("home.searchLabel")}</Label>
@@ -182,6 +183,12 @@ export function Directory({
           />
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/rank"
+            className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+          >
+            {t("rank.view")}
+          </Link>
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="outline" className="lg:hidden" aria-label={t("a11y.openFilters")}>
@@ -427,7 +434,9 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bots.map((bot) => (
+          {bots.map((bot) => {
+            const scored = scoreForSlug(bot.slug);
+            return (
             <TableRow
               key={bot.id}
               className="cursor-pointer"
@@ -445,6 +454,12 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
                         {bot.name}
                       </Link>
                       <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                      {scored ? (
+                        <ScoreBadge
+                          score={scored.score}
+                          label={t("rank.scoreAria", { score: scored.score })}
+                        />
+                      ) : null}
                     </div>
                     <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{bot.summary}</p>
                   </div>
@@ -468,7 +483,8 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
                 </span>
               </TableCell>
             </TableRow>
-          ))}
+            );
+          })}
         </TableBody>
       </Table>
     </div>
@@ -481,7 +497,9 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {bots.map((bot) => (
+      {bots.map((bot) => {
+        const scored = scoreForSlug(bot.slug);
+        return (
         <Link
           key={bot.id}
           href={listingHref(bot.slug)}
@@ -496,6 +514,12 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
                   <div className="flex flex-wrap items-center gap-2">
                     <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
                     <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+                    {scored ? (
+                      <ScoreBadge
+                        score={scored.score}
+                        label={t("rank.scoreAria", { score: scored.score })}
+                      />
+                    ) : null}
                   </div>
                   <CardTitle>{bot.name}</CardTitle>
                   <CardDescription>{bot.summary}</CardDescription>
@@ -516,7 +540,8 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
             </CardContent>
           </Card>
         </Link>
-      ))}
+        );
+      })}
     </div>
   );
 }

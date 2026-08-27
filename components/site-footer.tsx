@@ -12,11 +12,13 @@ import { cn } from "@/lib/utils";
 const USE_LINKS: (
   | { href: "/how-to"; key: "howToUse" }
   | { href: "/"; nav: "directory" }
+  | { href: "/rank"; nav: "rank" }
   | { href: "/ops"; nav: "ops" }
   | { href: "/submit"; nav: "submit" }
 )[] = [
   { href: "/how-to", key: "howToUse" },
   { href: "/", nav: "directory" },
+  { href: "/rank", nav: "rank" },
   { href: "/ops", nav: "ops" },
   ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit", nav: "submit" }] as const) : []),
 ];

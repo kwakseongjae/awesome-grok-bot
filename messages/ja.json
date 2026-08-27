@@ -48,6 +48,7 @@
     "install": "エージェント導入",
     "changelog": "更新履歴",
     "ops": "運用",
+    "rank": "ランキング",
     "migrate": "移行",
     "docs": "Docs",
     "signIn": "ログイン",
@@ -72,6 +73,21 @@
     "nextPage": "次へ",
     "pageStatus": "{page} / {pages}",
     "mascotName": "Awesome"
+  },
+  "rank": {
+    "eyebrow": "Scored 2026-08-27",
+    "title": "에디터 ranking",
+    "lead": "Five live Grok Bot setups, scored by 에디터 after reading them.",
+    "panelTitle": "에디터 score",
+    "criteriaTitle": "基準",
+    "rater": "評価者",
+    "date": "日付",
+    "view": "ランキング",
+    "open": "ランキングを開く",
+    "back": "ディレクトリに戻る",
+    "place": "{total}件中 {rank}位",
+    "scoreAria": "{score}/10 · 에디터 score",
+    "listingLink": "{rank}. {name}, {score}/10"
   },
   "filters": {
     "category": "分野",

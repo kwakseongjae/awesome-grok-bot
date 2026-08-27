@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-27T15:20:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-27T16:10:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,16 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-27-editor-ranking",
+    date: "2026-08-27",
+    source: "This site",
+    title: copy("에디터 ranking of five setups"),
+    body: copy(
+      "Five live Grok Bot setups scored by 에디터 after reading them. Not a user survey. Not app telemetry.",
+    ),
+    links: [{ href: "/en/rank", label: "Ranking" }],
+  },
   {
     id: "2026-08-21-more-plans",
     date: "2026-08-21",

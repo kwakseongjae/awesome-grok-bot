@@ -17,6 +17,7 @@ export const HOW_TO_STEP_KEYS = [
 
 export const STATIC_INDEX_PATHS = [
   "",
+  "rank",
   "how-to",
   "changelog",
   "ops",
@@ -288,6 +289,38 @@ export const breadcrumbJsonLd = (items: { name: string; path: string }[]) => ({
     position: index + 1,
     name: item.name,
     item: absoluteUrl(item.path),
+  })),
+});
+
+export const rankingJsonLd = ({
+  locale,
+  name,
+  description,
+  datePublished,
+  items,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+  datePublished: string;
+  items: { position: number; name: string; description: string; path: string }[];
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name,
+  description,
+  datePublished,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "rank")),
+  numberOfItems: items.length,
+  itemListOrder: "https://schema.org/ItemListOrderAscending",
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+  itemListElement: items.map((item) => ({
+    "@type": "ListItem",
+    position: item.position,
+    name: item.name,
+    description: item.description,
+    url: absoluteUrl(item.path),
   })),
 });
 

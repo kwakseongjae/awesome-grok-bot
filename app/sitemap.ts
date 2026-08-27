@@ -3,6 +3,7 @@ import { listPublishedBots } from "@/lib/bots";
 import { SITE_UPDATED_AT } from "@/lib/changelog";
 import { LOCALES } from "@/lib/locales";
 import { OPS_UPDATED_AT } from "@/lib/ops";
+import { SCORE_DATE } from "@/lib/scores";
 import { absoluteUrl, localePath, pageLanguages, STATIC_INDEX_PATHS } from "@/lib/seo";
 import { SITE_ORIGIN } from "@/lib/site";
 
@@ -19,7 +20,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified:
         path === "changelog"
           ? new Date(SITE_UPDATED_AT)
-          : path === "ops" || path.startsWith("ops/")
+          : path === "rank"
+            ? new Date(SCORE_DATE)
+            : path === "ops" || path.startsWith("ops/")
             ? new Date(OPS_UPDATED_AT)
             : now,
       changeFrequency: path === "" || path === "ops" ? "daily" : "weekly",

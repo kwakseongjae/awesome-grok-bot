@@ -48,6 +48,7 @@
     "install": "에이전트 설치",
     "changelog": "체인지로그",
     "ops": "운영",
+    "rank": "랭킹",
     "migrate": "이전",
     "docs": "Docs",
     "signIn": "로그인",
@@ -72,6 +73,21 @@
     "nextPage": "다음",
     "pageStatus": "{page} / {pages}",
     "mascotName": "어썸"
+  },
+  "rank": {
+    "eyebrow": "Scored 2026-08-27",
+    "title": "에디터 ranking",
+    "lead": "Five live Grok Bot setups, scored by 에디터 after reading them.",
+    "panelTitle": "에디터 score",
+    "criteriaTitle": "기준",
+    "rater": "평가자",
+    "date": "날짜",
+    "view": "랭킹",
+    "open": "랭킹 열기",
+    "back": "디렉터리로 돌아가기",
+    "place": "{total}중 {rank}위",
+    "scoreAria": "{score}/10 · 에디터 score",
+    "listingLink": "{rank}. {name}, {score}/10"
   },
   "filters": {
     "category": "분야",

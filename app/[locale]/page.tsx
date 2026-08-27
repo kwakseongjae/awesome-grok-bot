@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
 import { Directory } from "@/components/directory";
+import { CatalogRank } from "@/components/catalog-rank";
 import { HeroHuddle } from "@/components/hero-huddle";
 import { HomeChangelog } from "@/components/home-changelog";
 import { HomeInstall } from "@/components/home-install";
@@ -13,6 +14,7 @@ import { SiteFaq } from "@/components/site-faq";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
+import { rankingRows } from "@/lib/scores";
 import { pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 
@@ -70,6 +72,7 @@ export default async function HomePage({ params, searchParams }: Props) {
       <HomeMigrate />
       <HomeInstall />
       <HomeReading />
+      <CatalogRank rows={rankingRows(bots)} />
       <Directory
         bots={bots}
         integrations={integrations}
