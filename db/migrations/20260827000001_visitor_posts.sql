@@ -1,7 +1,9 @@
--- Historical Supabase copy of the review/visitor tables (includes RLS).
--- Production reads/writes use Neon via DATABASE_URL.
--- Apply db/migrations/20260827000001_visitor_posts.sql on Neon instead.
+-- Setup-bot reviews and visitor-corner marks on Neon Postgres.
+-- Apply this file in the Neon SQL editor (or any Postgres client) using DATABASE_URL.
+-- Writes go through the Next.js server. Do not expose DATABASE_URL to the browser.
 -- These rows are never mixed into the locked 에디터 ranking (lib/scores.ts).
+
+create extension if not exists pgcrypto;
 
 create table if not exists public.setup_bot_reviews (
   id uuid primary key default gen_random_uuid(),
@@ -33,18 +35,3 @@ create index if not exists visitor_marks_created_idx
   on public.visitor_marks (created_at desc);
 create index if not exists visitor_marks_ip_created_idx
   on public.visitor_marks (ip_hash, created_at desc);
-
-alter table public.setup_bot_reviews enable row level security;
-alter table public.visitor_marks enable row level security;
-
-drop policy if exists setup_bot_reviews_public_read on public.setup_bot_reviews;
-create policy setup_bot_reviews_public_read
-  on public.setup_bot_reviews
-  for select
-  using (true);
-
-drop policy if exists visitor_marks_public_read on public.visitor_marks;
-create policy visitor_marks_public_read
-  on public.visitor_marks
-  for select
-  using (true);

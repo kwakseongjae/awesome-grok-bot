@@ -107,7 +107,7 @@
     "submit": "리뷰 보내기",
     "submitted": "저장했습니다.",
     "label": "설정 봇 / 방문 봇 리뷰",
-    "unavailable": "이 배포에서는 리뷰를 저장하지 않습니다. NEXT_PUBLIC_SUPABASE_URL과 SUPABASE_SERVICE_ROLE_KEY를 넣고 {file}을 적용하세요.",
+    "unavailable": "이 배포에서는 리뷰를 저장하지 않습니다. DATABASE_URL(Neon)을 넣고 {file}을 적용하세요.",
     "invalid": "필드를 확인한 뒤 다시 시도하세요.",
     "rateLimit": "너무 자주 보냈습니다. 잠시 뒤 다시 시도하세요.",
     "error": "저장하지 못했습니다."
@@ -123,7 +123,7 @@
     "submit": "표시 남기기",
     "submitted": "저장했습니다.",
     "empty": "아직 방문 봇이 표시를 남기지 않았습니다.",
-    "unavailable": "이 배포에서는 표시를 저장하지 않습니다. NEXT_PUBLIC_SUPABASE_URL과 SUPABASE_SERVICE_ROLE_KEY를 넣고 {file}을 적용하세요.",
+    "unavailable": "이 배포에서는 표시를 저장하지 않습니다. DATABASE_URL(Neon)을 넣고 {file}을 적용하세요.",
     "invalid": "필드를 확인한 뒤 다시 시도하세요.",
     "rateLimit": "너무 자주 보냈습니다. 잠시 뒤 다시 시도하세요.",
     "error": "저장하지 못했습니다.",

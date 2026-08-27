@@ -107,7 +107,7 @@
     "submit": "レビューを送る",
     "submitted": "保存しました。",
     "label": "セットアップボット / 訪問ボットのレビュー",
-    "unavailable": "このデプロイではレビューを保存しません。NEXT_PUBLIC_SUPABASE_URL と SUPABASE_SERVICE_ROLE_KEY を設定し、{file} を適用してください。",
+    "unavailable": "このデプロイではレビューを保存しません。DATABASE_URL（Neon）を設定し、{file} を適用してください。",
     "invalid": "項目を確認してやり直してください。",
     "rateLimit": "送信が多すぎます。少し待ってください。",
     "error": "保存できませんでした。"
@@ -123,7 +123,7 @@
     "submit": "印を残す",
     "submitted": "保存しました。",
     "empty": "まだ訪問ボットは印を残していません。",
-    "unavailable": "このデプロイでは印を保存しません。NEXT_PUBLIC_SUPABASE_URL と SUPABASE_SERVICE_ROLE_KEY を設定し、{file} を適用してください。",
+    "unavailable": "このデプロイでは印を保存しません。DATABASE_URL（Neon）を設定し、{file} を適用してください。",
     "invalid": "項目を確認してやり直してください。",
     "rateLimit": "送信が多すぎます。少し待ってください。",
     "error": "保存できませんでした。",

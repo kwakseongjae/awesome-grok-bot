@@ -34,27 +34,26 @@ You can:
 
 Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secrets are still stripped from handoff files.
 
-## Run with secrets (Supabase + Better Auth)
+## Run with secrets (Neon + optional Supabase + Better Auth)
 
-1. Create a Supabase project. In the SQL editor, run in order:
-   - `supabase/migrations/20260819000001_init.sql`
-   - `supabase/migrations/20260819000002_seed.sql`
-   - later locale and catalog migrations under `supabase/migrations/`
-   - `supabase/migrations/20260827000001_visitor_posts.sql` (setup-bot reviews + visitor marks)
-2. Create GitHub and Google OAuth apps. Callbacks:
+1. Set `DATABASE_URL` to a Neon pooled connection string. In the Neon SQL editor, apply:
+   - `db/migrations/20260827000001_visitor_posts.sql` (setup-bot reviews + visitor marks)
+   Better Auth creates its own tables on first sign-in. Reviews and `/visitors` writes do not use the Supabase JS client.
+2. Optional: a Supabase project for listing-copy persistence (not required for the directory, ranking, reviews, or visitors). If you use it, run the catalog migrations under `supabase/migrations/` — skip the visitor-posts file there; Neon owns those tables.
+3. Create GitHub and Google OAuth apps. Callbacks:
    - `{BETTER_AUTH_URL}/api/auth/callback/github`
    - `{BETTER_AUTH_URL}/api/auth/callback/google`
-3. Fill `.env.local` (see `.env.example`):
+4. Fill `.env.local` (see `.env.example`):
 
 | Variable | Used for |
 | --- | --- |
 | `NEXT_PUBLIC_APP_URL` | Canonical site URL |
 | `BETTER_AUTH_URL` | Better Auth base URL (same as the site URL) |
 | `BETTER_AUTH_SECRET` | Session signing (`openssl rand -base64 32`) |
-| `DATABASE_URL` | Supabase Postgres URI for Better Auth tables |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public reads (published bots, RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server writes after Better Auth session checks; also stores setup-bot reviews and visitor marks |
+| `DATABASE_URL` | Neon Postgres URI (Better Auth + setup-bot reviews + visitor marks) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Optional. Supabase API for listing-copy persistence |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional. Public reads (published bots, RLS) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional. Server writes after Better Auth session checks (listings only) |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub login |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google login |
 
@@ -74,7 +73,7 @@ Setup text should include: name and title, what it owns, what good looks like, w
 
 ## Stack
 
-Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `en`), Supabase Postgres, Better Auth (GitHub + Google).
+Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `en`), Neon Postgres (`DATABASE_URL`) for auth/reviews/visitors, optional Supabase JS for listing copy, Better Auth (GitHub + Google).
 
 ## License
 

@@ -1,4 +1,4 @@
-export const VISITOR_POSTS_MIGRATION = "supabase/migrations/20260827000001_visitor_posts.sql";
+export const VISITOR_POSTS_MIGRATION = "db/migrations/20260827000001_visitor_posts.sql";
 
 export const POST_LIMITS = {
   name: { min: 2, max: 40 },
