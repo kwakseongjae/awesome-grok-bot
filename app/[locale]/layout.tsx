@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { LOCALE_OG } from "@/lib/locales";
 import { websiteJsonLd } from "@/lib/seo";
 import { siteVerification } from "@/lib/site-verify";
+import { BRAND_MARK } from "@/lib/brand";
 import { OG_IMAGE, SITE_NAME } from "@/lib/site";
 import { routing, toAppLocale } from "@/i18n/routing";
 import { HtmlLang } from "@/components/html-lang";
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     icons: {
       icon: [{ url: "/favicon.png", type: "image/png" }],
-      apple: "/brand/mascot/awesome-mark.png",
+      apple: BRAND_MARK.src,
     },
     openGraph: {
       title,

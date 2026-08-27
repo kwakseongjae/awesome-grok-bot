@@ -9,12 +9,14 @@ import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
 import { ScorePanel } from "@/components/score-panel";
+import { SetupBotReviews } from "@/components/setup-bot-reviews";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { scoreForSlug } from "@/lib/scores";
 import { SITE_NAME } from "@/lib/site";
+import { getVisitorStoreStatus, listSetupBotReviews } from "@/lib/visitor-posts";
 import type { ListingLocale } from "@/lib/types";
 
 type Props = {
@@ -49,6 +51,8 @@ export default async function BotDetailPage({ params }: Props) {
   const appLocale = toAppLocale(locale);
   const shareUrl = absoluteUrl(localePath(appLocale, `bots/${bot.slug}`));
   const scored = scoreForSlug(bot.slug);
+  const reviews = await listSetupBotReviews(bot.slug);
+  const store = getVisitorStoreStatus();
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -201,6 +205,13 @@ export default async function BotDetailPage({ params }: Props) {
           </dd>
         </div>
       </dl>
+
+      <SetupBotReviews
+        slug={bot.slug}
+        listingName={bot.name}
+        reviews={reviews}
+        canWrite={store.canWrite}
+      />
 
       {related.length > 0 ? (
         <section className="mt-12 space-y-3">

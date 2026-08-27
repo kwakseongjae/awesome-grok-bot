@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { BRAND_MARK_DIR, BRAND_MARK_FILE } from "@/lib/brand";
 
 export const runtime = "nodejs";
 export const alt = "Awesome Grok Bot";
@@ -8,7 +9,9 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
-  const mark = await readFile(join(process.cwd(), "public/brand/mascot/awesome-mark.png"));
+  const mark = await readFile(
+    join(/* turbopackIgnore: true */ process.cwd(), BRAND_MARK_DIR, BRAND_MARK_FILE),
+  );
 
   return new ImageResponse(
     (

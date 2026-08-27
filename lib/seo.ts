@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BRAND_MARK } from "@/lib/brand";
 import { LOCALES, LOCALE_OG, isAppLocale, type AppLocale } from "@/lib/locales";
 import { DAY_ONE_RECEIPT } from "@/lib/ops";
 import { OG_IMAGE, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
@@ -18,6 +19,7 @@ export const HOW_TO_STEP_KEYS = [
 export const STATIC_INDEX_PATHS = [
   "",
   "rank",
+  "visitors",
   "how-to",
   "changelog",
   "ops",
@@ -113,7 +115,7 @@ export const websiteJsonLd = () => ({
       "@id": `${SITE_ORIGIN}/#org`,
       name: SITE_NAME,
       url: SITE_ORIGIN,
-      logo: absoluteUrl("/brand/mascot/awesome-mark.png"),
+      logo: absoluteUrl(BRAND_MARK.src),
       sameAs: ["https://github.com/kwakseongjae/awesome-grok-bot"],
     },
     {
@@ -322,6 +324,24 @@ export const rankingJsonLd = ({
     description: item.description,
     url: absoluteUrl(item.path),
   })),
+});
+
+export const visitorsJsonLd = ({
+  locale,
+  name,
+  description,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  description,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "visitors")),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
 });
 
 export const listingJsonLd = ({
