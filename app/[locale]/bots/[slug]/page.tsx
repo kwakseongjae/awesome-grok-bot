@@ -4,14 +4,16 @@ import { notFound } from "next/navigation";
 import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
-import { CategoryBadge, KindBadge } from "@/components/listing-badges";
+import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
+import { ScorePanel } from "@/components/score-panel";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
+import { scoreForSlug } from "@/lib/scores";
 import { SITE_NAME } from "@/lib/site";
 import type { ListingLocale } from "@/lib/types";
 
@@ -46,6 +48,7 @@ export default async function BotDetailPage({ params }: Props) {
   const listingLocale = locale as ListingLocale;
   const appLocale = toAppLocale(locale);
   const shareUrl = absoluteUrl(localePath(appLocale, `bots/${bot.slug}`));
+  const scored = scoreForSlug(bot.slug);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -79,6 +82,12 @@ export default async function BotDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
               <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+              {scored ? (
+                <ScoreBadge
+                  score={scored.score}
+                  label={t("rank.scoreAria", { score: scored.score })}
+                />
+              ) : null}
             </div>
             <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
             <p className="text-lg text-muted-foreground">{bot.summary}</p>
@@ -112,6 +121,8 @@ export default async function BotDetailPage({ params }: Props) {
         ) : null}
         <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
       </header>
+
+      {scored ? <ScorePanel entry={scored} /> : null}
 
       <section className="mt-12 space-y-3">
         <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">

@@ -24,7 +24,8 @@ Open [http://localhost:3000](http://localhost:3000). Accept-Language sends you t
 
 You can:
 
-- browse table and card views (`/ko`, `/ko?view=cards`)
+- browse table and card views (`/en`, `/en?view=cards`)
+- open the 에디터 ranking (`/en/rank`) — five scored setups, not a survey
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
 - visit `/from-link`, `/submit`, `/sign-in`, and `/migrate`
 - Hermes sample files (no secrets): `fixtures/hermes-handoff/SOUL.md` and `MEMORY.md`
