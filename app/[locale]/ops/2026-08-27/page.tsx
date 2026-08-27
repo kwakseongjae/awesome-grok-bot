@@ -83,7 +83,7 @@ export default async function DayOneReceiptPage({ params }: Props) {
           href={DAY_ONE_RECEIPT.firstShotHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute inset-x-[9%] top-[61%] h-[7%] cursor-pointer focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="absolute inset-x-[9%] top-[56%] h-[6%] cursor-pointer focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <span className="sr-only">First shot: {DAY_ONE_RECEIPT.firstShotLabel}</span>
         </a>
