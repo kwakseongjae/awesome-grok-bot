@@ -208,12 +208,12 @@ export const OPS_LOG: OpsLogEntry[] = [
       "zh-TW": "公開網頁收據",
     }),
     body: copy(
-      '@KanekoaTheGreat: “Grok Bot is insane” (38 warriors / 13 clips / 19:35, no scripts no code). @liam_fallen: “My Grok Bot just paid its own salary,” amplified by Elon. 8/25 The Information: Musk at Cursor all-hands — Grok behind, Anthropic ahead, “not used to losing.” Hermes is real. Win angle is receipts, not model bragging.',
+      '@KanekoaTheGreat: “Grok Bot is insane” (38 transcripts / 13 clips / 19:35, no scripts no code). @liam_fallen: “My Grok Bot just paid its own salary,” amplified by Elon. 8/25 The Information: Musk at Cursor all-hands — Grok behind, Anthropic ahead, “not used to losing.” Hermes is real. Win angle is receipts, not model bragging.',
       {
         ko: '@KanekoaTheGreat “Grok Bot is insane”(전사 38 / 클립 13 / 19:35, 스크립트·코드 없음). @liam_fallen “My Grok Bot just paid its own salary”를 일론이 증폭. 8/25 The Information: 머스크 Cursor 올핸즈 — Grok은 뒤, Anthropic은 앞, “지는 데 익숙하지 않다”. Hermes는 실재. 이기는 각은 모델 자랑이 아니라 영수증.',
-        ja: '@KanekoaTheGreat「Grok Bot is insane」（38 warriors / 13 clips / 19:35、スクリプトもコードもなし）。@liam_fallen「My Grok Bot just paid its own salary」を Elon が増幅。8/25 The Information: Musk が Cursor 全社会合で Grok は遅れ、Anthropic が先行、「負けるのに慣れていない」。Hermes は実在。勝ち筋はモデル自慢ではなくレシート。',
-        "zh-CN": '@KanekoaTheGreat：「Grok Bot is insane」（38 warriors / 13 clips / 19:35，无脚本无代码）。@liam_fallen：「My Grok Bot just paid its own salary」，Elon 转发放大。8/25 The Information：Musk 在 Cursor 全员会——Grok 落后、Anthropic 领先，“不习惯输”。Hermes 是真的。赢面是收据，不是吹模型。',
-        "zh-TW": '@KanekoaTheGreat：「Grok Bot is insane」（38 warriors / 13 clips / 19:35，無腳本無程式）。@liam_fallen：「My Grok Bot just paid its own salary」，Elon 轉發放大。8/25 The Information：Musk 在 Cursor 全員會——Grok 落後、Anthropic 領先，「不習慣輸」。Hermes 是真的。贏面是收據，不是吹模型。',
+        ja: '@KanekoaTheGreat「Grok Bot is insane」（38 トランスクリプト / 13 clips / 19:35、スクリプトもコードもなし）。@liam_fallen「My Grok Bot just paid its own salary」を Elon が増幅。8/25 The Information: Musk が Cursor 全社会合で Grok は遅れ、Anthropic が先行、「負けるのに慣れていない」。Hermes は実在。勝ち筋はモデル自慢ではなくレシート。',
+        "zh-CN": '@KanekoaTheGreat：「Grok Bot is insane」（38 实录 / 13 clips / 19:35，无脚本无代码）。@liam_fallen：「My Grok Bot just paid its own salary」，Elon 转发放大。8/25 The Information：Musk 在 Cursor 全员会——Grok 落后、Anthropic 领先，“不习惯输”。Hermes 是真的。赢面是收据，不是吹模型。',
+        "zh-TW": '@KanekoaTheGreat：「Grok Bot is insane」（38 逐字稿 / 13 clips / 19:35，無腳本無程式）。@liam_fallen：「My Grok Bot just paid its own salary」，Elon 轉發放大。8/25 The Information：Musk 在 Cursor 全員會——Grok 落後、Anthropic 領先，「不習慣輸」。Hermes 是真的。贏面是收據，不是吹模型。',
       },
     ),
   },
