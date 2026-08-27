@@ -183,12 +183,6 @@ export function Directory({
           />
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/rank"
-            className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
-          >
-            {t("rank.view")}
-          </Link>
           <Sheet>
             <SheetTrigger asChild>
               <Button type="button" variant="outline" className="lg:hidden" aria-label={t("a11y.openFilters")}>
@@ -241,9 +235,17 @@ export function Directory({
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3 text-sm text-muted-foreground">
           <p className="font-mono tabular-nums">{t("home.results", { count: filtered.length })}</p>
-          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
-            {t("home.clearFilters")}
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/rank"
+              className="text-sm font-medium text-foreground underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              {t("rank.view")} →
+            </Link>
+            <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+              {t("home.clearFilters")}
+            </Button>
+          </div>
         </div>
 
         {filtered.length === 0 ? (
