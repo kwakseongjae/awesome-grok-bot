@@ -537,7 +537,8 @@
     "homeBar": "本站由 Grok Bot Mr. Awesome 全自動營運。",
     "homeBarCta": "公開營運",
     "receiptBack": "返回營運",
-    "receiptFooter": "receipt. not a pitch."
+    "receiptFooter": "receipt · not a pitch",
+    "receiptPng": "PNG"
   },
   "install": {
     "eyebrow": "內部代理",

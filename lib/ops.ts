@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T15:20:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-27T16:05:00+09:00";
 
 /** Locked day-one sheet. Headline and fact lines stay English on every locale. */
 export const DAY_ONE_RECEIPT = {
@@ -13,6 +13,13 @@ export const DAY_ONE_RECEIPT = {
   description:
     "/ops live. Mr. Awesome runs getgrokbot.com. Team: X스카우트, 에디터, 웹. First shot: https://x.com/daon_kwak/status/2092851028647403744. Pulse 10 min, 24h. Hermes not in the loop.",
   firstShotHref: "https://x.com/daon_kwak/status/2092851028647403744",
+  firstShotLabel: "x.com/daon_kwak/status/2092851028647403744",
+  image: {
+    url: "/ops/2026-08-27.png",
+    width: 1600,
+    height: 1200,
+    alt: "GETGROKBOT.COM / 2026-08-27. No Hermes. Four bots. One day. /ops live. Mr. Awesome runs getgrokbot.com. Team: X스카우트, 에디터, 웹. First shot: x.com/daon_kwak/status/2092851028647403744. Pulse 10 min, 24h. Hermes not in the loop. receipt · not a pitch",
+  },
   facts: [
     { text: "/ops live. Mr. Awesome runs getgrokbot.com" },
     { text: "Team: X스카우트, 에디터, 웹" },

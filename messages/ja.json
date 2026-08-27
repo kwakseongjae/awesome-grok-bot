@@ -537,7 +537,8 @@
     "homeBar": "このサイトは Grok Bot の Mr. Awesome が全自動化で運用しています。",
     "homeBarCta": "公開運用",
     "receiptBack": "運用に戻る",
-    "receiptFooter": "receipt. not a pitch."
+    "receiptFooter": "receipt · not a pitch",
+    "receiptPng": "PNG"
   },
   "install": {
     "eyebrow": "中で動くエージェント",

@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
 import { Link } from "@/i18n/navigation";
 import { toAppLocale } from "@/i18n/routing";
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: DAY_ONE_RECEIPT.path,
     title: DAY_ONE_RECEIPT.headline,
     description: DAY_ONE_RECEIPT.description,
+    image: DAY_ONE_RECEIPT.image,
   });
 }
 
@@ -31,7 +33,7 @@ export default async function DayOneReceiptPage({ params }: Props) {
   const t = await getTranslations("ops");
 
   return (
-    <div className="mx-auto flex min-h-[calc(100dvh-12rem)] w-full max-w-lg flex-col justify-center px-4 py-8 sm:py-10">
+    <div className="mx-auto flex min-h-[calc(100dvh-12rem)] w-full max-w-3xl flex-col justify-center px-4 py-8 sm:py-10">
       <JsonLd
         data={opsReceiptJsonLd({
           locale: appLocale,
@@ -39,6 +41,7 @@ export default async function DayOneReceiptPage({ params }: Props) {
           description: DAY_ONE_RECEIPT.description,
           datePublished: DAY_ONE_RECEIPT.date,
           path: DAY_ONE_RECEIPT.path,
+          image: DAY_ONE_RECEIPT.image.url,
         })}
       />
       <JsonLd
@@ -49,47 +52,41 @@ export default async function DayOneReceiptPage({ params }: Props) {
         ])}
       />
 
-      <Link
-        href="/ops"
-        className="w-fit cursor-pointer text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-      >
-        ← {t("receiptBack")}
-      </Link>
-
-      <article className="mt-5 rounded-lg border bg-card px-5 py-7 sm:px-8 sm:py-8">
-        <time
-          dateTime={DAY_ONE_RECEIPT.date}
-          className="font-mono text-xs text-muted-foreground tabular-nums"
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link
+          href="/ops"
+          className="w-fit cursor-pointer text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          {DAY_ONE_RECEIPT.date}
-        </time>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-pretty sm:text-4xl">
-          {DAY_ONE_RECEIPT.headline}
-        </h1>
-        <ul className="mt-8 divide-y">
-          {DAY_ONE_RECEIPT.facts.map((fact) => (
-            <li key={fact.text} className="py-3 text-sm leading-6 first:pt-0 last:pb-0 sm:text-base sm:leading-7">
-              {"href" in fact ? (
-                <>
-                  {fact.text}{" "}
-                  <a
-                    href={fact.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cursor-pointer break-all font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {fact.href}
-                  </a>
-                </>
-              ) : (
-                fact.text
-              )}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 font-mono text-[0.7rem] tracking-[0.08em] text-muted-foreground">
-          {t("receiptFooter")}
-        </p>
+          ← {t("receiptBack")}
+        </Link>
+        <a
+          href={DAY_ONE_RECEIPT.image.url}
+          download="no-hermes-four-bots-one-day.png"
+          className="cursor-pointer font-mono text-xs tracking-[0.08em] text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {t("receiptPng")}
+        </a>
+      </div>
+
+      <article className="relative mt-5">
+        <h1 className="sr-only">{DAY_ONE_RECEIPT.headline}</h1>
+        <Image
+          src={DAY_ONE_RECEIPT.image.url}
+          alt={DAY_ONE_RECEIPT.image.alt}
+          width={DAY_ONE_RECEIPT.image.width}
+          height={DAY_ONE_RECEIPT.image.height}
+          priority
+          unoptimized
+          className="h-auto w-full"
+        />
+        <a
+          href={DAY_ONE_RECEIPT.firstShotHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-x-[9%] top-[61%] h-[7%] cursor-pointer focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          <span className="sr-only">First shot: {DAY_ONE_RECEIPT.firstShotLabel}</span>
+        </a>
       </article>
     </div>
   );

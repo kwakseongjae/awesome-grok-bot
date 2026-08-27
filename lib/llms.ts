@@ -330,6 +330,7 @@ const renderOpsReceipt = async (locale: AppLocale) => {
     "",
     t("receiptFooter"),
     "",
+    `Card: ${absoluteUrl(DAY_ONE_RECEIPT.image.url)}`,
     `Human page: ${absoluteUrl(localePath(locale, DAY_ONE_RECEIPT.path))}`,
     `Ops log: ${absoluteUrl(localePath(locale, "ops"))}`,
     "",

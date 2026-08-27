@@ -61,16 +61,24 @@ export const pageSeo = ({
   title,
   description,
   index = true,
+  image = OG_IMAGE,
 }: {
   locale: string;
   path?: string;
   title: string;
   description: string;
   index?: boolean;
+  image?: { url: string; width: number; height: number; alt: string };
 }): Metadata => {
   const canonical = absoluteUrl(localePath(locale, path));
   const ogLocale = isAppLocale(locale) ? LOCALE_OG[locale] : LOCALE_OG.ko;
   const alternateLocale = LOCALES.filter((item) => item !== locale).map((item) => LOCALE_OG[item]);
+  const ogImage = {
+    url: absoluteUrl(image.url),
+    width: image.width,
+    height: image.height,
+    alt: image.alt,
+  };
 
   return {
     title,
@@ -93,13 +101,13 @@ export const pageSeo = ({
       locale: ogLocale,
       alternateLocale,
       type: "website",
-      images: [OG_IMAGE],
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [OG_IMAGE.url],
+      images: [ogImage.url],
     },
   };
 };
@@ -256,12 +264,14 @@ export const opsReceiptJsonLd = ({
   description,
   datePublished,
   path,
+  image,
 }: {
   locale: string;
   headline: string;
   description: string;
   datePublished: string;
   path: string;
+  image?: string;
 }) => ({
   "@context": "https://schema.org",
   "@type": "Article",
@@ -271,6 +281,7 @@ export const opsReceiptJsonLd = ({
   dateModified: datePublished,
   inLanguage: locale,
   url: absoluteUrl(localePath(locale, path)),
+  ...(image ? { image: absoluteUrl(image) } : {}),
   publisher: { "@id": `${SITE_ORIGIN}/#org` },
   about: {
     "@type": "SoftwareApplication",
