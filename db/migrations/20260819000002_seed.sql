@@ -1,4 +1,5 @@
--- Seed listings (same content as data/seed-bots.json)
+-- Catalog seed (same content as data/seed-bots.json).
+-- Plain Postgres for Neon. Apply after 20260819000001_init.sql.
 insert into public.bots (
   id, slug, name, kind, category, locale, summary, prompt, integrations,
   source_url, contributor_handle, status, created_by, added_at, copy_count

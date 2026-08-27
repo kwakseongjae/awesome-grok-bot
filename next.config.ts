@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   agentRules: false,
+  serverExternalPackages: ["pg"],
   async rewrites() {
     return [
       { source: "/:locale/llms.txt", destination: "/api/llms/:locale" },

@@ -40,6 +40,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Neon CLI link file (project/branch ids)
+.neon
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

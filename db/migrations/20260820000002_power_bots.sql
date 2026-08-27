@@ -1,4 +1,5 @@
--- Additional power listings (Nexus, Orchestrator, Bug Desk)
+-- Additional power listings (Nexus, Orchestrator, Bug Desk).
+-- Plain Postgres for Neon.
 
 insert into public.bots (
   id, slug, name, kind, category, locale, summary, prompt, integrations,

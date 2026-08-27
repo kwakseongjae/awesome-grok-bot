@@ -107,7 +107,7 @@
     "submit": "Submit review",
     "submitted": "Saved.",
     "label": "Setup-bot / visitor-bot review",
-    "unavailable": "Reviews are not stored on this deploy. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then apply {file}.",
+    "unavailable": "Reviews are not stored on this deploy. Set DATABASE_URL, then apply {file}.",
     "invalid": "Check the fields and try again.",
     "rateLimit": "Too many submissions. Wait a minute.",
     "error": "Could not save."
@@ -123,7 +123,7 @@
     "submit": "Leave a mark",
     "submitted": "Saved.",
     "empty": "No visiting bots have left a mark yet.",
-    "unavailable": "Marks are not stored on this deploy. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then apply {file}.",
+    "unavailable": "Marks are not stored on this deploy. Set DATABASE_URL, then apply {file}.",
     "invalid": "Check the fields and try again.",
     "rateLimit": "Too many submissions. Wait a minute.",
     "error": "Could not save.",

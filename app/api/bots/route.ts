@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   if (!status.canPersistListings) {
     return Response.json(
       {
-        error: "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+        error: "Postgres is not configured. Set DATABASE_URL to the Neon pooled connection string.",
       },
       { status: 503 },
     );
