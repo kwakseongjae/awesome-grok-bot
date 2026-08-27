@@ -47,7 +47,8 @@ export function SiteHeader() {
           <ThemeToggle />
           {SHOW_ACCOUNT_CHROME ? <AuthButtons /> : null}
         </nav>
-        <div className="md:hidden">
+        <div className="flex items-center md:hidden">
+          <LocaleSwitcher appearance="icon" />
           <SiteMobileNav />
         </div>
       </div>

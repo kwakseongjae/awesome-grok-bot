@@ -20,7 +20,7 @@ cp .env.example .env.local
 pnpm dev       # or npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Accept-Language sends you to `/ko` or `/en`.
+Open [http://localhost:3000](http://localhost:3000). Unprefixed `/` redirects to `/en`. Korean is `/ko` (there is no `/kr`).
 
 You can:
 
@@ -72,7 +72,7 @@ Setup text should include: name and title, what it owns, what good looks like, w
 
 ## Stack
 
-Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `en`), Neon Postgres, Better Auth (GitHub + Google).
+Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`en` default; `ko` / `ja` / `zh-CN` / `zh-TW`), Neon Postgres, Better Auth (GitHub + Google).
 
 ## License
 
