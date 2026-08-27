@@ -294,7 +294,8 @@
   .grok-bot-mark-glyph,
   .mark-idle,
   .huddle-orbit,
-  .huddle-orbit-face {
+  .huddle-orbit-face,
+  .ops-live-dot {
     animation: none !important;
   }
 }
@@ -369,4 +370,18 @@
 
 .mark-idle {
   animation: mark-idle 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes ops-live {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.28;
+  }
+}
+
+.ops-live-dot {
+  animation: ops-live 1.8s ease-in-out infinite;
 }

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { listPublishedBots } from "@/lib/bots";
 import { SITE_UPDATED_AT } from "@/lib/changelog";
 import { LOCALES } from "@/lib/locales";
+import { OPS_UPDATED_AT } from "@/lib/ops";
 import { absoluteUrl, localePath, pageLanguages, STATIC_INDEX_PATHS } from "@/lib/seo";
 import { SITE_ORIGIN } from "@/lib/site";
 
@@ -15,9 +16,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages: MetadataRoute.Sitemap = STATIC_INDEX_PATHS.flatMap((path) =>
     LOCALES.map((locale) => ({
       url: absoluteUrl(localePath(locale, path)),
-      lastModified: path === "changelog" ? new Date(SITE_UPDATED_AT) : now,
-      changeFrequency: path === "" ? "daily" : "weekly",
-      priority: path === "" ? 1 : path.startsWith("migrate/") ? 0.8 : 0.7,
+      lastModified:
+        path === "changelog" ? new Date(SITE_UPDATED_AT) : path === "ops" ? new Date(OPS_UPDATED_AT) : now,
+      changeFrequency: path === "" || path === "ops" ? "daily" : "weekly",
+      priority: path === "" ? 1 : path.startsWith("migrate/") || path === "ops" ? 0.8 : 0.7,
       alternates: { languages: pageLanguages(path) },
     })),
   );

@@ -18,6 +18,7 @@ export const STATIC_INDEX_PATHS = [
   "",
   "how-to",
   "changelog",
+  "ops",
   "install",
   "migrate",
   "migrate/hermes",
@@ -158,6 +159,50 @@ export const howToJsonLd = ({
     name: step.name,
     text: step.text,
   })),
+});
+
+export const opsJsonLd = ({
+  locale,
+  name,
+  description,
+  dateModified,
+  entries,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+  dateModified: string;
+  entries: { id: string; date: string; headline: string; text: string }[];
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  description,
+  dateModified,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "ops")),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+  about: {
+    "@type": "SoftwareApplication",
+    name: "Mr. Awesome",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    itemListElement: entries.map((entry, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Article",
+        headline: entry.headline,
+        description: entry.text,
+        datePublished: entry.date,
+        url: `${absoluteUrl(localePath(locale, "ops"))}#${entry.id}`,
+      },
+    })),
+  },
 });
 
 export const changelogJsonLd = ({
