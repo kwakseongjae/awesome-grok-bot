@@ -9,7 +9,8 @@ export const routing = defineRouting({
   locales: LOCALES,
   defaultLocale: "en",
   localePrefix: "always",
-  localeDetection: true,
+  localeDetection: false,
+  localeCookie: false,
 });
 
 export function toAppLocale(locale: string): AppLocale {

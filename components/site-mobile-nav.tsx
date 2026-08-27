@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { AuthButtons } from "@/components/auth-buttons";
-import { LocaleSwitcher } from "@/components/locale-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { Button } from "@/components/ui/button";
@@ -76,7 +75,6 @@ export function SiteMobileNav() {
           </SheetClose>
         </nav>
         <div className="mt-auto flex items-center gap-1 border-t p-4">
-          <LocaleSwitcher appearance="icon" />
           <ThemeToggle />
           {SHOW_ACCOUNT_CHROME ? <AuthButtons appearance="icon" /> : null}
         </div>
