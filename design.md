@@ -95,7 +95,9 @@ Listing avatars use the Grok Bot customizer palette in
 - Directory mascot (home huddle center): same raster, white sphere on the
   huddle origin, hat overflowing up. Name: 어썸 / Awesome. Light mode: a hairline
   drop-shadow on the sphere so the white body reads on paper. Not a glow.
-  Dark mode: no extra shadow.
+  Dark mode: no extra shadow. Swap path: [`lib/mascot.ts`](lib/mascot.ts)
+  (`heroSrc` / `markSrc`). Change that file to swap the raster; do not
+  scatter new mascot URLs in components.
 - Listing faces: Grok Bot avatar skins (shape + colour + expression)
   with a blink/float on SVG. Huddle faces also wander gaze like the
   Grok Bot customizer play state. Reduced-motion: static.

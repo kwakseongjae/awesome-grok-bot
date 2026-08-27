@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LOCALES, LOCALE_OG, isAppLocale, type AppLocale } from "@/lib/locales";
 import { DAY_ONE_RECEIPT } from "@/lib/ops";
 import { OG_IMAGE, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
+import { MASCOT } from "@/lib/mascot";
 
 export const SEO_FAQ_KEYS = ["what", "importer", "updates", "inside", "copy", "migrate", "free"] as const;
 export const HOW_TO_STEP_KEYS = [
@@ -18,6 +19,7 @@ export const HOW_TO_STEP_KEYS = [
 export const STATIC_INDEX_PATHS = [
   "",
   "rank",
+  "play",
   "how-to",
   "changelog",
   "ops",
@@ -113,7 +115,7 @@ export const websiteJsonLd = () => ({
       "@id": `${SITE_ORIGIN}/#org`,
       name: SITE_NAME,
       url: SITE_ORIGIN,
-      logo: absoluteUrl("/brand/mascot/awesome-mark.png"),
+      logo: absoluteUrl(MASCOT.markSrc),
       sameAs: ["https://github.com/kwakseongjae/awesome-grok-bot"],
     },
     {
@@ -322,6 +324,33 @@ export const rankingJsonLd = ({
     description: item.description,
     url: absoluteUrl(item.path),
   })),
+});
+
+export const playJsonLd = ({
+  locale,
+  name,
+  description,
+  dateModified,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+  dateModified: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  description,
+  dateModified,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "play")),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+  about: {
+    "@type": "SoftwareApplication",
+    name: "Mr. Awesome",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+  },
 });
 
 export const listingJsonLd = ({

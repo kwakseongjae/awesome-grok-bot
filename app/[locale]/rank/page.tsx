@@ -4,7 +4,10 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CatalogRank } from "@/components/catalog-rank";
 import { JsonLd } from "@/components/json-ld";
+import { SetupTakes } from "@/components/setup-takes";
 import { listPublishedBots } from "@/lib/bots";
+import { listSetupReviews } from "@/lib/community-store";
+import { listingNames } from "@/lib/review-parse";
 import { rankingRows, SCORE_DATE, SCORE_DISCLAIMER } from "@/lib/scores";
 import { breadcrumbJsonLd, localePath, pageSeo, rankingJsonLd } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
@@ -34,6 +37,8 @@ export default async function RankPage({ params }: Props) {
   const t = await getTranslations("rank");
   const bots = await listPublishedBots({ locale: appLocale });
   const rows = rankingRows(bots);
+  const takes = await listSetupReviews();
+  const names = listingNames(bots);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -63,8 +68,9 @@ export default async function RankPage({ params }: Props) {
       >
         ← {t("back")}
       </Link>
-      <div className="mt-8">
+      <div className="mt-8 space-y-12">
         <CatalogRank rows={rows} variant="page" />
+        <SetupTakes reviews={takes} names={names} variant="rank" />
       </div>
     </div>
   );

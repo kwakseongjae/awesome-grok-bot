@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { trackListingCopy, type CopyKind } from "@/lib/analytics";
+import { USED_SETUP_EVENT, usedSetupKey } from "@/lib/reviews";
 
 type Props = {
   text: string;
@@ -13,6 +14,7 @@ type Props = {
   copiedLabel: string;
   ariaLabel: string;
   botId?: string;
+  listingSlug?: string;
   copyKind?: CopyKind;
   size?: "default" | "sm" | "lg";
   variant?: "default" | "outline" | "secondary" | "ghost";
@@ -26,6 +28,7 @@ export function CopyButton({
   copiedLabel,
   ariaLabel,
   botId,
+  listingSlug,
   copyKind,
   size = "default",
   variant = "default",
@@ -41,6 +44,10 @@ export function CopyButton({
       setCopied(true);
       if (copyKind) {
         trackListingCopy({ kind: copyKind, has_bot_id: Boolean(botId) });
+      }
+      if (listingSlug) {
+        window.sessionStorage.setItem(usedSetupKey(listingSlug), "1");
+        window.dispatchEvent(new CustomEvent(USED_SETUP_EVENT, { detail: { slug: listingSlug } }));
       }
       onCopied?.();
       if (botId) {

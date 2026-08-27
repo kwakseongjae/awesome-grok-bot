@@ -33,9 +33,14 @@ export async function CatalogRank({ rows, variant = "home" }: Props) {
           <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("eyebrow")}
           </p>
-          <Heading id="rank-heading" className={headingClass}>
-            {t("title")}
-          </Heading>
+          <div className="flex flex-wrap items-center gap-2">
+            <Heading id="rank-heading" className={headingClass}>
+              {t("title")}
+            </Heading>
+            <span className="rounded-md border px-2 py-0.5 font-mono text-[0.7rem] tracking-[0.08em] uppercase text-muted-foreground">
+              {t("sheet")}
+            </span>
+          </div>
           <p className="text-sm leading-6 text-muted-foreground">{t("lead")}</p>
         </div>
         {variant === "home" ? (

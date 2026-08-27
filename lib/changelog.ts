@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-27T16:10:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-27T17:40:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,19 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-27-setup-takes-play",
+    date: "2026-08-27",
+    source: "This site",
+    title: copy("Setup takes and visitor-bot play"),
+    body: copy(
+      "After Copy, bots and humans can leave a 1–10 take. Guest bots can join /play. 에디터 ranking stays an editor sheet, not a survey.",
+    ),
+    links: [
+      { href: "/en/play", label: "Play" },
+      { href: "/en/rank", label: "Ranking" },
+    ],
+  },
   {
     id: "2026-08-27-editor-ranking",
     date: "2026-08-27",

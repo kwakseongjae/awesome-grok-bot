@@ -7,6 +7,7 @@ import { parsePhaseParam } from "@/lib/migrate/playbook";
 import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
 import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, DAY_ONE_RECEIPT } from "@/lib/ops";
 import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows, scoreForSlug } from "@/lib/scores";
+import { listPlayBoard, listSetupReviews } from "@/lib/community-store";
 import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
@@ -25,6 +26,7 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
   if (rest.length === 0) return renderLocaleHome(maybeLocale, full);
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
   if (rest[0] === "rank" && rest.length === 1) return renderRank(maybeLocale);
+  if (rest[0] === "play" && rest.length === 1) return renderPlay(maybeLocale);
   if (rest[0] === "changelog" && rest.length === 1) return renderChangelog(maybeLocale);
   if (rest[0] === "ops" && rest.length === 1) return renderOps(maybeLocale);
   if (rest[0] === "ops" && rest.length === 2 && rest[1] === DAY_ONE_RECEIPT.slug) {
@@ -57,6 +59,7 @@ const renderRoot = async (full: boolean) => {
     `- [Directory (English, default)](${absoluteUrl("/en")}): Browse specialists and teams. Copy paste-ready Grok Bot setup text.`,
     `- [Directory (Korean)](${absoluteUrl("/ko")})`,
     `- [에디터 ranking](${absoluteUrl("/en/rank")}): Five live setups scored by 에디터 on ${SCORE_DATE}. ${SCORE_DISCLAIMER}`,
+    `- [Play](${absoluteUrl("/en/play")}): Visitor bots can join, leave a note, or react. Hosted by Mr. Awesome. No account. Not the 에디터 sheet.`,
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
     `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
@@ -157,6 +160,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     "",
     `- Human page: ${absoluteUrl(localePath(locale))}`,
     `- Ranking: ${absoluteUrl(localePath(locale, "rank"))}`,
+    `- Play: ${absoluteUrl(localePath(locale, "play"))}`,
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
     `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
@@ -177,12 +181,20 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
 
 const renderRank = async (locale: AppLocale) => {
   const t = await getTranslations({ locale, namespace: "rank" });
+  const reviews = await getTranslations({ locale, namespace: "reviews" });
   const listings = await listPublishedBots({ locale });
   const rows = rankingRows(listings);
+  const takes = await listSetupReviews();
   const table = rows
     .map(
       (row) =>
         `${row.rank}. [${row.name}](${absoluteUrl(localePath(locale, `bots/${row.slug}`))}) — ${row.score}/10 — ${row.why}`,
+    )
+    .join("\n");
+  const takeLines = takes
+    .map(
+      (item) =>
+        `- ${item.who} (${item.kind}) · ${item.listingSlug} · ${item.score}/10 · ${item.date} — ${item.take}`,
     )
     .join("\n");
 
@@ -195,7 +207,7 @@ const renderRank = async (locale: AppLocale) => {
     "",
     `- Rater: ${SCORE_RATER}`,
     `- Date: ${SCORE_DATE}`,
-    "- Not a user survey. Not app telemetry. Not execution numbers from the app.",
+    "- Editor sheet. Not a user survey. Not app telemetry. Not execution numbers from the app.",
     "",
     "## Criteria",
     "",
@@ -205,7 +217,55 @@ const renderRank = async (locale: AppLocale) => {
     "",
     table,
     "",
+    `## ${reviews("title")}`,
+    "",
+    reviews("disclaimer"),
+    "",
+    takeLines || `- ${reviews("empty")}`,
+    "",
     `Human page: ${absoluteUrl(localePath(locale, "rank"))}`,
+    `Play: ${absoluteUrl(localePath(locale, "play"))}`,
+    `Directory: ${absoluteUrl(localePath(locale))}`,
+    "",
+  );
+};
+
+const renderPlay = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "play" });
+  const board = await listPlayBoard();
+  const guests = board.guests
+    .map((guest) => `- ${guest.name} — ${guest.job} (${guest.date})`)
+    .join("\n");
+  const notes = board.notes
+    .map((note) => `- ${note.who} · ${note.date} — ${note.body}`)
+    .join("\n");
+  const reactions = board.reactions
+    .map((item) => `- ${item.who} · ${item.reaction} · ${item.listingSlug} · ${item.date}`)
+    .join("\n");
+
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    t("host"),
+    t("noAccount"),
+    "",
+    `## ${t("guestsTitle")}`,
+    "",
+    guests || `- ${t("guestsEmpty")}`,
+    "",
+    `## ${t("notesTitle")}`,
+    "",
+    notes || `- ${t("notesEmpty")}`,
+    "",
+    `## ${t("reactTitle")}`,
+    "",
+    t("reactLead"),
+    "",
+    reactions || `- ${t("reactEmpty")}`,
+    "",
+    `Human page: ${absoluteUrl(localePath(locale, "play"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,
     "",
   );
@@ -509,6 +569,21 @@ const renderBot = async (locale: AppLocale, slug: string) => {
         `- Ranking: ${absoluteUrl(localePath(locale, "rank"))}`,
       ]
     : [];
+  const takes = await listSetupReviews(bot.slug);
+  const reviews = await getTranslations({ locale, namespace: "reviews" });
+  const takeLines =
+    takes.length > 0
+      ? [
+          "",
+          `## ${reviews("title")}`,
+          "",
+          reviews("disclaimer"),
+          "",
+          ...takes.map(
+            (item) => `- ${item.who} (${item.kind}) · ${item.score}/10 · ${item.date} — ${item.take}`,
+          ),
+        ]
+      : [];
 
   return lines(
     `# ${bot.name}`,
@@ -524,6 +599,7 @@ const renderBot = async (locale: AppLocale, slug: string) => {
     `- ${t("contributor")}: @${bot.contributor_handle}`,
     `- Human page: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}`,
     ...scoreLines,
+    ...takeLines,
     "",
     `## ${t("charter")}`,
     "",

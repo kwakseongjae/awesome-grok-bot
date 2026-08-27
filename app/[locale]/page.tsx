@@ -9,11 +9,15 @@ import { HomeInstall } from "@/components/home-install";
 import { HomeMigrate } from "@/components/home-migrate";
 import { HomeOpsBar } from "@/components/home-ops-bar";
 import { HomeReading } from "@/components/home-reading";
+import { PlayCorner } from "@/components/play-corner";
 import { SetupGuide } from "@/components/setup-guide";
+import { SetupTakes } from "@/components/setup-takes";
 import { SiteFaq } from "@/components/site-faq";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
+import { listPlayBoard, listSetupReviews } from "@/lib/community-store";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
+import { listingNames } from "@/lib/review-parse";
 import { rankingRows } from "@/lib/scores";
 import { pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
@@ -43,6 +47,9 @@ export default async function HomePage({ params, searchParams }: Props) {
   const uiLocale = toAppLocale(locale);
   const bots = await listPublishedBots({ locale: uiLocale });
   const integrations = await listIntegrations();
+  const takes = await listSetupReviews();
+  const play = await listPlayBoard();
+  const names = listingNames(bots);
   const huddle = LISTING_FACE_SLUGS.map((slug) => {
     const match =
       bots.find((bot) => bot.slug === slug && bot.locale === uiLocale) ??
@@ -73,6 +80,8 @@ export default async function HomePage({ params, searchParams }: Props) {
       <HomeInstall />
       <HomeReading />
       <CatalogRank rows={rankingRows(bots)} />
+      <SetupTakes reviews={takes} names={names} variant="home" />
+      <PlayCorner notes={play.notes} guests={play.guests} />
       <Directory
         bots={bots}
         integrations={integrations}

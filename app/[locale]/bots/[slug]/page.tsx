@@ -9,9 +9,13 @@ import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
 import { ScorePanel } from "@/components/score-panel";
+import { SetupReviewForm } from "@/components/setup-review-form";
+import { SetupTakes } from "@/components/setup-takes";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
+import { listSetupReviews } from "@/lib/community-store";
 import { JsonLd } from "@/components/json-ld";
+import { listingNames } from "@/lib/review-parse";
 import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { scoreForSlug } from "@/lib/scores";
 import { SITE_NAME } from "@/lib/site";
@@ -42,6 +46,8 @@ export default async function BotDetailPage({ params }: Props) {
   if (!bot) notFound();
 
   const related = await listRelatedBots(bot);
+  const takes = await listSetupReviews(bot.slug);
+  const names = listingNames([bot, ...related]);
   const added = new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
     new Date(bot.added_at),
   );
@@ -100,6 +106,7 @@ export default async function BotDetailPage({ params }: Props) {
             copiedLabel={t("bot.copied")}
             ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
             botId={bot.id}
+            listingSlug={bot.slug}
             copyKind="listing"
           />
           {bot.kind === "team" ? (
@@ -109,6 +116,7 @@ export default async function BotDetailPage({ params }: Props) {
               copiedLabel={t("bot.copied")}
               ariaLabel={t("a11y.copyAll", { name: bot.name })}
               botId={bot.id}
+              listingSlug={bot.slug}
               copyKind="team"
               variant="ghost"
             />
@@ -123,6 +131,11 @@ export default async function BotDetailPage({ params }: Props) {
       </header>
 
       {scored ? <ScorePanel entry={scored} /> : null}
+
+      <section className="mt-12 space-y-4">
+        <SetupTakes reviews={takes} names={names} variant="listing" listingSlug={bot.slug} />
+        <SetupReviewForm listingSlug={bot.slug} />
+      </section>
 
       <section className="mt-12 space-y-3">
         <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">

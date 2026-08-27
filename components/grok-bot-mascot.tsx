@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { MASCOT } from "@/lib/mascot";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -16,7 +17,7 @@ export const GrokBotMascot = ({
   className,
   variant = "hero",
 }: Props) => {
-  const src = variant === "mark" ? "/brand/mascot/awesome-mark.png" : "/brand/mascot/awesome.png";
+  const src = variant === "mark" ? MASCOT.markSrc : MASCOT.heroSrc;
   const intrinsic = size ?? 256;
 
   return (

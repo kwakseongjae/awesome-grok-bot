@@ -3,6 +3,7 @@ import { listPublishedBots } from "@/lib/bots";
 import { SITE_UPDATED_AT } from "@/lib/changelog";
 import { LOCALES } from "@/lib/locales";
 import { OPS_UPDATED_AT } from "@/lib/ops";
+import { PLAY_UPDATED_AT } from "@/lib/community-types";
 import { SCORE_DATE } from "@/lib/scores";
 import { absoluteUrl, localePath, pageLanguages, STATIC_INDEX_PATHS } from "@/lib/seo";
 import { SITE_ORIGIN } from "@/lib/site";
@@ -22,6 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           ? new Date(SITE_UPDATED_AT)
           : path === "rank"
             ? new Date(SCORE_DATE)
+            : path === "play"
+              ? new Date(PLAY_UPDATED_AT)
             : path === "ops" || path.startsWith("ops/")
             ? new Date(OPS_UPDATED_AT)
             : now,

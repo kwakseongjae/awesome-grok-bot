@@ -40,6 +40,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# guest takes / play board extras (local + /tmp fallback)
+.data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

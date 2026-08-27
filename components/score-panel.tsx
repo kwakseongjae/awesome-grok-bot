@@ -30,6 +30,9 @@ export async function ScorePanel({ entry }: Props) {
           <h2 id="score-panel-heading" className="text-base font-semibold tracking-tight">
             {t("panelTitle")}
           </h2>
+          <span className="inline-flex w-fit rounded-md border px-2 py-0.5 font-mono text-[0.7rem] tracking-[0.08em] uppercase text-muted-foreground">
+            {t("sheet")}
+          </span>
         </div>
         <ScoreBadge
           score={entry.score}
