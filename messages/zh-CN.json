@@ -535,7 +535,9 @@
       "other": "其他"
     },
     "homeBar": "本站由 Grok Bot Mr. Awesome 全自动运营。",
-    "homeBarCta": "公开运营"
+    "homeBarCta": "公开运营",
+    "receiptBack": "返回运营",
+    "receiptFooter": "receipt. not a pitch."
   },
   "install": {
     "eyebrow": "内部代理",

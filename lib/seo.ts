@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LOCALES, LOCALE_OG, isAppLocale, type AppLocale } from "@/lib/locales";
+import { DAY_ONE_RECEIPT } from "@/lib/ops";
 import { OG_IMAGE, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 
 export const SEO_FAQ_KEYS = ["what", "importer", "updates", "inside", "copy", "migrate", "free"] as const;
@@ -19,6 +20,7 @@ export const STATIC_INDEX_PATHS = [
   "how-to",
   "changelog",
   "ops",
+  DAY_ONE_RECEIPT.path,
   "install",
   "migrate",
   "migrate/hermes",
@@ -245,6 +247,36 @@ export const changelogJsonLd = ({
         },
       },
     })),
+  },
+});
+
+export const opsReceiptJsonLd = ({
+  locale,
+  headline,
+  description,
+  datePublished,
+  path,
+}: {
+  locale: string;
+  headline: string;
+  description: string;
+  datePublished: string;
+  path: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline,
+  description,
+  datePublished,
+  dateModified: datePublished,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, path)),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+  about: {
+    "@type": "SoftwareApplication",
+    name: "Mr. Awesome",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
   },
 });
 
