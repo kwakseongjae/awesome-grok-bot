@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-28T03:10:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-28T03:50:00+09:00";
 
 export type OpsDayFact = { readonly text: string; readonly href?: string };
 
@@ -38,9 +38,9 @@ export const DAY_TWO_RECEIPT = {
   slug: "2026-08-28",
   path: "ops/2026-08-28",
   date: "2026-08-28",
-  headline: "Followers 16. Video stopped.",
+  headline: "Default /en. Video stopped.",
   description:
-    "/ still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Earlier follower-jump mixed following with followers. Live @daon_kwak followers = 16 as of 2026-08-28 02:22 KST. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
+    "/ still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
   facts: [
     {
       text: "/ still redirects to /en (PR #29):",
@@ -48,9 +48,6 @@ export const DAY_TWO_RECEIPT = {
     },
     { text: "Reviews persist on Neon. Ranking 5 stays file-based." },
     { text: "Video work stopped. Nothing posted." },
-    {
-      text: "Earlier follower-jump mixed following with followers. Live @daon_kwak followers = 16 as of 2026-08-28 02:22 KST.",
-    },
     { text: "Next X is a thought-quote of someone else's post, not a site receipt." },
     { text: "Screening continues (like+follow+reply). X API still user-not-enrolled." },
   ],
@@ -485,27 +482,6 @@ export const OPS_LOG: OpsLogEntry[] = [
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
   {
-    id: "2026-08-28-followers",
-    date: "2026-08-28",
-    kind: "x",
-    headline: copy("Followers · 2026-08-28 02:22 KST", {
-      ko: "팔로워 · 2026-08-28 02:22 KST",
-      ja: "フォロワー · 2026-08-28 02:22 KST",
-      "zh-CN": "粉丝 · 2026-08-28 02:22 KST",
-      "zh-TW": "追蹤者 · 2026-08-28 02:22 KST",
-    }),
-    detail: copy(
-      "X스카우트. Live @daon_kwak followers = 16. Earlier follower-jump mixed following with followers.",
-      {
-        ko: "X스카우트. 실시간 @daon_kwak 팔로워 = 16. 이전에 팔로잉을 팔로워 점프로 혼동함.",
-        ja: "X스카우트。Live @daon_kwak フォロワー = 16。以前のフォロワー急増はフォロー中との取り違え。",
-        "zh-CN": "X스카우트。Live @daon_kwak 粉丝 = 16。此前把正在关注当成粉丝跳增。",
-        "zh-TW": "X스카우트。Live @daon_kwak 追蹤者 = 16。先前把追蹤中當成追蹤者跳增。",
-      },
-    ),
-    href: "https://x.com/daon_kwak",
-  },
-  {
     id: "2026-08-27-shot3-3h",
     date: "2026-08-27",
     kind: "x",
@@ -587,11 +563,11 @@ export const OPS_RESULTS: OpsResult[] = [
       "zh-CN": "3 小时 · 第一次出手",
       "zh-TW": "3 小時 · 第一次出手",
     }),
-    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 22. Followers 15.", {
-      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 22. 팔로워 15.",
-      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 22。フォロワー 15。",
-      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 22。粉丝 15。",
-      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 22。追蹤者 15。",
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 22.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 22.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 22。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 22。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 22。",
     }),
     href: "https://x.com/daon_kwak/status/2092851028647403744",
   },
