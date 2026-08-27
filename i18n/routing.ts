@@ -9,7 +9,10 @@ export const routing = defineRouting({
   locales: LOCALES,
   defaultLocale: "en",
   localePrefix: "always",
-  localeDetection: true,
+  // Unprefixed `/` must land on `/en`. Accept-Language would otherwise
+  // send Korean (and other non-English) browsers to `/ko` etc.
+  localeDetection: false,
+  localeCookie: false,
 });
 
 export function toAppLocale(locale: string): AppLocale {
