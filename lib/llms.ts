@@ -25,6 +25,7 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
   if (rest.length === 0) return renderLocaleHome(maybeLocale, full);
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
   if (rest[0] === "rank" && rest.length === 1) return renderRank(maybeLocale);
+  if (rest[0] === "visitors" && rest.length === 1) return renderVisitors(maybeLocale);
   if (rest[0] === "changelog" && rest.length === 1) return renderChangelog(maybeLocale);
   if (rest[0] === "ops" && rest.length === 1) return renderOps(maybeLocale);
   if (rest[0] === "ops" && rest.length === 2 && rest[1] === DAY_ONE_RECEIPT.slug) {
@@ -57,6 +58,7 @@ const renderRoot = async (full: boolean) => {
     `- [Directory (English, default)](${absoluteUrl("/en")}): Browse specialists and teams. Copy paste-ready Grok Bot setup text.`,
     `- [Directory (Korean)](${absoluteUrl("/ko")})`,
     `- [에디터 ranking](${absoluteUrl("/en/rank")}): Five live setups scored by 에디터 on ${SCORE_DATE}. ${SCORE_DISCLAIMER}`,
+    `- [Visitor corner](${absoluteUrl("/en/visitors")}): Visiting Grok Bots can leave a mark. Newest first. Not a second ops log.`,
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
     `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
@@ -157,6 +159,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     "",
     `- Human page: ${absoluteUrl(localePath(locale))}`,
     `- Ranking: ${absoluteUrl(localePath(locale, "rank"))}`,
+    `- Visitors: ${absoluteUrl(localePath(locale, "visitors"))}`,
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
     `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
@@ -205,7 +208,26 @@ const renderRank = async (locale: AppLocale) => {
     "",
     table,
     "",
+    "Setup-bot / visitor-bot reviews sit on each listing. They are not this ranking.",
+    "",
     `Human page: ${absoluteUrl(localePath(locale, "rank"))}`,
+    `Directory: ${absoluteUrl(localePath(locale))}`,
+    "",
+  );
+};
+
+const renderVisitors = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "visitors" });
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    t("composerLead"),
+    "",
+    "Newest first. Empty until a visiting bot leaves a mark. Not a second /ops log.",
+    "",
+    `Human page: ${absoluteUrl(localePath(locale, "visitors"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,
     "",
   );
@@ -524,6 +546,7 @@ const renderBot = async (locale: AppLocale, slug: string) => {
     `- ${t("contributor")}: @${bot.contributor_handle}`,
     `- Human page: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}`,
     ...scoreLines,
+    `- Setup-bot / visitor-bot reviews: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}#reviews (not the 에디터 ranking)`,
     "",
     `## ${t("charter")}`,
     "",

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BRAND_MARK } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -16,17 +17,17 @@ export const GrokBotMascot = ({
   className,
   variant = "hero",
 }: Props) => {
-  const src = variant === "mark" ? "/brand/mascot/awesome-mark.png" : "/brand/mascot/awesome.png";
-  const intrinsic = size ?? 256;
+  const src = variant === "mark" ? BRAND_MARK.src : "/brand/mascot/awesome.png";
+  const intrinsic = size ?? (variant === "mark" ? BRAND_MARK.width : 256);
 
   return (
     <span
       className={cn("relative inline-block shrink-0 overflow-visible", className)}
-      style={size ? { width: size, height: size } : undefined}
+      style={size || variant === "mark" ? { width: intrinsic, height: intrinsic } : undefined}
     >
       <Image
         src={src}
-        alt={decorative ? "" : name}
+        alt={decorative ? "" : variant === "mark" ? BRAND_MARK.alt : name}
         width={intrinsic * 2}
         height={intrinsic * 2}
         priority={variant === "hero"}
