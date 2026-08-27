@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/how-to" as const, key: "howTo" as const },
   { href: "/install" as const, key: "install" as const },
   { href: "/changelog" as const, key: "changelog" as const },
+  { href: "/ops" as const, key: "ops" as const },
   { href: "/migrate" as const, key: "migrate" as const },
   ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit" as const, key: "submit" as const }] as const) : []),
 ] as const;

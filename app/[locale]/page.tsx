@@ -6,6 +6,7 @@ import { HeroHuddle } from "@/components/hero-huddle";
 import { HomeChangelog } from "@/components/home-changelog";
 import { HomeInstall } from "@/components/home-install";
 import { HomeMigrate } from "@/components/home-migrate";
+import { HomeOpsBar } from "@/components/home-ops-bar";
 import { HomeReading } from "@/components/home-reading";
 import { SetupGuide } from "@/components/setup-guide";
 import { SiteFaq } from "@/components/site-faq";
@@ -49,6 +50,7 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-12 sm:py-16">
+      <HomeOpsBar />
       <section className="space-y-6 overflow-x-clip border-b pb-12">
         <HeroHuddle listings={huddle} />
         <div className="max-w-2xl space-y-4">

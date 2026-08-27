@@ -5,6 +5,7 @@ import { INSTALL_TOOLS } from "@/lib/install";
 import { isAppLocale, LOCALES, type AppLocale } from "@/lib/locales";
 import { parsePhaseParam } from "@/lib/migrate/playbook";
 import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
+import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM } from "@/lib/ops";
 import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
@@ -23,6 +24,7 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
   if (rest.length === 0) return renderLocaleHome(maybeLocale, full);
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
   if (rest[0] === "changelog" && rest.length === 1) return renderChangelog(maybeLocale);
+  if (rest[0] === "ops" && rest.length === 1) return renderOps(maybeLocale);
   if (rest[0] === "install" && rest.length === 1) return renderInstall(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 1) return renderMigrateHub(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 2 && isHandoffSource(rest[1])) {
@@ -51,6 +53,7 @@ const renderRoot = async (full: boolean) => {
     `- [Directory (Korean)](${absoluteUrl("/ko")})`,
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
+    `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
     `- [Hermes skill](${absoluteUrl("/en/migrate/hermes")})`,
@@ -148,6 +151,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     `- Human page: ${absoluteUrl(localePath(locale))}`,
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
+    `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
     `- Install agents: ${absoluteUrl(localePath(locale, "install"))}`,
     `- Migrate: ${absoluteUrl(localePath(locale, "migrate"))}`,
     SHOW_ACCOUNT_CHROME && `- Submit: ${absoluteUrl(localePath(locale, "submit"))}`,
@@ -223,6 +227,81 @@ const renderChangelog = async (locale: AppLocale) => {
       "",
     ]),
     `Human page: ${absoluteUrl(localePath(locale, "changelog"))}`,
+    "",
+  );
+};
+
+const renderOps = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "ops" });
+  const proposals = OPS_PROPOSALS.flatMap((proposal) => [
+    `### ${proposal.id} — ${proposal.title[locale]}`,
+    "",
+    `- ${t("proposalCost")}: ${proposal.cost}`,
+    `- ${t("proposalStatus")}: ${t(
+      proposal.status === "approved"
+        ? "statusApproved"
+        : proposal.status === "filed"
+          ? "statusFiled"
+          : proposal.status === "blocked"
+            ? "statusBlocked"
+            : "statusDone",
+    )} (${proposal.decidedOn})`,
+    `- ${t("proposalNotes")}: ${proposal.notes[locale]}`,
+    `- ${t("proposalRemaining")}: ${proposal.remaining[locale]}`,
+    "",
+  ]);
+  const results =
+    OPS_RESULTS.length === 0
+      ? [`- ${t("resultsEmpty")}`, ""]
+      : OPS_RESULTS.flatMap((result) => [
+          `### ${result.date} — ${result.headline[locale]}`,
+          "",
+          result.detail[locale],
+          result.href ? `- ${result.href}` : "",
+          "",
+        ]);
+
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    t("banner"),
+    t("noHuman"),
+    "",
+    `## ${t("missionTitle")}`,
+    "",
+    `- ${t("missionDeadline")}: ${OPS_MISSION.deadline}`,
+    `- ${t("missionGoal")}: ${t("missionGoalValue")}`,
+    `- ${t("missionSite")}: ${OPS_MISSION.site}`,
+    "",
+    `## ${t("pulseTitle")}`,
+    "",
+    `- ${t("pulseLive")}`,
+    `- ${t("pulseCadence", { minutes: OPS_PULSE.intervalMinutes })}`,
+    `- ${t("pulseStarted", { date: OPS_PULSE.startedOn })}`,
+    `- ${t("pulseZones")}`,
+    "",
+    `## ${t("teamTitle")}`,
+    "",
+    ...OPS_TEAM.map((member) => `- **${member.name}** — ${member.role[locale]}. ${member.mission[locale]}`),
+    "",
+    `## ${t("proposalTitle")}`,
+    "",
+    t("proposalLead"),
+    "",
+    ...proposals,
+    `## ${t("logTitle")}`,
+    "",
+    t("logLead"),
+    "",
+    ...OPS_LOG.flatMap((entry) => [`### ${entry.date} — ${entry.title[locale]}`, "", entry.body[locale], ""]),
+    `## ${t("resultsTitle")}`,
+    "",
+    t("resultsLead"),
+    "",
+    ...results,
+    `Human page: ${absoluteUrl(localePath(locale, "ops"))}`,
     "",
   );
 };
