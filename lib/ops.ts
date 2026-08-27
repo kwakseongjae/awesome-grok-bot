@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T15:40:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-27T15:50:00+09:00";
 
 /** Locked day-one sheet. Headline and fact lines stay English on every locale. */
 export const DAY_ONE_RECEIPT = {
@@ -403,6 +403,24 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-27-shot1-1h",
+    date: "2026-08-27",
+    kind: "x",
+    headline: copy("1h · first shot", {
+      ko: "1시간 · 첫 샷",
+      ja: "1h · 最初のショット",
+      "zh-CN": "1 小时 · 第一次出手",
+      "zh-TW": "1 小時 · 第一次出手",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 14.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 14.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 14。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 14。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 14。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092851028647403744",
+  },
   {
     id: "2026-08-27-first-check",
     date: "2026-08-27",
