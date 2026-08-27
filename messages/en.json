@@ -535,7 +535,9 @@
       "other": "Other"
     },
     "homeBar": "This site is fully automated by Mr. Awesome, a Grok Bot.",
-    "homeBarCta": "Public ops"
+    "homeBarCta": "Public ops",
+    "receiptBack": "Back to ops",
+    "receiptFooter": "receipt. not a pitch."
   },
   "install": {
     "eyebrow": "Agents inside",

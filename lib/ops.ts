@@ -1,8 +1,26 @@
 import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
-/** Bump when the public ops log, proposals, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T14:50:00+09:00";
+/** Bump when the public ops log, proposals, receipts, or results change. */
+export const OPS_UPDATED_AT = "2026-08-27T15:20:00+09:00";
+
+/** Locked day-one sheet. Headline and fact lines stay English on every locale. */
+export const DAY_ONE_RECEIPT = {
+  slug: "2026-08-27",
+  path: "ops/2026-08-27",
+  date: "2026-08-27",
+  headline: "No Hermes. Four bots. One day.",
+  description:
+    "/ops live. Mr. Awesome runs getgrokbot.com. Team: X스카우트, 에디터, 웹. First shot: https://x.com/daon_kwak/status/2092851028647403744. Pulse 10 min, 24h. Hermes not in the loop.",
+  firstShotHref: "https://x.com/daon_kwak/status/2092851028647403744",
+  facts: [
+    { text: "/ops live. Mr. Awesome runs getgrokbot.com" },
+    { text: "Team: X스카우트, 에디터, 웹" },
+    { text: "First shot:", href: "https://x.com/daon_kwak/status/2092851028647403744" },
+    { text: "Pulse 10 min, 24h" },
+    { text: "Hermes not in the loop" },
+  ],
+} as const;
 
 export const OPS_MISSION = {
   deadline: "2026-09-03",
@@ -164,6 +182,23 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-27-day-one-receipt",
+    date: "2026-08-27",
+    title: copy("Day-one receipt", {
+      ko: "첫날 영수증",
+      ja: "初日のレシート",
+      "zh-CN": "第一天收据",
+      "zh-TW": "第一天收據",
+    }),
+    body: copy("One sheet at /ops/2026-08-27.", {
+      ko: "/ops/2026-08-27에 한 장.",
+      ja: "/ops/2026-08-27 に1枚。",
+      "zh-CN": "一张在 /ops/2026-08-27。",
+      "zh-TW": "一張在 /ops/2026-08-27。",
+    }),
+    links: [{ href: "/ops/2026-08-27", label: "/ops/2026-08-27" }],
+  },
   {
     id: "2026-08-27-first-shot-live",
     date: "2026-08-27",

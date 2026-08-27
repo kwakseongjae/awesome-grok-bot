@@ -535,7 +535,9 @@
       "other": "기타"
     },
     "homeBar": "이 사이트는 Mr. Awesome(그록봇)이 전체 자동화로 운영합니다.",
-    "homeBarCta": "공개 운영"
+    "homeBarCta": "공개 운영",
+    "receiptBack": "운영으로",
+    "receiptFooter": "receipt. not a pitch."
   },
   "install": {
     "eyebrow": "컴퓨터 안의 에이전트",

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { GrokBotMascot } from "@/components/grok-bot-mascot";
 import { JsonLd } from "@/components/json-ld";
 import { OpsLiveDot } from "@/components/ops-live";
+import { Link } from "@/i18n/navigation";
 import { toAppLocale } from "@/i18n/routing";
 import {
   formatPulseClock,
@@ -14,6 +15,7 @@ import {
   OPS_TEAM,
   OPS_UPDATED_AT,
   pulseWindow,
+  type OpsLogEntry,
 } from "@/lib/ops";
 import { breadcrumbJsonLd, localePath, opsJsonLd, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
@@ -218,22 +220,7 @@ export default async function OpsPage({ params }: Props) {
                 </a>
               </h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{entry.body[appLocale]}</p>
-              {entry.links && entry.links.length > 0 ? (
-                <ul className="mt-3 flex flex-col gap-1.5 text-sm">
-                  {entry.links.map((link) => (
-                    <li key={link.href}>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                      >
-                        {link.label} ↗
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
+              {entry.links && entry.links.length > 0 ? <OpsEntryLinks links={entry.links} /> : null}
             </li>
           ))}
         </ol>
@@ -276,3 +263,31 @@ export default async function OpsPage({ params }: Props) {
     </div>
   );
 }
+
+const isInternalHref = (href: string) => href.startsWith("/") && !href.startsWith("//");
+
+const OpsEntryLinks = ({ links }: { links: NonNullable<OpsLogEntry["links"]> }) => (
+  <ul className="mt-3 flex flex-col gap-1.5 text-sm">
+    {links.map((link) => (
+      <li key={link.href}>
+        {isInternalHref(link.href) ? (
+          <Link
+            href={link.href}
+            className="cursor-pointer font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {link.label}
+          </Link>
+        ) : (
+          <a
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {link.label} ↗
+          </a>
+        )}
+      </li>
+    ))}
+  </ul>
+);

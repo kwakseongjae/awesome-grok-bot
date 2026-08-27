@@ -5,7 +5,7 @@ import { INSTALL_TOOLS } from "@/lib/install";
 import { isAppLocale, LOCALES, type AppLocale } from "@/lib/locales";
 import { parsePhaseParam } from "@/lib/migrate/playbook";
 import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
-import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM } from "@/lib/ops";
+import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, DAY_ONE_RECEIPT } from "@/lib/ops";
 import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
@@ -25,6 +25,9 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
   if (rest[0] === "changelog" && rest.length === 1) return renderChangelog(maybeLocale);
   if (rest[0] === "ops" && rest.length === 1) return renderOps(maybeLocale);
+  if (rest[0] === "ops" && rest.length === 2 && rest[1] === DAY_ONE_RECEIPT.slug) {
+    return renderOpsReceipt(maybeLocale);
+  }
   if (rest[0] === "install" && rest.length === 1) return renderInstall(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 1) return renderMigrateHub(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 2 && isHandoffSource(rest[1])) {
@@ -54,6 +57,7 @@ const renderRoot = async (full: boolean) => {
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
     `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
+    `- [Day-one receipt](${absoluteUrl("/en/ops/2026-08-27")}): ${DAY_ONE_RECEIPT.headline}`,
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
     `- [Hermes skill](${absoluteUrl("/en/migrate/hermes")})`,
@@ -152,6 +156,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
     `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
+    `- Day-one receipt: ${absoluteUrl(localePath(locale, DAY_ONE_RECEIPT.path))}`,
     `- Install agents: ${absoluteUrl(localePath(locale, "install"))}`,
     `- Migrate: ${absoluteUrl(localePath(locale, "migrate"))}`,
     SHOW_ACCOUNT_CHROME && `- Submit: ${absoluteUrl(localePath(locale, "submit"))}`,
@@ -308,6 +313,25 @@ const renderOps = async (locale: AppLocale) => {
     "",
     ...results,
     `Human page: ${absoluteUrl(localePath(locale, "ops"))}`,
+    "",
+  );
+};
+
+const renderOpsReceipt = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "ops" });
+  return lines(
+    `# ${DAY_ONE_RECEIPT.headline}`,
+    "",
+    DAY_ONE_RECEIPT.date,
+    "",
+    ...DAY_ONE_RECEIPT.facts.map((fact) =>
+      "href" in fact ? `- ${fact.text} ${fact.href}` : `- ${fact.text}`,
+    ),
+    "",
+    t("receiptFooter"),
+    "",
+    `Human page: ${absoluteUrl(localePath(locale, DAY_ONE_RECEIPT.path))}`,
+    `Ops log: ${absoluteUrl(localePath(locale, "ops"))}`,
     "",
   );
 };
