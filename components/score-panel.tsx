@@ -41,6 +41,7 @@ export async function ScorePanel({ entry }: Props) {
       <p className="text-sm leading-6 text-muted-foreground">
         {t("place", { rank: entry.rank, total: 5 })}
       </p>
+      <p className="text-sm leading-6">{entry.why}</p>
 
       <dl className="grid gap-2 text-sm sm:grid-cols-2">
         <div>
