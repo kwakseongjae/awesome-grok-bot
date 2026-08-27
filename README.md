@@ -12,7 +12,7 @@ Visual system: Grok-like white/black monotone. See [`design.md`](design.md). Lis
 
 ## Run locally (no secrets)
 
-The catalog works from committed seed data when Supabase is not configured.
+The catalog works from committed seed data when `DATABASE_URL` is not set.
 
 ```bash
 pnpm install   # or npm install
@@ -34,33 +34,31 @@ You can:
 
 Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secrets are still stripped from handoff files.
 
-## Run with secrets (Supabase + Better Auth)
+## Run with secrets (Neon + Better Auth)
 
-1. Create a Supabase project. In the SQL editor, run in order:
-   - `supabase/migrations/20260819000001_init.sql`
-   - `supabase/migrations/20260819000002_seed.sql`
-   - later locale and catalog migrations under `supabase/migrations/`
-   - `supabase/migrations/20260827000001_visitor_posts.sql` (setup-bot reviews + visitor marks)
-2. Create GitHub and Google OAuth apps. Callbacks:
+1. Create a Neon project (free plan). Use the **pooled** connection string as `DATABASE_URL`.
+2. Apply SQL in `db/migrations/` (filename order), either `pnpm db:migrate` or the Neon SQL editor:
+   - `db/migrations/20260819000001_init.sql`
+   - `db/migrations/20260819000002_seed.sql`
+   - later locale and catalog migrations under `db/migrations/`
+   - `db/migrations/20260827000001_visitor_posts.sql` (setup-bot reviews + visitor marks)
+3. Create GitHub and Google OAuth apps. Callbacks:
    - `{BETTER_AUTH_URL}/api/auth/callback/github`
    - `{BETTER_AUTH_URL}/api/auth/callback/google`
-3. Fill `.env.local` (see `.env.example`):
+4. Fill `.env.local` (see `.env.example`):
 
 | Variable | Used for |
 | --- | --- |
 | `NEXT_PUBLIC_APP_URL` | Canonical site URL |
 | `BETTER_AUTH_URL` | Better Auth base URL (same as the site URL) |
 | `BETTER_AUTH_SECRET` | Session signing (`openssl rand -base64 32`) |
-| `DATABASE_URL` | Supabase Postgres URI for Better Auth tables |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public reads (published bots, RLS) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server writes after Better Auth session checks; also stores setup-bot reviews and visitor marks |
+| `DATABASE_URL` | Neon pooled Postgres URI. Catalog reads/writes, setup-bot reviews, visitor marks, copy events, Better Auth |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub login |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google login |
 
-On Vercel, set the same values. `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` should be the production origin.
+On Vercel, set the same values. `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` should be the production origin. `DATABASE_URL` is the only database secret; do not add `NEXT_PUBLIC_SUPABASE_*` keys.
 
-**Auth vs RLS:** published rows are public-read. Drafts and writes are not allowed for the anon key. The app uses the service role only after a Better Auth session, and only the author can publish their own listing (no review board in v1).
+Writes go through the Next.js server after Better Auth session checks (listings) or the public review/visitor routes (rate-limited). The directory query only returns `status = 'published'` rows. Drafts are not listed publicly. There is no review board in v1.
 
 X / Twitter sign-in is not wired. Better Auth can add a `twitter` social provider, but it needs a separate OAuth app and secrets; this directory keeps GitHub + Google only.
 
@@ -68,13 +66,13 @@ X / Twitter sign-in is not wired. Better Auth can add a `twitter` social provide
 
 - **In the app:** sign in → Submit. Markdown-like fields. You can publish immediately.
 - **From a public URL:** `/from-link` fetches title/text (no LLM key) and fills a setup-text template. If fetch fails, fill the form yourself.
-- **In seed data:** existing listings live in `data/seed-bots.json`. New official-role listings live in `data/catalog.ts` (local fallback). Keep `supabase/migrations/20260819000002_seed.sql` in sync for the original seed if you use Postgres.
+- **In seed data:** existing listings live in `data/seed-bots.json`. New official-role listings live in `data/catalog.ts` (local fallback). Keep `db/migrations/20260819000002_seed.sql` in sync for the original seed if you use Postgres.
 
 Setup text should include: name and title, what it owns, what good looks like, what it must never do without asking, plugins, and a first task. Teams add member roles.
 
 ## Stack
 
-Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `en`), Supabase Postgres, Better Auth (GitHub + Google).
+Next.js App Router, TypeScript, Tailwind, shadcn/ui, next-intl (`ko` default, `en`), Neon Postgres, Better Auth (GitHub + Google).
 
 ## License
 

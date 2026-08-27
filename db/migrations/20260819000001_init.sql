@@ -1,5 +1,6 @@
--- Grok Bot directory schema: Better Auth tables + catalog tables + RLS.
--- Apply in the Supabase SQL editor or via `supabase db push`.
+-- Grok Bot directory schema: Better Auth tables + catalog tables.
+-- Plain Postgres (Neon). Apply with `pnpm db:migrate` or the Neon SQL editor.
+-- App reads/writes go through Next.js using DATABASE_URL (pooled). No Supabase API.
 
 create extension if not exists pgcrypto;
 
@@ -62,9 +63,11 @@ create table if not exists public.profiles (
   id text primary key references "user"("id") on delete cascade,
   handle text not null unique,
   display_name text not null,
-  locale text not null default 'ko' check (locale in ('ko', 'en')),
+  locale text not null default 'ko',
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint profiles_locale_check
+    check (locale in ('ko', 'en', 'ja', 'zh-CN', 'zh-TW'))
 );
 
 create table if not exists public.bots (
@@ -75,7 +78,7 @@ create table if not exists public.bots (
   category text not null check (
     category in ('productivity', 'sales', 'marketing', 'ops', 'success', 'personal')
   ),
-  locale text not null check (locale in ('ko', 'en')),
+  locale text not null,
   summary text not null,
   prompt text not null,
   integrations text[] not null default '{}',
@@ -85,7 +88,9 @@ create table if not exists public.bots (
   created_by text references public.profiles(id) on delete set null,
   added_at timestamptz not null default now(),
   copy_count integer not null default 0,
-  unique (slug, locale)
+  unique (slug, locale),
+  constraint bots_locale_check
+    check (locale in ('ko', 'en', 'ja', 'zh-CN', 'zh-TW'))
 );
 
 create index if not exists bots_status_idx on public.bots (status);
@@ -111,40 +116,3 @@ create table if not exists public.copy_events (
 );
 
 create index if not exists copy_events_bot_id_idx on public.copy_events (bot_id);
-
-alter table public.profiles enable row level security;
-alter table public.bots enable row level security;
-alter table public.team_members enable row level security;
-alter table public.copy_events enable row level security;
-
--- Anon / authenticated clients may read published listings.
--- Writes go through the Next.js server with the service role after Better Auth
--- checks the session. Service role bypasses RLS; app code enforces ownership.
-
-drop policy if exists profiles_public_read on public.profiles;
-create policy profiles_public_read
-  on public.profiles
-  for select
-  using (true);
-
-drop policy if exists bots_public_read_published on public.bots;
-create policy bots_public_read_published
-  on public.bots
-  for select
-  using (status = 'published');
-
-drop policy if exists team_members_public_read on public.team_members;
-create policy team_members_public_read
-  on public.team_members
-  for select
-  using (
-    exists (
-      select 1
-      from public.bots
-      where bots.id = team_members.team_bot_id
-        and bots.status = 'published'
-    )
-  );
-
--- No insert/update/delete policies for anon or authenticated roles.
--- Drafts are owner-only via the service-role API after session checks.

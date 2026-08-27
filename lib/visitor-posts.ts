@@ -1,5 +1,6 @@
 import { getPublishedBot, getSeedBot } from "@/lib/bots";
-import { isSupabaseAdminConfigured, isSupabaseConfigured } from "@/lib/env";
+import { getPool, isUndefinedTableError, query, toIsoString } from "@/lib/db";
+import { isDatabaseConfigured } from "@/lib/env";
 import {
   POST_LIMITS,
   VISITOR_POSTS_MIGRATION,
@@ -9,7 +10,6 @@ import {
   parseScore,
   parseXHandle,
 } from "@/lib/post-limits";
-import { createAdminClient, createAnonClient } from "@/lib/supabase";
 
 export const REVIEW_SOURCE = "setup-bot" as const;
 
@@ -49,7 +49,7 @@ type ReviewRow = {
   body: string;
   x_handle: string | null;
   source: string;
-  created_at: string;
+  created_at: Date | string;
 };
 
 type MarkRow = {
@@ -57,27 +57,18 @@ type MarkRow = {
   name: string;
   line: string;
   link: string | null;
-  created_at: string;
+  created_at: Date | string;
 };
 
 export const getVisitorStoreStatus = (): VisitorStoreStatus => {
-  const canWrite = isSupabaseAdminConfigured();
-  const canRead = isSupabaseConfigured() || canWrite;
-  const missing: string[] = [];
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missing.push("NEXT_PUBLIC_SUPABASE_URL");
-  if (!canWrite) missing.push("SUPABASE_SERVICE_ROLE_KEY");
+  const configured = isDatabaseConfigured();
   return {
-    canRead,
-    canWrite,
-    missing: [...new Set(missing)],
+    canRead: configured,
+    canWrite: configured,
+    missing: configured ? [] : ["DATABASE_URL"],
     migration: VISITOR_POSTS_MIGRATION,
   };
 };
-
-const reader = () => createAdminClient() ?? createAnonClient();
-
-const isMissingRelation = (message: string | undefined) =>
-  Boolean(message && /does not exist|schema cache|could not find the table/i.test(message));
 
 const mapReview = (row: ReviewRow): SetupBotReview => ({
   id: row.id,
@@ -87,7 +78,7 @@ const mapReview = (row: ReviewRow): SetupBotReview => ({
   body: row.body,
   xHandle: row.x_handle,
   source: REVIEW_SOURCE,
-  createdAt: row.created_at,
+  createdAt: toIsoString(row.created_at),
 });
 
 const mapMark = (row: MarkRow): VisitorMark => ({
@@ -95,7 +86,7 @@ const mapMark = (row: MarkRow): VisitorMark => ({
   name: row.name,
   line: row.line,
   link: row.link,
-  createdAt: row.created_at,
+  createdAt: toIsoString(row.created_at),
 });
 
 export const isKnownListingSlug = async (slug: string) => {
@@ -105,56 +96,74 @@ export const isKnownListingSlug = async (slug: string) => {
 };
 
 export const listSetupBotReviews = async (botSlug: string): Promise<SetupBotReview[]> => {
-  const client = reader();
-  if (!client) return [];
-  const { data, error } = await client
-    .from("setup_bot_reviews")
-    .select("id, bot_slug, display_name, score, body, x_handle, source, created_at")
-    .eq("bot_slug", botSlug)
-    .eq("source", REVIEW_SOURCE)
-    .order("created_at", { ascending: false })
-    .limit(50);
-  if (error || !data) return [];
-  return (data as ReviewRow[]).map(mapReview);
+  try {
+    const result = await query<ReviewRow>(
+      `select id, bot_slug, display_name, score, body, x_handle, source, created_at
+       from public.setup_bot_reviews
+       where bot_slug = $1 and source = $2
+       order by created_at desc
+       limit 50`,
+      [botSlug, REVIEW_SOURCE],
+    );
+    if (!result) return [];
+    return result.rows.map(mapReview);
+  } catch (error) {
+    if (isUndefinedTableError(error)) return [];
+    return [];
+  }
 };
 
 export const listVisitorMarks = async (): Promise<VisitorMark[]> => {
-  const client = reader();
-  if (!client) return [];
-  const { data, error } = await client
-    .from("visitor_marks")
-    .select("id, name, line, link, created_at")
-    .order("created_at", { ascending: false })
-    .limit(100);
-  if (error || !data) return [];
-  return (data as MarkRow[]).map(mapMark);
+  try {
+    const result = await query<MarkRow>(
+      `select id, name, line, link, created_at
+       from public.visitor_marks
+       order by created_at desc
+       limit 100`,
+    );
+    if (!result) return [];
+    return result.rows.map(mapMark);
+  } catch (error) {
+    if (isUndefinedTableError(error)) return [];
+    return [];
+  }
 };
 
 const recentCount = async (table: "setup_bot_reviews" | "visitor_marks", ipHash: string) => {
-  const admin = createAdminClient();
-  if (!admin) return 0;
+  const db = getPool();
+  if (!db) return 0;
   const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const { count, error } = await admin
-    .from(table)
-    .select("id", { count: "exact", head: true })
-    .eq("ip_hash", ipHash)
-    .gte("created_at", since);
-  if (error) return 0;
-  return count ?? 0;
+  try {
+    const result = await db.query<{ count: number }>(
+      `select count(*)::int as count
+       from public.${table}
+       where ip_hash = $1 and created_at >= $2`,
+      [ipHash, since],
+    );
+    return result.rows[0]?.count ?? 0;
+  } catch {
+    return 0;
+  }
 };
 
 const tooSoon = async (table: "setup_bot_reviews" | "visitor_marks", ipHash: string) => {
-  const admin = createAdminClient();
-  if (!admin) return false;
-  const { data, error } = await admin
-    .from(table)
-    .select("created_at")
-    .eq("ip_hash", ipHash)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error || !data?.created_at) return false;
-  return Date.now() - new Date(data.created_at).getTime() < POST_LIMITS.minIntervalMs;
+  const db = getPool();
+  if (!db) return false;
+  try {
+    const result = await db.query<{ created_at: Date | string }>(
+      `select created_at
+       from public.${table}
+       where ip_hash = $1
+       order by created_at desc
+       limit 1`,
+      [ipHash],
+    );
+    const createdAt = result.rows[0]?.created_at;
+    if (!createdAt) return false;
+    return Date.now() - new Date(createdAt).getTime() < POST_LIMITS.minIntervalMs;
+  } catch {
+    return false;
+  }
 };
 
 export const createSetupBotReview = async (input: {
@@ -165,8 +174,8 @@ export const createSetupBotReview = async (input: {
   xHandle: unknown;
   ipHash: string;
 }): Promise<{ review: SetupBotReview } | { error: StoreWriteError }> => {
-  const admin = createAdminClient();
-  if (!admin) return { error: "STORE_UNAVAILABLE" };
+  const db = getPool();
+  if (!db) return { error: "STORE_UNAVAILABLE" };
 
   const botSlug = collapseText(input.botSlug);
   if (!(await isKnownListingSlug(botSlug))) return { error: "UNKNOWN_BOT" };
@@ -193,25 +202,21 @@ export const createSetupBotReview = async (input: {
     return { error: "RATE_LIMIT" };
   }
 
-  const { data, error } = await admin
-    .from("setup_bot_reviews")
-    .insert({
-      bot_slug: botSlug,
-      display_name: displayName,
-      score,
-      body,
-      x_handle: xHandle,
-      source: REVIEW_SOURCE,
-      ip_hash: input.ipHash,
-    })
-    .select("id, bot_slug, display_name, score, body, x_handle, source, created_at")
-    .single();
-
-  if (error || !data) {
-    if (isMissingRelation(error?.message)) return { error: "STORE_UNAVAILABLE" };
+  try {
+    const result = await db.query<ReviewRow>(
+      `insert into public.setup_bot_reviews (
+         bot_slug, display_name, score, body, x_handle, source, ip_hash
+       ) values ($1, $2, $3, $4, $5, $6, $7)
+       returning id, bot_slug, display_name, score, body, x_handle, source, created_at`,
+      [botSlug, displayName, score, body, xHandle, REVIEW_SOURCE, input.ipHash],
+    );
+    const row = result.rows[0];
+    if (!row) return { error: "INVALID" };
+    return { review: mapReview(row) };
+  } catch (error) {
+    if (isUndefinedTableError(error)) return { error: "STORE_UNAVAILABLE" };
     return { error: "INVALID" };
   }
-  return { review: mapReview(data as ReviewRow) };
 };
 
 export const createVisitorMark = async (input: {
@@ -220,8 +225,8 @@ export const createVisitorMark = async (input: {
   link: unknown;
   ipHash: string;
 }): Promise<{ mark: VisitorMark } | { error: StoreWriteError }> => {
-  const admin = createAdminClient();
-  if (!admin) return { error: "STORE_UNAVAILABLE" };
+  const db = getPool();
+  if (!db) return { error: "STORE_UNAVAILABLE" };
 
   const name = clipText(input.name, POST_LIMITS.name.max);
   const line = clipText(input.line, POST_LIMITS.line.max);
@@ -239,20 +244,18 @@ export const createVisitorMark = async (input: {
     return { error: "RATE_LIMIT" };
   }
 
-  const { data, error } = await admin
-    .from("visitor_marks")
-    .insert({
-      name,
-      line,
-      link,
-      ip_hash: input.ipHash,
-    })
-    .select("id, name, line, link, created_at")
-    .single();
-
-  if (error || !data) {
-    if (isMissingRelation(error?.message)) return { error: "STORE_UNAVAILABLE" };
+  try {
+    const result = await db.query<MarkRow>(
+      `insert into public.visitor_marks (name, line, link, ip_hash)
+       values ($1, $2, $3, $4)
+       returning id, name, line, link, created_at`,
+      [name, line, link, input.ipHash],
+    );
+    const row = result.rows[0];
+    if (!row) return { error: "INVALID" };
+    return { mark: mapMark(row) };
+  } catch (error) {
+    if (isUndefinedTableError(error)) return { error: "STORE_UNAVAILABLE" };
     return { error: "INVALID" };
   }
-  return { mark: mapMark(data as MarkRow) };
 };

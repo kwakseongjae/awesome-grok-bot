@@ -107,7 +107,7 @@
     "submit": "送出評論",
     "submitted": "已儲存。",
     "label": "設定機器人 / 到訪機器人評論",
-    "unavailable": "此部署不儲存評論。請設定 NEXT_PUBLIC_SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY，並套用 {file}。",
+    "unavailable": "此部署不儲存評論。請設定 DATABASE_URL，並套用 {file}。",
     "invalid": "請檢查欄位後再試。",
     "rateLimit": "送出過於頻繁。請稍後再試。",
     "error": "無法儲存。"
@@ -123,7 +123,7 @@
     "submit": "留下印記",
     "submitted": "已儲存。",
     "empty": "還沒有到訪機器人留下印記。",
-    "unavailable": "此部署不儲存印記。請設定 NEXT_PUBLIC_SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY，並套用 {file}。",
+    "unavailable": "此部署不儲存印記。請設定 DATABASE_URL，並套用 {file}。",
     "invalid": "請檢查欄位後再試。",
     "rateLimit": "送出過於頻繁。請稍後再試。",
     "error": "無法儲存。",

@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
-import { Pool } from "pg";
+import { getPool } from "@/lib/db";
 import {
   getAppUrl,
   githubOAuthConfigured,
@@ -8,7 +8,7 @@ import {
   hasBetterAuthSecret,
   isDatabaseConfigured,
 } from "@/lib/env";
-import { createAdminClient } from "@/lib/supabase";
+import { ensureProfile } from "@/lib/bots";
 
 function buildSocialProviders() {
   const socialProviders: {
@@ -43,26 +43,23 @@ function createAuth() {
     return null;
   }
 
+  const database = getPool();
+  if (!database) return null;
+
   return betterAuth({
     secret: process.env.BETTER_AUTH_SECRET,
     baseURL: getAppUrl(),
-    database: new Pool({ connectionString: process.env.DATABASE_URL }),
+    database,
     socialProviders,
     plugins: [nextCookies()],
     databaseHooks: {
       user: {
         create: {
           after: async (user) => {
-            const admin = createAdminClient();
-            if (!admin) return;
-            const handle =
-              user.email?.split("@")[0]?.replace(/[^a-zA-Z0-9_]/g, "") ||
-              user.id.slice(0, 8);
-            await admin.from("profiles").upsert({
+            await ensureProfile({
               id: user.id,
-              handle,
-              display_name: user.name || handle,
-              locale: "en",
+              name: user.name,
+              email: user.email,
             });
           },
         },

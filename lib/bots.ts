@@ -1,8 +1,14 @@
 import seedFile from "@/data/seed-bots.json";
 import { expandCatalog } from "@/lib/catalog";
 import { ensureListingSlug } from "@/lib/charter";
-import { createAdminClient, createAnonClient } from "@/lib/supabase";
-import { isSupabaseConfigured } from "@/lib/env";
+import {
+  getPool,
+  isUndefinedTableError,
+  query,
+  toIsoString,
+  withTransaction,
+} from "@/lib/db";
+import { isDatabaseConfigured } from "@/lib/env";
 import { CONTRIBUTOR_HANDLE } from "@/lib/site";
 import { localeCollator } from "@/lib/locales";
 import type {
@@ -21,6 +27,9 @@ const seedBots = dedupeSlugLocale([
   ...(seedFile as SeedFile).bots,
   ...expandCatalog(),
 ]);
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function dedupeSlugLocale(bots: BotListing[]) {
   const seen = new Set<string>();
@@ -48,15 +57,14 @@ type BotRow = {
   contributor_handle: string | null;
   status: "draft" | "published";
   created_by: string | null;
-  added_at: string;
+  added_at: Date | string;
   copy_count: number | null;
-  team_members?: { name: string; role: string; charter: string }[] | null;
 };
 
 function matchesFilters(bot: BotListing, filters: BotFilters = {}) {
   if (bot.status !== "published") return false;
-  const query = filters.query?.trim().toLowerCase();
-  if (query) {
+  const queryText = filters.query?.trim().toLowerCase();
+  if (queryText) {
     const haystack = [
       bot.name,
       bot.summary,
@@ -66,7 +74,7 @@ function matchesFilters(bot: BotListing, filters: BotFilters = {}) {
     ]
       .join(" ")
       .toLowerCase();
-    if (!haystack.includes(query)) return false;
+    if (!haystack.includes(queryText)) return false;
   }
   if (filters.category && filters.category !== "all" && bot.category !== filters.category) {
     return false;
@@ -102,42 +110,49 @@ function mapRow(row: BotRow, members: TeamMember[] = []): BotListing {
     contributor_handle: row.contributor_handle ?? CONTRIBUTOR_HANDLE,
     status: row.status,
     created_by: row.created_by,
-    added_at: row.added_at,
-    copy_count: row.copy_count ?? 0,
+    added_at: toIsoString(row.added_at),
+    copy_count: Number(row.copy_count ?? 0),
     team_members: members,
   };
 }
 
 async function attachMembers(rows: BotRow[]): Promise<BotListing[]> {
   if (rows.length === 0) return [];
-  const client = createAnonClient();
-  if (!client) {
-    return rows.map((row) => mapRow(row, row.team_members ?? []));
+  try {
+    const result = await query<{
+      team_bot_id: string;
+      name: string;
+      role: string;
+      charter: string;
+    }>(
+      `select team_bot_id, name, role, charter
+       from public.team_members
+       where team_bot_id = any($1::uuid[])
+       order by sort_order asc`,
+      [rows.map((row) => row.id)],
+    );
+    if (!result) {
+      return rows.map((row) => mapRow(row));
+    }
+
+    const byTeam = new Map<string, TeamMember[]>();
+    for (const member of result.rows) {
+      const list = byTeam.get(member.team_bot_id) ?? [];
+      list.push({
+        name: member.name,
+        role: member.role,
+        charter: member.charter,
+      });
+      byTeam.set(member.team_bot_id, list);
+    }
+
+    return rows.map((row) => mapRow(row, byTeam.get(row.id) ?? []));
+  } catch (error) {
+    if (isUndefinedTableError(error)) {
+      return rows.map((row) => mapRow(row));
+    }
+    throw error;
   }
-
-  const ids = rows.map((row) => row.id);
-  const { data, error } = await client
-    .from("team_members")
-    .select("team_bot_id, name, role, charter, sort_order")
-    .in("team_bot_id", ids)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    return rows.map((row) => mapRow(row));
-  }
-
-  const byTeam = new Map<string, TeamMember[]>();
-  for (const member of data ?? []) {
-    const list = byTeam.get(member.team_bot_id) ?? [];
-    list.push({
-      name: member.name,
-      role: member.role,
-      charter: member.charter,
-    });
-    byTeam.set(member.team_bot_id, list);
-  }
-
-  return rows.map((row) => mapRow(row, byTeam.get(row.id) ?? []));
 }
 
 export function listSeedBots(filters: BotFilters = {}) {
@@ -186,46 +201,56 @@ export function listSeedIntegrations() {
 }
 
 export async function listPublishedBots(filters: BotFilters = {}): Promise<BotListing[]> {
-  if (!isSupabaseConfigured()) {
+  if (!isDatabaseConfigured()) {
     return listSeedBots(filters);
   }
 
-  const client = createAnonClient();
-  if (!client) return listSeedBots(filters);
-
-  let query = client.from("bots").select("*").eq("status", "published");
-
+  const values: unknown[] = ["published"];
+  let sql = `select * from public.bots where status = $1`;
+  let index = 2;
   if (filters.category && filters.category !== "all") {
-    query = query.eq("category", filters.category);
+    sql += ` and category = $${index}`;
+    values.push(filters.category);
+    index += 1;
   }
   if (filters.locale && filters.locale !== "all") {
-    query = query.eq("locale", filters.locale);
+    sql += ` and locale = $${index}`;
+    values.push(filters.locale);
+    index += 1;
   }
   if (filters.kind && filters.kind !== "all") {
-    query = query.eq("kind", filters.kind);
+    sql += ` and kind = $${index}`;
+    values.push(filters.kind);
+    index += 1;
   }
   if (filters.integration && filters.integration !== "all") {
-    query = query.contains("integrations", [filters.integration]);
+    sql += ` and integrations @> array[$${index}]::text[]`;
+    values.push(filters.integration);
+    index += 1;
   }
+  sql += ` order by name asc`;
 
-  const { data, error } = await query.order("name", { ascending: true });
-  if (error || !data) {
+  try {
+    const result = await query<BotRow>(sql, values);
+    if (!result) return listSeedBots(filters);
+
+    const listings = await attachMembers(result.rows);
+    const filtered = listings.filter((bot) => matchesFilters(bot, { query: filters.query }));
+    const locale = filters.locale;
+    if (
+      filtered.length === 0 &&
+      locale &&
+      locale !== "all" &&
+      locale !== "ko" &&
+      locale !== "en"
+    ) {
+      return listSeedBots(filters);
+    }
+    return mergeSeedGaps(filtered, filters);
+  } catch (error) {
+    if (isUndefinedTableError(error)) return listSeedBots(filters);
     return listSeedBots(filters);
   }
-
-  const listings = await attachMembers(data as BotRow[]);
-  const filtered = listings.filter((bot) => matchesFilters(bot, { query: filters.query }));
-  const locale = filters.locale;
-  if (
-    filtered.length === 0 &&
-    locale &&
-    locale !== "all" &&
-    locale !== "ko" &&
-    locale !== "en"
-  ) {
-    return listSeedBots(filters);
-  }
-  return mergeSeedGaps(filtered, filters);
 }
 
 function mergeSeedGaps(dbListings: BotListing[], filters: BotFilters) {
@@ -240,53 +265,35 @@ function mergeSeedGaps(dbListings: BotListing[], filters: BotFilters) {
 }
 
 export async function getPublishedBot(slug: string, locale: ListingLocale) {
-  if (!isSupabaseConfigured()) {
+  if (!isDatabaseConfigured()) {
     return getSeedBot(slug, locale);
   }
 
-  const client = createAnonClient();
-  if (!client) return getSeedBot(slug, locale);
-
-  const preferred = await client
-    .from("bots")
-    .select("*")
-    .eq("slug", slug)
-    .eq("locale", locale)
-    .eq("status", "published")
-    .maybeSingle();
-
-  const fallbackLocales: ListingLocale[] = locale === "en" ? ["ko"] : ["en", "ko"];
-  let row = preferred.data;
-  if (!row) {
-    for (const item of fallbackLocales) {
-      const next = await client
-        .from("bots")
-        .select("*")
-        .eq("slug", slug)
-        .eq("locale", item)
-        .eq("status", "published")
-        .maybeSingle();
-      if (next.data) {
-        row = next.data;
-        break;
-      }
-    }
+  try {
+    const result = await query<BotRow>(
+      `select *
+       from public.bots
+       where slug = $1
+         and status = 'published'
+       order by
+         case
+           when locale = $2 then 0
+           when locale = 'en' then 1
+           when locale = 'ko' then 2
+           else 3
+         end,
+         added_at asc
+       limit 1`,
+      [slug, locale],
+    );
+    const row = result?.rows[0];
+    if (!row) return getSeedBot(slug, locale);
+    const [listing] = await attachMembers([row]);
+    return listing ?? null;
+  } catch (error) {
+    if (isUndefinedTableError(error)) return getSeedBot(slug, locale);
+    return getSeedBot(slug, locale);
   }
-  if (!row) {
-    row = (
-      await client
-        .from("bots")
-        .select("*")
-        .eq("slug", slug)
-        .eq("status", "published")
-        .limit(1)
-        .maybeSingle()
-    ).data;
-  }
-
-  if (!row) return getSeedBot(slug, locale);
-  const [listing] = await attachMembers([row as BotRow]);
-  return listing ?? null;
 }
 
 export async function listRelatedBots(bot: BotListing, limit = 4) {
@@ -298,7 +305,7 @@ export async function listRelatedBots(bot: BotListing, limit = 4) {
 }
 
 export async function listIntegrations() {
-  if (!isSupabaseConfigured()) {
+  if (!isDatabaseConfigured()) {
     return listSeedIntegrations();
   }
   const bots = await listPublishedBots({ locale: "all" });
@@ -308,15 +315,22 @@ export async function listIntegrations() {
 }
 
 export async function incrementCopyCount(botId: string) {
-  const admin = createAdminClient();
-  if (!admin) return;
-  await admin.from("copy_events").insert({
-    bot_id: botId,
-    copied_by: null,
-  });
-  const { data } = await admin.from("bots").select("copy_count").eq("id", botId).maybeSingle();
-  const next = (data?.copy_count ?? 0) + 1;
-  await admin.from("bots").update({ copy_count: next }).eq("id", botId);
+  const db = getPool();
+  if (!db || !UUID_RE.test(botId)) return;
+  try {
+    await withTransaction(async (client) => {
+      await client.query(
+        `insert into public.copy_events (bot_id, copied_by) values ($1, null)`,
+        [botId],
+      );
+      await client.query(
+        `update public.bots set copy_count = copy_count + 1 where id = $1`,
+        [botId],
+      );
+    });
+  } catch {
+    return;
+  }
 }
 
 export async function createBotListing(
@@ -326,53 +340,60 @@ export async function createBotListing(
     handle: string;
   },
 ) {
-  const admin = createAdminClient();
-  if (!admin) {
-    throw new Error("SUPABASE_UNAVAILABLE");
-  }
+  const created = await withTransaction(async (client) => {
+    const inserted = await client.query<BotRow>(
+      `insert into public.bots (
+         slug, name, kind, category, locale, summary, prompt, integrations,
+         source_url, contributor_handle, status, created_by
+       ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+       returning *`,
+      [
+        ensureListingSlug(input.name, input.slug),
+        input.name,
+        input.kind,
+        input.category,
+        input.locale,
+        input.summary,
+        input.prompt,
+        input.integrations,
+        input.source_url || null,
+        CONTRIBUTOR_HANDLE,
+        input.status,
+        user?.id ?? null,
+      ],
+    );
+    const data = inserted.rows[0];
+    if (!data) {
+      throw new Error("INSERT_FAILED");
+    }
 
-  const { data, error } = await admin
-    .from("bots")
-    .insert({
-      slug: ensureListingSlug(input.name, input.slug),
-      name: input.name,
-      kind: input.kind,
-      category: input.category,
-      locale: input.locale,
-      summary: input.summary,
-      prompt: input.prompt,
-      integrations: input.integrations,
-      source_url: input.source_url || null,
-      contributor_handle: CONTRIBUTOR_HANDLE,
-      status: input.status,
-      created_by: user?.id ?? null,
-    })
-    .select("*")
-    .single();
-
-  if (error || !data) {
-    throw new Error(error?.message || "INSERT_FAILED");
-  }
-
-  if (input.kind === "team" && input.team_members.length > 0) {
-    const members = input.team_members
-      .filter((member) => member.name.trim() && member.role.trim())
-      .map((member, index) => ({
-        team_bot_id: data.id,
-        name: member.name.trim(),
-        role: member.role.trim(),
-        charter: member.charter.trim(),
-        sort_order: index,
-      }));
-    if (members.length > 0) {
-      const { error: memberError } = await admin.from("team_members").insert(members);
-      if (memberError) {
-        throw new Error(memberError.message);
+    if (input.kind === "team" && input.team_members.length > 0) {
+      const members = input.team_members.filter(
+        (member) => member.name.trim() && member.role.trim(),
+      );
+      for (const [index, member] of members.entries()) {
+        await client.query(
+          `insert into public.team_members (team_bot_id, name, role, charter, sort_order)
+           values ($1, $2, $3, $4, $5)`,
+          [
+            data.id,
+            member.name.trim(),
+            member.role.trim(),
+            member.charter.trim(),
+            index,
+          ],
+        );
       }
     }
+
+    return data;
+  });
+
+  if (!created) {
+    throw new Error("DATABASE_UNAVAILABLE");
   }
 
-  const [listing] = await attachMembers([data as BotRow]);
+  const [listing] = await attachMembers([created]);
   return listing;
 }
 
@@ -381,29 +402,33 @@ export async function ensureProfile(user: {
   name?: string | null;
   email?: string | null;
 }) {
-  const admin = createAdminClient();
-  if (!admin) return { handle: user.email?.split("@")[0] || "user" };
+  const fallbackHandle = user.email?.split("@")[0] || "user";
+  const db = getPool();
+  if (!db) return { handle: fallbackHandle };
 
-  const existing = await admin
-    .from("profiles")
-    .select("handle, display_name")
-    .eq("id", user.id)
-    .maybeSingle();
+  try {
+    const existing = await db.query<{ handle: string }>(
+      `select handle from public.profiles where id = $1`,
+      [user.id],
+    );
+    if (existing.rows[0]) {
+      return { handle: existing.rows[0].handle };
+    }
 
-  if (existing.data) {
-    return { handle: existing.data.handle as string };
+    const handle =
+      user.email?.split("@")[0]?.replace(/[^a-zA-Z0-9_]/g, "") ||
+      `user-${user.id.slice(0, 6)}`;
+
+    await db.query(
+      `insert into public.profiles (id, handle, display_name, locale)
+       values ($1, $2, $3, 'en')
+       on conflict (id) do update set display_name = excluded.display_name`,
+      [user.id, handle, user.name || handle],
+    );
+
+    return { handle };
+  } catch (error) {
+    if (isUndefinedTableError(error)) return { handle: fallbackHandle };
+    throw error;
   }
-
-  const handle =
-    user.email?.split("@")[0]?.replace(/[^a-zA-Z0-9_]/g, "") ||
-    `user-${user.id.slice(0, 6)}`;
-
-  await admin.from("profiles").upsert({
-    id: user.id,
-    handle,
-    display_name: user.name || handle,
-    locale: "en",
-  });
-
-  return { handle };
 }
