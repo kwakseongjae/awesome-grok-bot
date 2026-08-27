@@ -191,15 +191,12 @@ export const OPS_LOG: OpsLogEntry[] = [
       "zh-CN": "第一优先 QT 已上线",
       "zh-TW": "第一優先 QT 已上線",
     }),
-    body: copy(
-      '@daon_kwak quote-tweeted Elon ("Grok @Bot can do a lot!"). Locked QT copy: No Hermes. Four bots. One day. First check (X스카우트, same day): likes 0, retweets 0, quotes 0, replies 0, views 1. Parent tweet quotes 134 → 135. No reaction yet.',
-      {
-        ko: '@daon_kwak이 일론을 인용 리포스트("Grok @Bot can do a lot!"). 확정 QT 카피: No Hermes. Four bots. One day. 첫 점검(X스카우트, 당일): 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 1. 원글 인용 134 → 135. 아직 반응 없음.',
-        ja: '@daon_kwak が Elon を引用リポスト（「Grok @Bot can do a lot!」）。確定 QT コピー: No Hermes. Four bots. One day. 初回チェック（X스카우트、同日）: いいね 0、リポスト 0、引用 0、返信 0、表示 1。元投稿の引用 134 → 135。まだ反応なし。',
-        "zh-CN": '@daon_kwak 引用转发 Elon（“Grok @Bot can do a lot!”）。已锁定 QT 文案：No Hermes. Four bots. One day. 首次核对（X스카우트，当日）：喜欢 0、转帖 0、引用 0、回复 0、浏览 1。原帖引用 134 → 135。尚无反应。',
-        "zh-TW": '@daon_kwak 引用轉發 Elon（「Grok @Bot can do a lot!」）。已鎖定 QT 文案：No Hermes. Four bots. One day. 首次核對（X스카우트，當日）：喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 1。原帖引用 134 → 135。尚無反應。',
-      },
-    ),
+    body: copy("@daon_kwak quote-tweeted Elon.", {
+      ko: "@daon_kwak이 일론을 인용 리포스트.",
+      ja: "@daon_kwak が Elon を引用リポスト。",
+      "zh-CN": "@daon_kwak 引用转发 Elon。",
+      "zh-TW": "@daon_kwak 引用轉發 Elon。",
+    }),
     links: [
       { href: "https://x.com/daon_kwak/status/2092861599325229402", label: "x.com/daon_kwak/status/2092861599325229402" },
       { href: "https://x.com/elonmusk/status/2092038808607084868", label: "x.com/elonmusk/status/2092038808607084868" },
@@ -406,27 +403,6 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
-  {
-    id: "2026-08-27-first-rank-qt-first-check",
-    date: "2026-08-27",
-    kind: "x",
-    headline: copy("First check · 2026-08-27", {
-      ko: "첫 점검 · 2026-08-27",
-      ja: "初回チェック · 2026-08-27",
-      "zh-CN": "首次核对 · 2026-08-27",
-      "zh-TW": "首次核對 · 2026-08-27",
-    }),
-    detail: copy(
-      "X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 1. Parent tweet quotes 134 → 135. No reaction yet.",
-      {
-        ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 1. 원글 인용 134 → 135. 아직 반응 없음.",
-        ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 1。元投稿の引用 134 → 135。まだ反応なし。",
-        "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 1。原帖引用 134 → 135。尚无反应。",
-        "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 1。原帖引用 134 → 135。尚無反應。",
-      },
-    ),
-    href: "https://x.com/daon_kwak/status/2092861599325229402",
-  },
   {
     id: "2026-08-27-first-check",
     date: "2026-08-27",
