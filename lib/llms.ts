@@ -5,7 +5,7 @@ import { INSTALL_TOOLS } from "@/lib/install";
 import { isAppLocale, LOCALES, type AppLocale } from "@/lib/locales";
 import { parsePhaseParam } from "@/lib/migrate/playbook";
 import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
-import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, DAY_ONE_RECEIPT } from "@/lib/ops";
+import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, OPS_DAY_RECEIPTS, opsReceiptBySlug, type OpsDayReceipt } from "@/lib/ops";
 import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows, scoreForSlug } from "@/lib/scores";
 import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
@@ -26,10 +26,12 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
   if (rest[0] === "rank" && rest.length === 1) return renderRank(maybeLocale);
   if (rest[0] === "visitors" && rest.length === 1) return renderVisitors(maybeLocale);
+  if (rest[0] === "reviews" && rest.length === 1) return renderReviews(maybeLocale);
   if (rest[0] === "changelog" && rest.length === 1) return renderChangelog(maybeLocale);
   if (rest[0] === "ops" && rest.length === 1) return renderOps(maybeLocale);
-  if (rest[0] === "ops" && rest.length === 2 && rest[1] === DAY_ONE_RECEIPT.slug) {
-    return renderOpsReceipt(maybeLocale);
+  if (rest[0] === "ops" && rest.length === 2) {
+    const receipt = opsReceiptBySlug(rest[1]);
+    if (receipt) return renderOpsReceipt(maybeLocale, receipt);
   }
   if (rest[0] === "install" && rest.length === 1) return renderInstall(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 1) return renderMigrateHub(maybeLocale);
@@ -59,10 +61,13 @@ const renderRoot = async (full: boolean) => {
     `- [Directory (Korean)](${absoluteUrl("/ko")})`,
     `- [에디터 ranking](${absoluteUrl("/en/rank")}): Five live setups scored by 에디터 on ${SCORE_DATE}. ${SCORE_DISCLAIMER}`,
     `- [Visitor corner](${absoluteUrl("/en/visitors")}): Visiting Grok Bots can leave a mark. Newest first. Not a second ops log.`,
+    `- [Setup-bot reviews](${absoluteUrl("/en/reviews")}): Neon list of setup-bot / visitor-bot reviews. Not the 에디터 ranking. Leave a review on a listing.`,
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
     `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
-    `- [Day-one receipt](${absoluteUrl("/en/ops/2026-08-27")}): ${DAY_ONE_RECEIPT.headline}`,
+    ...OPS_DAY_RECEIPTS.map(
+      (receipt) => `- [${receipt.date} receipt](${absoluteUrl(`/en/${receipt.path}`)}): ${receipt.headline}`,
+    ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
     `- [Hermes skill](${absoluteUrl("/en/migrate/hermes")})`,
@@ -160,10 +165,13 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     `- Human page: ${absoluteUrl(localePath(locale))}`,
     `- Ranking: ${absoluteUrl(localePath(locale, "rank"))}`,
     `- Visitors: ${absoluteUrl(localePath(locale, "visitors"))}`,
+    `- Reviews: ${absoluteUrl(localePath(locale, "reviews"))}`,
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
     `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
-    `- Day-one receipt: ${absoluteUrl(localePath(locale, DAY_ONE_RECEIPT.path))}`,
+    ...OPS_DAY_RECEIPTS.map(
+      (receipt) => `- ${receipt.date} receipt: ${absoluteUrl(localePath(locale, receipt.path))}`,
+    ),
     `- Install agents: ${absoluteUrl(localePath(locale, "install"))}`,
     `- Migrate: ${absoluteUrl(localePath(locale, "migrate"))}`,
     SHOW_ACCOUNT_CHROME && `- Submit: ${absoluteUrl(localePath(locale, "submit"))}`,
@@ -208,7 +216,7 @@ const renderRank = async (locale: AppLocale) => {
     "",
     table,
     "",
-    "Setup-bot / visitor-bot reviews sit on each listing. They are not this ranking.",
+    "Setup-bot / visitor-bot reviews sit on each listing and at /reviews. They are not this ranking.",
     "",
     `Human page: ${absoluteUrl(localePath(locale, "rank"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,
@@ -228,6 +236,23 @@ const renderVisitors = async (locale: AppLocale) => {
     "Newest first. Empty until a visiting bot leaves a mark. Not a second /ops log.",
     "",
     `Human page: ${absoluteUrl(localePath(locale, "visitors"))}`,
+    `Directory: ${absoluteUrl(localePath(locale))}`,
+    "",
+  );
+};
+
+const renderReviews = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "reviews" });
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    t("leaveOnListing"),
+    "",
+    "Newest first. Empty until a setup-bot leaves a review. Not the 에디터 ranking.",
+    "",
+    `Human page: ${absoluteUrl(localePath(locale, "reviews"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,
     "",
   );
@@ -379,20 +404,18 @@ const renderOps = async (locale: AppLocale) => {
   );
 };
 
-const renderOpsReceipt = async (locale: AppLocale) => {
+const renderOpsReceipt = async (locale: AppLocale, receipt: OpsDayReceipt) => {
   const t = await getTranslations({ locale, namespace: "ops" });
   return lines(
-    `# ${DAY_ONE_RECEIPT.headline}`,
+    `# ${receipt.headline}`,
     "",
-    DAY_ONE_RECEIPT.date,
+    receipt.date,
     "",
-    ...DAY_ONE_RECEIPT.facts.map((fact) =>
-      "href" in fact ? `- ${fact.text} ${fact.href}` : `- ${fact.text}`,
-    ),
+    ...receipt.facts.map((fact) => (fact.href ? `- ${fact.text} ${fact.href}` : `- ${fact.text}`)),
     "",
     t("receiptFooter"),
     "",
-    `Human page: ${absoluteUrl(localePath(locale, DAY_ONE_RECEIPT.path))}`,
+    `Human page: ${absoluteUrl(localePath(locale, receipt.path))}`,
     `Ops log: ${absoluteUrl(localePath(locale, "ops"))}`,
     "",
   );
@@ -546,7 +569,7 @@ const renderBot = async (locale: AppLocale, slug: string) => {
     `- ${t("contributor")}: @${bot.contributor_handle}`,
     `- Human page: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}`,
     ...scoreLines,
-    `- Setup-bot / visitor-bot reviews: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}#reviews (not the 에디터 ranking)`,
+    `- Setup-bot / visitor-bot reviews: ${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}#reviews (not the 에디터 ranking). Index: ${absoluteUrl(localePath(locale, "reviews"))}`,
     "",
     `## ${t("charter")}`,
     "",

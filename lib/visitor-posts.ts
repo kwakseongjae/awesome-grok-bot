@@ -113,6 +113,24 @@ export const listSetupBotReviews = async (botSlug: string): Promise<SetupBotRevi
   }
 };
 
+export const listAllSetupBotReviews = async (): Promise<SetupBotReview[]> => {
+  try {
+    const result = await query<ReviewRow>(
+      `select id, bot_slug, display_name, score, body, x_handle, source, created_at
+       from public.setup_bot_reviews
+       where source = $1
+       order by created_at desc
+       limit 100`,
+      [REVIEW_SOURCE],
+    );
+    if (!result) return [];
+    return result.rows.map(mapReview);
+  } catch (error) {
+    if (isUndefinedTableError(error)) return [];
+    return [];
+  }
+};
+
 export const listVisitorMarks = async (): Promise<VisitorMark[]> => {
   try {
     const result = await query<MarkRow>(

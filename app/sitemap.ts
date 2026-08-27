@@ -18,13 +18,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     LOCALES.map((locale) => ({
       url: absoluteUrl(localePath(locale, path)),
       lastModified:
-        path === "changelog"
+        path === "changelog" || path === "reviews"
           ? new Date(SITE_UPDATED_AT)
           : path === "rank"
             ? new Date(SCORE_DATE)
             : path === "ops" || path.startsWith("ops/")
-            ? new Date(OPS_UPDATED_AT)
-            : now,
+              ? new Date(OPS_UPDATED_AT)
+              : now,
       changeFrequency: path === "" || path === "ops" ? "daily" : "weekly",
       priority: path === "" ? 1 : path.startsWith("migrate/") || path === "ops" || path.startsWith("ops/") ? 0.8 : 0.7,
       alternates: { languages: pageLanguages(path) },

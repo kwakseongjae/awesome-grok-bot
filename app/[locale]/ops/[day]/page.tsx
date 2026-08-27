@@ -1,31 +1,37 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { Link } from "@/i18n/navigation";
 import { toAppLocale } from "@/i18n/routing";
-import { DAY_ONE_RECEIPT } from "@/lib/ops";
+import { OPS_DAY_RECEIPTS, opsReceiptBySlug, type OpsDayReceipt } from "@/lib/ops";
 import { breadcrumbJsonLd, localePath, opsReceiptJsonLd, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 type Props = {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; day: string }>;
 };
 
+export const generateStaticParams = () => OPS_DAY_RECEIPTS.map((receipt) => ({ day: receipt.slug }));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  const appLocale = toAppLocale(locale);
+  const { locale, day } = await params;
+  const receipt = opsReceiptBySlug(day);
+  if (!receipt) notFound();
   return pageSeo({
-    locale: appLocale,
-    path: DAY_ONE_RECEIPT.path,
-    title: DAY_ONE_RECEIPT.headline,
-    description: DAY_ONE_RECEIPT.description,
+    locale: toAppLocale(locale),
+    path: receipt.path,
+    title: receipt.headline,
+    description: receipt.description,
   });
 }
 
-export default async function DayOneReceiptPage({ params }: Props) {
-  const { locale } = await params;
+export default async function OpsDayReceiptPage({ params }: Props) {
+  const { locale, day } = await params;
+  const receipt = opsReceiptBySlug(day);
+  if (!receipt) notFound();
   const appLocale = toAppLocale(locale);
   setRequestLocale(appLocale);
   const t = await getTranslations("ops");
@@ -35,17 +41,17 @@ export default async function DayOneReceiptPage({ params }: Props) {
       <JsonLd
         data={opsReceiptJsonLd({
           locale: appLocale,
-          headline: DAY_ONE_RECEIPT.headline,
-          description: DAY_ONE_RECEIPT.description,
-          datePublished: DAY_ONE_RECEIPT.date,
-          path: DAY_ONE_RECEIPT.path,
+          headline: receipt.headline,
+          description: receipt.description,
+          datePublished: receipt.date,
+          path: receipt.path,
         })}
       />
       <JsonLd
         data={breadcrumbJsonLd([
           { name: SITE_NAME, path: localePath(appLocale) },
           { name: t("title"), path: localePath(appLocale, "ops") },
-          { name: DAY_ONE_RECEIPT.headline, path: localePath(appLocale, DAY_ONE_RECEIPT.path) },
+          { name: receipt.headline, path: localePath(appLocale, receipt.path) },
         ])}
       />
 
@@ -57,34 +63,15 @@ export default async function DayOneReceiptPage({ params }: Props) {
       </Link>
 
       <article className="mt-5 rounded-lg border bg-card px-5 py-7 sm:px-8 sm:py-8">
-        <time
-          dateTime={DAY_ONE_RECEIPT.date}
-          className="font-mono text-xs text-muted-foreground tabular-nums"
-        >
-          {DAY_ONE_RECEIPT.date}
+        <time dateTime={receipt.date} className="font-mono text-xs text-muted-foreground tabular-nums">
+          {receipt.date}
         </time>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-pretty sm:text-4xl">
-          {DAY_ONE_RECEIPT.headline}
+          {receipt.headline}
         </h1>
         <ul className="mt-8 divide-y">
-          {DAY_ONE_RECEIPT.facts.map((fact) => (
-            <li key={fact.text} className="py-3 text-sm leading-6 first:pt-0 last:pb-0 sm:text-base sm:leading-7">
-              {"href" in fact ? (
-                <>
-                  {fact.text}{" "}
-                  <a
-                    href={fact.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="cursor-pointer break-all font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {fact.href}
-                  </a>
-                </>
-              ) : (
-                fact.text
-              )}
-            </li>
+          {receipt.facts.map((fact) => (
+            <OpsDayFactItem key={fact.text} fact={fact} />
           ))}
         </ul>
         <p className="mt-8 font-mono text-[0.7rem] tracking-[0.08em] text-muted-foreground">
@@ -94,3 +81,23 @@ export default async function DayOneReceiptPage({ params }: Props) {
     </div>
   );
 }
+
+const OpsDayFactItem = ({ fact }: { fact: OpsDayReceipt["facts"][number] }) => (
+  <li className="py-3 text-sm leading-6 first:pt-0 last:pb-0 sm:text-base sm:leading-7">
+    {fact.href ? (
+      <>
+        {fact.text}{" "}
+        <a
+          href={fact.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cursor-pointer break-all font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {fact.href}
+        </a>
+      </>
+    ) : (
+      fact.text
+    )}
+  </li>
+);
