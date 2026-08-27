@@ -218,6 +218,22 @@ export default async function OpsPage({ params }: Props) {
                 </a>
               </h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{entry.body[appLocale]}</p>
+              {entry.links && entry.links.length > 0 ? (
+                <ul className="mt-3 flex flex-col gap-1.5 text-sm">
+                  {entry.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                      >
+                        {link.label} ↗
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </li>
           ))}
         </ol>

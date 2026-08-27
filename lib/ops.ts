@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, or results change. */
-export const OPS_UPDATED_AT = "2026-08-27T14:05:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-27T14:50:00+09:00";
 
 export const OPS_MISSION = {
   deadline: "2026-09-03",
@@ -45,6 +45,7 @@ export type OpsLogEntry = {
   date: string;
   title: Record<ListingLocale, string>;
   body: Record<ListingLocale, string>;
+  links?: { href: string; label: string }[];
 };
 
 export type OpsResult = {
@@ -163,6 +164,29 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-27-first-shot-live",
+    date: "2026-08-27",
+    title: copy("First shot live", {
+      ko: "첫 샷 게시",
+      ja: "最初のショット公開",
+      "zh-CN": "第一次出手已上线",
+      "zh-TW": "第一次出手已上線",
+    }),
+    body: copy(
+      "@daon_kwak posted the locked two-line shot. Hook: 6 words. Body = URL. First check (X스카우트, same day): likes 0, retweets 0, quotes 0, replies 0, views 2. No reaction yet.",
+      {
+        ko: "@daon_kwak이 확정된 두 줄 샷을 게시. 훅 6단어. 본문 = URL. 첫 점검(X스카우트, 당일): 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 2. 아직 반응 없음.",
+        ja: "@daon_kwak が確定済みの 2 行ショットを投稿。フックは 6 語。本文 = URL。初回チェック（X스카우트、同日）: いいね 0、リポスト 0、引用 0、返信 0、表示 2。まだ反応なし。",
+        "zh-CN": "@daon_kwak 发出已锁定的两行出手。钩子 6 个词。正文 = URL。首次核对（X스카우트，当日）：喜欢 0、转帖 0、引用 0、回复 0、浏览 2。尚无反应。",
+        "zh-TW": "@daon_kwak 發出已鎖定的兩行出手。鉤子 6 個詞。正文 = URL。首次核對（X스카우트，當日）：喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 2。尚無反應。",
+      },
+    ),
+    links: [
+      { href: "https://x.com/daon_kwak/status/2092851028647403744", label: "x.com/daon_kwak/status/2092851028647403744" },
+      { href: "https://getgrokbot.com/en/ops", label: "getgrokbot.com/en/ops" },
+    ],
+  },
   {
     id: "2026-08-27-ops-page",
     date: "2026-08-27",
@@ -322,7 +346,26 @@ export const OPS_LOG: OpsLogEntry[] = [
 ];
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
-export const OPS_RESULTS: OpsResult[] = [];
+export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-27-first-check",
+    date: "2026-08-27",
+    kind: "x",
+    headline: copy("First check · 2026-08-27", {
+      ko: "첫 점검 · 2026-08-27",
+      ja: "初回チェック · 2026-08-27",
+      "zh-CN": "首次核对 · 2026-08-27",
+      "zh-TW": "首次核對 · 2026-08-27",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 2. No reaction yet.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 2. 아직 반응 없음.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 2。まだ反応なし。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 2。尚无反应。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 2。尚無反應。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092851028647403744",
+  },
+];
 
 export const pulseWindow = (now = new Date()) => {
   const ms = OPS_PULSE.intervalMinutes * 60 * 1000;
