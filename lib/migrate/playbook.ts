@@ -76,6 +76,12 @@ export const goldTasksReady = (tasks: GoldTask[]) => {
   return filled.length >= MIN_GOLD_TASKS && filled.length <= MAX_GOLD_TASKS;
 };
 
+export const GOLD_TASKS_MISSING = "gold-tasks-missing" as const;
+
+/** Phase 1 does not start without 3–5 gold tasks. Do not invent them. */
+export const phase1StopReason = (tasks: GoldTask[] = []) =>
+  goldTasksReady(tasks) ? null : GOLD_TASKS_MISSING;
+
 export const phaseChecksComplete = (progress: SourceProgress, phase: PhaseId) =>
   PHASE_CHECK_KEYS[phase].every((key) => progress.checks[phase]?.[key] === true);
 

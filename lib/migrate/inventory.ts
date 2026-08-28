@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { isSecretPath, isTextPath, normalizeArchivePath, shouldSkipPath } from "./secrets";
 import { profilePrompt } from "./packets";
+import { GOLD_TASKS_MISSING, goldTasksReady, type GoldTask } from "./playbook";
 import type { ArchiveFile, HandoffPacket, HandoffSource } from "./types";
 import type { ListingLocale } from "../types";
 
@@ -27,11 +28,13 @@ export type WorkspaceInventory = {
     agents: boolean;
     identity: boolean;
     heartbeat: boolean;
+    openclaw: boolean;
   };
   identityFiles: string[];
   memoryFiles: string[];
   skills: SkillEntry[];
   cron: CronEntry[];
+  tools: string[];
   skippedSecrets: string[];
   skippedOther: string[];
 };
@@ -97,6 +100,29 @@ const jobName = (job: Record<string, unknown>, index: number) => {
   if (typeof job.name === "string" && job.name.trim()) return job.name.trim();
   if (typeof job.id === "string" && job.id.trim()) return job.id.trim();
   return `job-${index + 1}`;
+};
+
+const toolNamesFromConfig = (text: string) => {
+  try {
+    const json = JSON.parse(text) as Record<string, unknown>;
+    const names: string[] = [];
+    if (json.channels && typeof json.channels === "object" && !Array.isArray(json.channels)) {
+      names.push(...Object.keys(json.channels as Record<string, unknown>));
+    }
+    const mcp = json.mcp ?? json.mcp_servers ?? json.mcpServers;
+    if (mcp && typeof mcp === "object" && !Array.isArray(mcp)) {
+      const root = mcp as Record<string, unknown>;
+      const servers = (root.servers as Record<string, unknown> | undefined) ?? root;
+      if (servers && typeof servers === "object" && !Array.isArray(servers)) {
+        names.push(
+          ...Object.keys(servers).filter((key) => !["mcp", "mcp_servers", "servers", "channels"].includes(key)),
+        );
+      }
+    }
+    return [...new Set(names.filter(Boolean))];
+  } catch {
+    return [];
+  }
 };
 
 const cronFromFile = (filePath: string, text: string): CronEntry[] => {
@@ -187,6 +213,7 @@ export const inventoryFromScan = (
   const memoryFiles: string[] = [];
   const skills: SkillEntry[] = [];
   const cron: CronEntry[] = [];
+  const tools: string[] = [];
   const present = {
     soul: false,
     user: false,
@@ -194,6 +221,7 @@ export const inventoryFromScan = (
     agents: false,
     identity: false,
     heartbeat: false,
+    openclaw: false,
   };
 
   for (const file of files) {
@@ -205,6 +233,10 @@ export const inventoryFromScan = (
     if (base === "agents.md") present.agents = true;
     if (base === "identity.md") present.identity = true;
     if (base === "heartbeat.md") present.heartbeat = true;
+    if (base === "openclaw.json" || base === "clawdbot.json" || base === "moltbot.json") {
+      present.openclaw = true;
+      tools.push(...toolNamesFromConfig(file.text));
+    }
     if (IDENTITY_NAMES.has(base) || MEMORY_NAMES.has(base)) identityFiles.push(rel);
     if (MEMORY_NAMES.has(base) || isDailyMemory(rel) || isDreams(rel) || /(^|\/)memory(ies)?\//i.test(rel)) {
       memoryFiles.push(rel);
@@ -219,6 +251,7 @@ export const inventoryFromScan = (
     memoryFiles: [...new Set(memoryFiles)],
     skills,
     cron,
+    tools: [...new Set(tools)],
     skippedSecrets: [...new Set(skippedSecrets)],
     skippedOther: [...new Set(skippedOther)],
   };
@@ -233,7 +266,9 @@ export const formatInventoryTable = (inventory: WorkspaceInventory) => {
   const identityLines = [
     `SOUL.md\t${inventory.present.soul ? "present" : "missing"}`,
     `USER.md\t${inventory.present.user ? "present" : "missing"}`,
+    `AGENTS.md\t${inventory.present.agents ? "present" : "missing"}`,
     `MEMORY.md\t${inventory.present.memory ? "present" : "missing"}`,
+    `HEARTBEAT.md\t${inventory.present.heartbeat ? "present (off default queue)" : "missing"}`,
   ];
   const skillLines =
     inventory.skills.length > 0
@@ -261,6 +296,9 @@ export const formatInventoryTable = (inventory: WorkspaceInventory) => {
     "",
     "Cron",
     ...cronLines,
+    "",
+    "Tools (names only)",
+    inventory.tools.length > 0 ? inventory.tools.join(", ") : "(none)",
     "",
     `Skipped secret files: ${inventory.skippedSecrets.length}`,
     ...secretLines,
@@ -292,7 +330,23 @@ export const draftChiefPacket = (
     id: "profile",
     kind: "profile",
     title: locale === "ko" ? "프로필 · 설정 문구" : "Profile · setup text",
-    source: [soul && "SOUL.md", user && "USER.md"].filter(Boolean).join(", ") || "persona",
+    source: [soul && "SOUL.md", user && "USER.md", agents && "AGENTS.md"].filter(Boolean).join(", ") || "persona",
     body,
+  };
+};
+
+export const advanceToPhase1 = (input: {
+  files: ArchiveFile[];
+  locale: ListingLocale;
+  source?: HandoffSource;
+  goldTasks?: GoldTask[];
+}) => {
+  if (!goldTasksReady(input.goldTasks ?? [])) {
+    return { stopped: true as const, reason: GOLD_TASKS_MISSING, packet: null };
+  }
+  return {
+    stopped: false as const,
+    reason: null,
+    packet: draftChiefPacket(input.files, input.locale, input.source ?? "hermes"),
   };
 };
