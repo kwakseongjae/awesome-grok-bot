@@ -6,7 +6,8 @@ import { MigrateHub } from "@/components/migrate-hub";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+export const revalidate = 3600;
 
 type Props = {
   params: Promise<{ locale: string }>;

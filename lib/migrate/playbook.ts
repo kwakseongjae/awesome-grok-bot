@@ -1,4 +1,4 @@
-import type { HandoffSource, ParseResult } from "@/lib/migrate/types";
+import type { HandoffSource, ParseResult } from "./types";
 
 export const PLAYBOOK_STORAGE_KEY = "grok-bot-migrate-playbook";
 export const PHASE_IDS = [0, 1, 2, 3, 4, 5, 6] as const;

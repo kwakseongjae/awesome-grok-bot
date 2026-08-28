@@ -1,7 +1,7 @@
 import { gunzipSync } from "node:zlib";
 import JSZip from "jszip";
-import { isTextPath, normalizeArchivePath, redactSecrets, shouldSkipPath } from "@/lib/migrate/secrets";
-import type { ArchiveFile, TextFileInput } from "@/lib/migrate/types";
+import { isTextPath, normalizeArchivePath, redactSecrets, shouldSkipPath } from "./secrets";
+import type { ArchiveFile, TextFileInput } from "./types";
 
 const MAX_FILES = 200;
 const MAX_TEXT_BYTES = 256_000;

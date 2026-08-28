@@ -1,6 +1,6 @@
-import { ensureListingSlug } from "@/lib/charter";
-import type { HandoffListingDraft, HandoffPacket, HandoffSource } from "@/lib/migrate/types";
-import type { ListingLocale } from "@/lib/types";
+import { ensureListingSlug } from "../charter";
+import type { HandoffListingDraft, HandoffPacket, HandoffSource } from "./types";
+import type { ListingLocale } from "../types";
 
 const DEFAULT_TZ = "Asia/Seoul";
 const MAX_ROUTINES = 50;
@@ -189,12 +189,13 @@ Duplicate Bot does not copy learned memory. Paste this into that Bot's chat.`;
 export function profilePrompt(input: {
   name: string;
   soul: string;
+  user?: string;
   agents: string;
   identity: string;
   plugins: string[];
   locale: ListingLocale;
 }) {
-  const context = [input.soul, input.identity, input.agents].filter(Boolean).join("\n\n");
+  const context = [input.soul, input.user, input.identity, input.agents].filter(Boolean).join("\n\n");
   const excerpt = clip(context, 1600);
   const plugins = input.plugins.length > 0 ? input.plugins.join(", ") : input.locale === "ko" ? "(연결할 도구를 먼저 물어보세요.)" : "(Ask which tools this job needs, then help connect them.)";
 

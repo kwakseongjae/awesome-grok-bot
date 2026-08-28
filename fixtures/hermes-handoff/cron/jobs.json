@@ -1,0 +1,9 @@
+{
+  "jobs": [
+    {
+      "name": "morning-brief",
+      "cron": "0 9 * * 1-5",
+      "prompt": "Run the morning brief skill. Draft only. Do not send mail."
+    }
+  ]
+}

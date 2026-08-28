@@ -1,33 +1,20 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { MigrateLockup } from "@/components/migrate-lockup";
-import { starterPrompt } from "@/lib/migrate/skill-md";
-import { sourceLabel } from "@/lib/migrate/source";
+import { HANDOFF_SOURCES, sourceLabel } from "@/lib/migrate/source";
 import type { HandoffSource } from "@/lib/migrate/types";
-import type { ListingLocale } from "@/lib/types";
 
 type Props = {
   source: HandoffSource;
+  starter: string;
 };
 
-const SOURCES: HandoffSource[] = ["hermes", "openclaw"];
 const AFTER_KEYS = ["afterSkill", "afterGold", "afterGate"] as const;
 
-export function MigrateDesk({ source }: Props) {
+export function MigrateDesk({ source, starter }: Props) {
   const t = useTranslations("migrate");
-  const locale = useLocale() as ListingLocale;
-  const [origin, setOrigin] = useState("");
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
-
   const label = sourceLabel(source);
-  const starter = origin ? starterPrompt({ origin, source, locale }) : t("desk.waitingOrigin");
 
   return (
     <div className="space-y-6">
@@ -76,7 +63,7 @@ export function MigrateHubDesks() {
         <li>{t("ruleSecrets")}</li>
       </ul>
       <div className="grid items-stretch gap-4 sm:grid-cols-2">
-        {SOURCES.map((source) => (
+        {HANDOFF_SOURCES.map((source) => (
           <Link
             key={source}
             href={`/migrate/${source}`}

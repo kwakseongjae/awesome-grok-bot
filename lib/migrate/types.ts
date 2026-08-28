@@ -1,4 +1,4 @@
-import type { ListingLocale } from "@/lib/types";
+import type { ListingLocale } from "../types";
 
 export const MIGRATE_DRAFT_KEY = "grok-bot-migrate-draft";
 
