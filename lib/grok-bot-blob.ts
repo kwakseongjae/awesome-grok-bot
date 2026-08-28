@@ -482,6 +482,7 @@ const EXTRA_SKINS: Record<string, BotSkin> = {
   "elon-brief": { shape: "cercle", color: "encre", expression: "fier" },
   "jy-brief": { shape: "galet", color: "bleu", expression: "attentif" },
   "figure-voice": { shape: "nuage", color: "violet", expression: "curieux" },
+  "one-machine": { shape: "capsule", color: "encre", expression: "attentif" },
 };
 
 function hash32(input: string) {

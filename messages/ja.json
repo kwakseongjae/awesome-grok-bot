@@ -74,7 +74,8 @@
     "prevPage": "前へ",
     "nextPage": "次へ",
     "pageStatus": "{page} / {pages}",
-    "mascotName": "Awesome"
+    "mascotName": "Awesome",
+    "today": "今日: One Machine"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
