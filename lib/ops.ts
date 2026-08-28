@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-28T03:50:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-28T14:50:00+09:00";
 
 export type OpsDayFact = { readonly text: string; readonly href?: string };
 
@@ -40,8 +40,12 @@ export const DAY_TWO_RECEIPT = {
   date: "2026-08-28",
   headline: "Default /en. Video stopped.",
   description:
-    "/ still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
+    "Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34. / still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
   facts: [
+    {
+      text: "Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34.",
+      href: "https://x.com/daon_kwak/status/2092851028647403744",
+    },
     {
       text: "/ still redirects to /en (PR #29):",
       href: "https://github.com/kwakseongjae/awesome-grok-bot/pull/29",
@@ -481,6 +485,24 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-28-shot1-24h",
+    date: "2026-08-28",
+    kind: "x",
+    headline: copy("24h · first shot", {
+      ko: "24시간 · 첫 샷",
+      ja: "24h · 最初のショット",
+      "zh-CN": "24 小时 · 第一次出手",
+      "zh-TW": "24 小時 · 第一次出手",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 34.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 34.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 34。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 34。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 34。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092851028647403744",
+  },
   {
     id: "2026-08-27-shot3-3h",
     date: "2026-08-27",
