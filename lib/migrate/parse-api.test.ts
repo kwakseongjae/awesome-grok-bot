@@ -49,7 +49,7 @@ test("parse API zips the Hermes fixture: inventory, skipped secrets, no leaks, n
   const form = new FormData();
   form.set("source", "hermes");
   form.set("locale", "en");
-  form.append("files", new File([bytes], "hermes-home.zip", { type: "application/zip" }));
+  form.append("files", new File([Buffer.from(bytes)], "hermes-home.zip", { type: "application/zip" }));
 
   const { response, payload, blob } = await parsePOST(form);
   assert.equal(response.status, 200);
@@ -75,7 +75,7 @@ test("parse API zips the OpenClaw fixture and redacts channel values", async () 
   const form = new FormData();
   form.set("source", "openclaw");
   form.set("locale", "en");
-  form.append("files", new File([bytes], "openclaw-workspace.zip", { type: "application/zip" }));
+  form.append("files", new File([Buffer.from(bytes)], "openclaw-workspace.zip", { type: "application/zip" }));
 
   const { response, payload, blob } = await parsePOST(form);
   assert.equal(response.status, 200);
