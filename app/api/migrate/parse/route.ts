@@ -1,6 +1,7 @@
 import { collectArchiveFiles } from "@/lib/migrate/archive";
 import { buildInventory } from "@/lib/migrate/inventory";
 import { buildHandoff } from "@/lib/migrate/parse";
+import { normalizeArchivePath, shouldSkipPath } from "@/lib/migrate/secrets";
 import type { HandoffSource } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
 import { isAppLocale } from "@/lib/locales";
@@ -8,7 +9,7 @@ import { isAppLocale } from "@/lib/locales";
 export const runtime = "nodejs";
 
 const MAX_UPLOAD_BYTES = 4_000_000;
-const MAX_FILES = 40;
+const MAX_FILES = 200;
 
 function isSource(value: FormDataEntryValue | null): value is HandoffSource {
   return value === "hermes" || value === "openclaw";
@@ -34,33 +35,46 @@ export async function POST(request: Request) {
   if (uploads.length === 0) {
     return Response.json({ error: "No files." }, { status: 400 });
   }
-  if (uploads.length > MAX_FILES) {
+
+  const skippedUploads: string[] = [];
+  const readable: File[] = [];
+  for (const file of uploads) {
+    const name = normalizeArchivePath(file.name);
+    if (shouldSkipPath(name)) {
+      skippedUploads.push(name);
+      continue;
+    }
+    readable.push(file);
+  }
+
+  if (readable.length > MAX_FILES) {
     return Response.json({ error: "Too many files." }, { status: 400 });
   }
 
-  const total = uploads.reduce((sum, file) => sum + file.size, 0);
+  const total = readable.reduce((sum, file) => sum + file.size, 0);
   if (total > MAX_UPLOAD_BYTES) {
     return Response.json({ error: "Upload too large." }, { status: 400 });
   }
 
   const inputs = await Promise.all(
-    uploads.map(async (file) => ({
+    readable.map(async (file) => ({
       name: file.name,
       bytes: new Uint8Array(await file.arrayBuffer()),
     })),
   );
 
   const collected = await collectArchiveFiles(inputs);
+  const skipped = [...skippedUploads, ...collected.skipped];
   const parsed = buildHandoff(collected.files, source, locale);
   const inventory = buildInventory({
     source,
     locale,
     files: collected.files,
-    skipped: collected.skipped,
+    skipped,
   });
   return Response.json({
     ...parsed,
-    skipped: collected.skipped,
+    skipped,
     redactedCount: collected.redactedCount,
     inventory,
   });

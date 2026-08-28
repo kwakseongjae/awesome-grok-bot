@@ -57,7 +57,7 @@ export default async function MigratePhasePage({ params }: Props) {
         <MigrateLockup source={source} />
       </div>
       <div className="mt-8">
-        <MigrateConsole source={source} phase={phaseId} />
+        <MigrateConsole source={source} phase={phaseId} locale={toAppLocale(locale)} />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { GET } from "@/app/api/migrate/skill/[source]/[[...file]]/route";
+import { GET, HEAD, OPTIONS } from "@/app/api/migrate/skill/[source]/[[...file]]/route";
 import {
   SKILL_FILE,
   SKILL_NAME,
@@ -88,10 +88,25 @@ test("unknown source and non-skill files 404", async () => {
   assert.equal(extra.status, 404);
 });
 
+test("skill HTTP HEAD and OPTIONS match the one-liner fetch", async () => {
+  const url = new URL("/api/migrate/skill/hermes/SKILL.md?locale=en", ORIGIN);
+  const head = await HEAD(new Request(url, { method: "HEAD" }), {
+    params: Promise.resolve({ source: "hermes", file: [SKILL_FILE] }),
+  });
+  assert.equal(head.status, 200);
+  assert.match(head.headers.get("content-type") ?? "", /text\/markdown/);
+  const options = OPTIONS();
+  assert.equal(options.status, 204);
+  assert.equal(options.headers.get("access-control-allow-origin"), "*");
+});
+
 test("starter prompt contains the install URL", () => {
   const starter = starterPrompt({ origin: ORIGIN, source: "hermes", locale: "en" });
   assert.equal(starter.includes(skillUrl(ORIGIN, "hermes", "en")), true);
   assert.equal(starter.includes("Do not move keys"), true);
+  const ko = starterPrompt({ origin: ORIGIN, source: "hermes", locale: "ko" });
+  assert.equal(ko.includes("locale=ko"), true);
+  assert.equal(ko.includes("키는 옮기지 마"), true);
 });
 
 test("curl -o equivalent writes a valid SKILL.md", async () => {

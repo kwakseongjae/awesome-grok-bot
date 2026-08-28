@@ -1,28 +1,29 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { MigrateLockup } from "@/components/migrate-lockup";
 import { starterPrompt } from "@/lib/migrate/skill-md";
 import { sourceLabel } from "@/lib/migrate/source";
 import type { HandoffSource } from "@/lib/migrate/types";
+import { SITE_ORIGIN } from "@/lib/site";
 import type { ListingLocale } from "@/lib/types";
 
 type Props = {
   source: HandoffSource;
+  locale: ListingLocale;
 };
 
 const SOURCES: HandoffSource[] = ["hermes", "openclaw"];
 const AFTER_KEYS = ["afterSkill", "afterGold", "afterGate"] as const;
 const subscribeOrigin = () => () => {};
 const readOrigin = () => window.location.origin;
-const serverOrigin = () => "";
+const serverOrigin = () => SITE_ORIGIN;
 
-export function MigrateDesk({ source }: Props) {
+export function MigrateDesk({ source, locale }: Props) {
   const t = useTranslations("migrate");
-  const locale = useLocale() as ListingLocale;
   const origin = useSyncExternalStore(subscribeOrigin, readOrigin, serverOrigin);
 
   const label = sourceLabel(source);

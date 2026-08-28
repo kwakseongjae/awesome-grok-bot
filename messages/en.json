@@ -244,6 +244,7 @@
     "openclawLead": "Put the skill in OpenClaw and say migrate. It reads a zip or AGENTS, HEARTBEAT, and openclaw.json.",
     "openclawPageLead": "Paste the one-liner into OpenClaw or drop SKILL.md into skills/. Keys stay behind. hermes claw migrate is optional tidy only.",
     "files": "Files",
+    "folder": "Or a folder",
     "accept": {
       "hermes": "zip/tar.gz profile, or SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
       "openclaw": "zip, or SOUL.md, AGENTS.md, USER.md, MEMORY.md, memory/*.md, HEARTBEAT.md, openclaw.json, cron/jobs.json, skills. Legacy clawdbot/moltbot names work."

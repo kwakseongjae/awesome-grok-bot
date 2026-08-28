@@ -244,6 +244,7 @@
     "openclawLead": "OpenClaw에 스킬을 넣고 「마이그레이션 해줘」라고 합니다. zip 또는 AGENTS·HEARTBEAT·openclaw.json을 읽습니다.",
     "openclawPageLead": "아래 한 줄을 OpenClaw에 붙이거나 SKILL.md를 skills/에 넣습니다. 키는 옮기지 않습니다. hermes claw migrate는 선택 정리입니다.",
     "files": "파일",
+    "folder": "또는 폴더",
     "accept": {
       "hermes": "zip/tar.gz 프로필, 또는 SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron.",
       "openclaw": "zip, 또는 SOUL.md, AGENTS.md, USER.md, MEMORY.md, memory/*.md, HEARTBEAT.md, openclaw.json, cron/jobs.json, skills. clawdbot/moltbot 이름도 됩니다."

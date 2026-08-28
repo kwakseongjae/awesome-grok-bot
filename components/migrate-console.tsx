@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Link, useRouter } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
@@ -40,13 +40,13 @@ import { cn } from "@/lib/utils";
 type Props = {
   source: HandoffSource;
   phase: PhaseId;
+  locale: ListingLocale;
 };
 
 const PORTS: SkillPort[] = ["portable", "needs-connector", "wont-port"];
 
-export function MigrateConsole({ source, phase }: Props) {
+export function MigrateConsole({ source, phase, locale }: Props) {
   const t = useTranslations("migrate");
-  const locale = useLocale() as ListingLocale;
   const router = useRouter();
   const { state, ready, save } = usePlaybook();
   const progress = state[source];
@@ -200,7 +200,7 @@ export function MigrateConsole({ source, phase }: Props) {
               ) : (
                 <p className="text-sm leading-6 text-muted-foreground">{t("playbook.inventoryHermes")}</p>
               )}
-              <MigrateUpload source={source} onParsed={handleParsed} showQueue={false} />
+              <MigrateUpload source={source} locale={locale} onParsed={handleParsed} showQueue={false} />
               {progress.parse?.inventory ? <MigrateInventory inventory={progress.parse.inventory} /> : null}
               {progress.parse ? (
                 <HandoffQueue

@@ -244,6 +244,7 @@
     "openclawLead": "把技能放進 OpenClaw 並說「幫我遷移」。它讀取 zip 或 AGENTS、HEARTBEAT、openclaw.json。",
     "openclawPageLead": "把下面一行貼進 OpenClaw，或把 SKILL.md 放到 skills/。金鑰留下。hermes claw migrate 只是選填整理。",
     "files": "檔案",
+    "folder": "或選擇資料夾",
     "accept": {
       "hermes": "zip/tar.gz 檔案，或 SOUL.md、USER.md、MEMORY.md、memories/*、skills/*/SKILL.md、cron。",
       "openclaw": "zip，或 SOUL.md、AGENTS.md、USER.md、MEMORY.md、memory/*.md、HEARTBEAT.md、openclaw.json、cron/jobs.json、skills。舊名 clawdbot/moltbot 也可用。"
