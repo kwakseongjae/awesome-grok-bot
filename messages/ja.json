@@ -397,6 +397,8 @@
       "resume": "{source} コンソールに戻る",
       "inventoryHermes": "目録: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron。.env と state.db は記憶ではありません。",
       "inventoryOpenclaw": "目録: zip 優先。SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills。",
+      "inventoryPreview": "任意のプレビュー。シークレットファイルは数えるだけで開きません。",
+      "skippedSecrets": "スキップしたシークレット: {count}（値なし）",
       "tidyOpenclaw": "任意: ローカルで hermes claw migrate して整理できます。既定は OpenClaw zip の直接アップロードです。--migrate-secrets は使いません。",
       "factsNote": "事実は FACTS.md に置き、ファイルを引用します。Remember these だけは失敗です。",
       "skillsTitle": "スキル分類",

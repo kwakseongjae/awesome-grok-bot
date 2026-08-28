@@ -17,6 +17,7 @@ type Props = {
   size?: "default" | "sm" | "lg";
   variant?: "default" | "outline" | "secondary" | "ghost";
   className?: string;
+  disabled?: boolean;
   onCopied?: () => void;
 };
 
@@ -30,12 +31,14 @@ export function CopyButton({
   size = "default",
   variant = "default",
   className,
+  disabled = false,
   onCopied,
 }: Props) {
   const t = useTranslations("bot");
   const [copied, setCopied] = useState(false);
 
   const handleClick = async () => {
+    if (disabled) return;
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -62,6 +65,7 @@ export function CopyButton({
       size={size}
       variant={variant}
       className={className}
+      disabled={disabled}
       onClick={handleClick}
       aria-label={ariaLabel}
       aria-live="polite"

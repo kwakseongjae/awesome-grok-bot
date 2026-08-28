@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
@@ -16,15 +16,14 @@ type Props = {
 
 const SOURCES: HandoffSource[] = ["hermes", "openclaw"];
 const AFTER_KEYS = ["afterSkill", "afterGold", "afterGate"] as const;
+const subscribeOrigin = () => () => {};
+const readOrigin = () => window.location.origin;
+const serverOrigin = () => "";
 
 export function MigrateDesk({ source }: Props) {
   const t = useTranslations("migrate");
   const locale = useLocale() as ListingLocale;
-  const [origin, setOrigin] = useState("");
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+  const origin = useSyncExternalStore(subscribeOrigin, readOrigin, serverOrigin);
 
   const label = sourceLabel(source);
   const starter = origin ? starterPrompt({ origin, source, locale }) : t("desk.waitingOrigin");
@@ -42,6 +41,7 @@ export function MigrateDesk({ source }: Props) {
             ariaLabel={t("desk.copyStarterAria", { source: label })}
             copyKind="starter"
             size="sm"
+            disabled={!origin}
           />
         </div>
         <pre className="max-h-48 overflow-auto text-xs leading-5 whitespace-pre-wrap text-muted-foreground">

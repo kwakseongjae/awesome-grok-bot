@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:locale/llms.txt", destination: "/api/llms/:locale" },
       { source: "/:locale/:path+/llms.txt", destination: "/api/llms/:locale/:path+" },
+      { source: "/skills/:source/SKILL.md", destination: "/api/migrate/skill/:source/SKILL.md" },
       { source: "/:file(google[A-Za-z0-9]+).html", destination: "/api/site-verify/:file" },
       { source: "/:file(naver[A-Za-z0-9]+).html", destination: "/api/site-verify/:file" },
     ];

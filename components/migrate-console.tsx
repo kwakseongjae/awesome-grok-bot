@@ -7,6 +7,7 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { HandoffQueue } from "@/components/handoff-queue";
 import { MigrateHandoverAppendix } from "@/components/migrate-handover-appendix";
+import { MigrateInventory } from "@/components/migrate-inventory";
 import { MigrateUpload } from "@/components/migrate-upload";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -200,6 +201,7 @@ export function MigrateConsole({ source, phase }: Props) {
                 <p className="text-sm leading-6 text-muted-foreground">{t("playbook.inventoryHermes")}</p>
               )}
               <MigrateUpload source={source} onParsed={handleParsed} showQueue={false} />
+              {progress.parse?.inventory ? <MigrateInventory inventory={progress.parse.inventory} /> : null}
               {progress.parse ? (
                 <HandoffQueue
                   source={progress.parse.source}

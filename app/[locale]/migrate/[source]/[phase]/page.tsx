@@ -5,15 +5,21 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { MigrateConsole } from "@/components/migrate-console";
 import { MigrateLockup } from "@/components/migrate-lockup";
-import { parsePhaseParam } from "@/lib/migrate/playbook";
-import { isHandoffSource } from "@/lib/migrate/source";
+import { PHASE_IDS, parsePhaseParam } from "@/lib/migrate/playbook";
+import { HANDOFF_SOURCES, isHandoffSource } from "@/lib/migrate/source";
 import { pageSeo } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ locale: string; source: string; phase: string }>;
 };
+
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  return HANDOFF_SOURCES.flatMap((source) =>
+    PHASE_IDS.map((phase) => ({ source, phase: String(phase) })),
+  );
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, source, phase } = await params;

@@ -1,0 +1,20 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "."
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "fixture-telegram-botToken-do-not-leak"
+    }
+  },
+  "mcp": {
+    "servers": {
+      "gmail": {
+        "apiKey": "fixture-gmail-apiKey-do-not-leak"
+      }
+    }
+  }
+}

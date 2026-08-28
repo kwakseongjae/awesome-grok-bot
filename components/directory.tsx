@@ -79,6 +79,12 @@ export function Directory({
   const [integration, setIntegration] = useState(ALL);
   const [kind, setKind] = useState<BotKind | typeof ALL>(ALL);
   const [page, setPage] = useState(1);
+  const filterKey = `${query}\0${category}\0${integration}\0${kind}\0${view}`;
+  const [pageKey, setPageKey] = useState(filterKey);
+  if (pageKey !== filterKey) {
+    setPageKey(filterKey);
+    setPage(1);
+  }
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -113,10 +119,6 @@ export function Directory({
     }, 800);
     return () => window.clearTimeout(timer);
   }, [query, filtered.length, category, integration, kind]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [query, category, integration, kind, view]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pageCount);

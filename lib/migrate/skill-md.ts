@@ -5,9 +5,19 @@ import type { HandoffSource } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
 
 export const SKILL_NAME = "grok-bot-migrate";
+export const SKILL_FILE = "SKILL.md";
 
+/** Hermes UrlSource only claims http(s) URLs whose path ends in `.md`. */
 export const skillUrl = (origin: string, source: HandoffSource, locale: ListingLocale) =>
-  `${origin.replace(/\/$/, "")}/api/migrate/skill/${source}?locale=${locale}`;
+  `${origin.replace(/\/$/, "")}/api/migrate/skill/${source}/${SKILL_FILE}?locale=${locale}`;
+
+export const skillUrlIsHermesInstallable = (url: string) => {
+  try {
+    return new URL(url).pathname.toLowerCase().endsWith(".md");
+  } catch {
+    return false;
+  }
+};
 
 export const installCommand = (origin: string, source: HandoffSource, locale: ListingLocale) => {
   const url = skillUrl(origin, source, locale);
@@ -107,7 +117,7 @@ metadata:
 - 첫 봇은 Chief 하나. 이 스킬로 Nexus·전문 봇·Seeder를 만들지 마라.
 - 페이즈 0→6을 순서대로. 빨리 하라고 해도 건너뛰지 마라. 현재 페이즈 실패 조건을 보여 주고 멈춰라.
 - 골드 태스크 3–5개(이름, 입력, 기대 출력)가 없으면 인벤토리 다음에 멈춰라. 기억 복원율은 성공 기준이 아니다.
-- 시크릿을 열거나 출력하거나 옮기지 마라. 거부 목록: ${SECRET_DENY}. 있으면 \`skipped: secret\` 한 줄만.
+- 시크릿을 열거나 출력하거나 옮기지 마라. 거부 목록: ${SECRET_DENY}. 있으면 \`skipped: secret\` 한 줄만. --migrate-secrets는 쓰지 마라.
 - 일일 노트, DREAMS, HEARTBEAT는 기본 큐에서 빼라.
 - 소스 cron과 Grok 루틴을 동시에 켜지 마라. Test run은 실동작이다.
 - 이 인수 대화를 통째로 기억에 저장하지 마라.
@@ -160,7 +170,7 @@ Load only this skill when the user says migrate, hand off, move, or Grok Bot.
 - First Bot is one Chief. Do not spawn a Nexus, specialist Bots, or a Seeder from this skill.
 - Phases 0→6 in order. If the user says to hurry, refuse and show the current fail condition.
 - Stop after inventory unless you have 3–5 gold tasks (name, input, expected output). Memory-restore rate is not success.
-- Do not open, print, or move secrets. Deny: ${SECRET_DENY}. If present, write only \`skipped: secret\`.
+- Do not open, print, or move secrets. Deny: ${SECRET_DENY}. If present, write only \`skipped: secret\`. Do not use --migrate-secrets.
 - Daily notes, DREAMS, and HEARTBEAT stay off the default queue.
 - Never run source cron and Grok routines live together. Test run is real.
 - Do not save this whole handoff thread as memory.
@@ -197,6 +207,10 @@ export const assertSkillMarkdown = (markdown: string, source: HandoffSource) => 
     }
   }
   if (!markdown.includes(".env")) missing.push("secret-deny");
+  if (!markdown.includes("skipped: secret")) missing.push("skipped-secret");
+  if (!markdown.includes("--migrate-secrets")) missing.push("no-migrate-secrets");
+  if (!/gold tasks|골드 태스크/i.test(markdown)) missing.push("gold-tasks");
+  if (!/Do not touch Grok|Grok을 아직 만지지 마라/.test(markdown)) missing.push("no-touch-grok");
   if (source === "openclaw" && !markdown.includes("openclaw.json")) missing.push("openclaw-inventory");
   if (source === "hermes" && !markdown.includes("SOUL.md")) missing.push("hermes-inventory");
   if (!/Nexus/.test(markdown)) missing.push("nexus-rule");

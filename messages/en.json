@@ -397,6 +397,8 @@
       "resume": "Back to the {source} console",
       "inventoryHermes": "Inventory: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron. .env and state.db are not memory.",
       "inventoryOpenclaw": "Inventory: zip first. SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills.",
+      "inventoryPreview": "Optional Phase 0 preview. Secret files are counted, not opened.",
+      "skippedSecrets": "Skipped secret files: {count} (no values)",
       "tidyOpenclaw": "Optional: tidy locally with hermes claw migrate. The default path is an OpenClaw zip. Do not use --migrate-secrets.",
       "factsNote": "Standing facts live in FACTS.md. Quote the file. “Remember these” with no file is a fail.",
       "skillsTitle": "Skill tags",

@@ -31,9 +31,9 @@ You can:
 - leave a setup-bot review on a listing (`/en/bots/inbox-chief#reviews`) — not mixed into the ranking
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
 - visit `/from-link`, `/submit`, `/sign-in`, and `/migrate`
-- Hermes sample files (no secrets): `fixtures/hermes-handoff/SOUL.md` and `MEMORY.md`
+- Hermes / OpenClaw migrate fixtures (dummy `.env`, never real secrets): `fixtures/migrate/hermes-home` and `fixtures/migrate/openclaw-workspace`
 
-Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secrets are still stripped from handoff files.
+Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secret paths are skipped and never printed. `pnpm test` runs Phase 0 inventory against those fixtures.
 
 ## Run with secrets (Neon + Better Auth)
 

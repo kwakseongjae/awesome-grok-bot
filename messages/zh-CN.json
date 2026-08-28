@@ -397,6 +397,8 @@
       "resume": "回到 {source} 控制台",
       "inventoryHermes": "清单：SOUL.md、USER.md、MEMORY.md、memories/*、skills/*/SKILL.md、cron。.env 与 state.db 不是记忆。",
       "inventoryOpenclaw": "清单：优先 zip。SOUL、AGENTS、USER、MEMORY、memory/*、HEARTBEAT、openclaw.json、cron/jobs.json、skills。",
+      "inventoryPreview": "可选预览。密钥文件只计数，不打开。",
+      "skippedSecrets": "跳过的密钥文件：{count}（无值）",
       "tidyOpenclaw": "可选：本地用 hermes claw migrate 先整理。默认路径是直接上传 OpenClaw zip。不要用 --migrate-secrets。",
       "factsNote": "事实放进 FACTS.md 并引用文件。只说 Remember these 算失败。",
       "skillsTitle": "技能分类",

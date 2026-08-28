@@ -21,7 +21,7 @@ function SourceMark({ source }: { source: HandoffSource }) {
         // eslint-disable-next-line @next/next/no-img-element
         <img src={src} alt="" width={40} height={40} className="size-8 object-contain sm:size-10" />
       ) : (
-        <Image src={src} alt="" width={48} height={48} className="size-10 object-contain sm:size-12" />
+        <Image src={src} alt="" width={48} height={48} unoptimized className="size-10 object-contain sm:size-12" />
       )}
     </span>
   );

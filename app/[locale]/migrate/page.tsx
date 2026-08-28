@@ -6,11 +6,11 @@ import { MigrateHub } from "@/components/migrate-hub";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 
-export const dynamic = "force-dynamic";
-
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export const dynamic = "force-static";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;

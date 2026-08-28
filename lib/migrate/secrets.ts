@@ -6,6 +6,8 @@ const SKIP_DIR_RE =
 
 const SKIP_DB_RE = /(^|\/)(state\.db.*|.*\.(db|sqlite|sqlite3|bin))$/i;
 
+const SECRET_DIR_RE = /(^|\/)(sessions|transcripts)(\/|$)/i;
+
 const SECRET_KEY_LINE =
   /^\s*(?:export\s+)?([A-Z0-9_]*((API|ACCESS|SECRET|TOKEN|PASSWORD|PRIVATE|AUTH)[_-]?KEY|BOT_TOKEN|APP_TOKEN|ACCESS_TOKEN|REFRESH_TOKEN|CLIENT_SECRET|GATEWAY_TOKEN)|apiKey|botToken|appToken|accessToken|refreshToken|clientSecret)\s*([:=])\s*.+$/gim;
 
@@ -22,10 +24,23 @@ export function normalizeArchivePath(raw: string) {
 export function shouldSkipPath(raw: string) {
   const path = normalizeArchivePath(raw);
   if (!path || path.includes("..")) return true;
+  SKIP_NAME_RE.lastIndex = 0;
+  SKIP_DIR_RE.lastIndex = 0;
+  SKIP_DB_RE.lastIndex = 0;
   if (SKIP_NAME_RE.test(path) || SKIP_DIR_RE.test(path) || SKIP_DB_RE.test(path)) {
     return true;
   }
   return false;
+}
+
+/** Secret-looking paths. Count these; never open or print them. */
+export function isSecretPath(raw: string) {
+  const path = normalizeArchivePath(raw);
+  if (!path || path.includes("..")) return true;
+  SKIP_NAME_RE.lastIndex = 0;
+  SKIP_DB_RE.lastIndex = 0;
+  SECRET_DIR_RE.lastIndex = 0;
+  return SKIP_NAME_RE.test(path) || SKIP_DB_RE.test(path) || SECRET_DIR_RE.test(path);
 }
 
 export function isTextPath(raw: string) {
@@ -39,6 +54,10 @@ export function redactSecrets(text: string) {
     count += 1;
     return "[redacted]";
   };
+
+  BEGIN_SECRET_RE.lastIndex = 0;
+  SECRET_KEY_LINE.lastIndex = 0;
+  KEY_SHAPE_RE.lastIndex = 0;
 
   let next = text.replace(BEGIN_SECRET_RE, () => mark());
   next = next.replace(SECRET_KEY_LINE, (full) => {

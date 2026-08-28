@@ -397,6 +397,8 @@
       "resume": "{source} 콘솔로 돌아가기",
       "inventoryHermes": "인벤토리: SOUL.md, USER.md, MEMORY.md, memories/*, skills/*/SKILL.md, cron. .env와 state.db는 기억이 아닙니다.",
       "inventoryOpenclaw": "인벤토리: zip 우선. SOUL, AGENTS, USER, MEMORY, memory/*, HEARTBEAT, openclaw.json, cron/jobs.json, skills.",
+      "inventoryPreview": "선택 미리보기. 시크릿 파일은 개수만 세고 열지 않습니다.",
+      "skippedSecrets": "건너뛴 시크릿 파일: {count} (값 없음)",
       "tidyOpenclaw": "선택: 로컬에서 hermes claw migrate로 미리 정리할 수 있습니다. 기본 경로는 OpenClaw zip 직접 업로드입니다. --migrate-secrets는 쓰지 않습니다.",
       "factsNote": "기억은 FACTS.md에 두고 파일을 인용합니다. Remember these만 하면 실패입니다.",
       "skillsTitle": "스킬 분류",

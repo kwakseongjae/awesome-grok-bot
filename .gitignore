@@ -36,6 +36,8 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+# Dummy migrate fixtures (not real secrets)
+!fixtures/**/.env
 
 # vercel
 .vercel

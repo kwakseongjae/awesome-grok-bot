@@ -142,8 +142,24 @@ export const readPlaybook = (): PlaybookState => {
   }
 };
 
+const playbookListeners = new Set<() => void>();
+
+export const subscribePlaybook = (listener: () => void) => {
+  playbookListeners.add(listener);
+  if (typeof window !== "undefined") {
+    window.addEventListener("storage", listener);
+  }
+  return () => {
+    playbookListeners.delete(listener);
+    if (typeof window !== "undefined") {
+      window.removeEventListener("storage", listener);
+    }
+  };
+};
+
 export const writePlaybook = (state: PlaybookState) => {
   window.localStorage.setItem(PLAYBOOK_STORAGE_KEY, JSON.stringify(state));
+  playbookListeners.forEach((listener) => listener());
 };
 
 export const exportPlaybook = (state: PlaybookState) =>

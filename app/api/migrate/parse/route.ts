@@ -1,4 +1,5 @@
 import { collectArchiveFiles } from "@/lib/migrate/archive";
+import { buildInventory } from "@/lib/migrate/inventory";
 import { buildHandoff } from "@/lib/migrate/parse";
 import type { HandoffSource } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
@@ -51,9 +52,16 @@ export async function POST(request: Request) {
 
   const collected = await collectArchiveFiles(inputs);
   const parsed = buildHandoff(collected.files, source, locale);
+  const inventory = buildInventory({
+    source,
+    locale,
+    files: collected.files,
+    skipped: collected.skipped,
+  });
   return Response.json({
     ...parsed,
     skipped: collected.skipped,
     redactedCount: collected.redactedCount,
+    inventory,
   });
 }

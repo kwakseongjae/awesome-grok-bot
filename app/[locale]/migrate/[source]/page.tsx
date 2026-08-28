@@ -5,16 +5,20 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { MigrateDesk } from "@/components/migrate-desk";
 import { MigrateLockup } from "@/components/migrate-lockup";
-import { isHandoffSource } from "@/lib/migrate/source";
+import { HANDOFF_SOURCES, isHandoffSource } from "@/lib/migrate/source";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
 
-export const dynamic = "force-dynamic";
-
 type Props = {
   params: Promise<{ locale: string; source: string }>;
 };
+
+export const dynamic = "force-static";
+
+export function generateStaticParams() {
+  return HANDOFF_SOURCES.map((source) => ({ source }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, source } = await params;

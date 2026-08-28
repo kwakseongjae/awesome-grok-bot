@@ -1,55 +1,11 @@
+import { asJobList, jobName, jobPrompt, jobSchedule, jobSkill, jsonValue } from "@/lib/migrate/jobs";
 import { capRoutines, listingDraftFromProfile, memoryPaste, profilePrompt, routinePaste, skillPaste, splitMemoryChunks } from "@/lib/migrate/packets";
+import { basename, fileName, findAll, findFile, isCronFile, isDailyMemory, isDreams, isSkill } from "@/lib/migrate/paths";
 import type { ArchiveFile, HandoffPacket, HandoffSource, ParseResult } from "@/lib/migrate/types";
 import type { ListingLocale } from "@/lib/types";
 
-function basename(path: string) {
-  return path.split("/").pop()?.toLowerCase() ?? "";
-}
-
-function fileName(path: string) {
-  return path.split("/").pop() ?? path;
-}
-
-function findFile(files: ArchiveFile[], names: string[]) {
-  const wanted = new Set(names.map((name) => name.toLowerCase()));
-  return files.find((file) => wanted.has(basename(file.path))) ?? null;
-}
-
-function findAll(files: ArchiveFile[], test: (path: string) => boolean) {
-  return files.filter((file) => test(file.path.replace(/\\/g, "/")));
-}
-
-function isDailyMemory(path: string) {
-  return /(^|\/)memory(ies)?\/\d{4}-\d{2}-\d{2}[^/]*\.md$/i.test(path);
-}
-
-function isDreams(path: string) {
-  return /(^|\/)dreams\.md$/i.test(path);
-}
-
-function isSkill(path: string) {
-  return /(^|\/)skills\/.+\/skill\.md$/i.test(path) || /(^|\/)skill\.md$/i.test(path);
-}
-
-function isCronFile(path: string) {
-  const lower = path.toLowerCase();
-  return (
-    /(^|\/)cron\/jobs\.json$/i.test(lower) ||
-    /(^|\/)jobs\.json$/i.test(lower) && lower.includes("cron") ||
-    /(^|\/)cron\/.+\.json$/i.test(lower)
-  );
-}
-
 function unique(items: string[]) {
   return [...new Set(items.map((item) => item.trim()).filter(Boolean))];
-}
-
-function jsonValue(text: string) {
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
-  }
 }
 
 function recordKeys(value: unknown): string[] {
@@ -98,67 +54,6 @@ function collectPluginNames(files: ArchiveFile[]) {
   }
 
   return unique(names).slice(0, 12);
-}
-
-function asJobList(value: unknown): Record<string, unknown>[] {
-  if (Array.isArray(value)) {
-    return value.filter((item) => item && typeof item === "object") as Record<string, unknown>[];
-  }
-  if (value && typeof value === "object") {
-    const root = value as Record<string, unknown>;
-    const jobs = root.jobs ?? root.cron ?? root.automations;
-    if (Array.isArray(jobs)) {
-      return jobs.filter((item) => item && typeof item === "object") as Record<string, unknown>[];
-    }
-    if (typeof root.name === "string" || typeof root.prompt === "string" || typeof root.schedule === "string") {
-      return [root];
-    }
-  }
-  return [];
-}
-
-function jobSchedule(job: Record<string, unknown>) {
-  const schedule = job.schedule;
-  if (typeof schedule === "string") return schedule;
-  if (schedule && typeof schedule === "object") {
-    const spec = schedule as Record<string, unknown>;
-    if (typeof spec.expr === "string") return spec.expr;
-    if (typeof spec.cron === "string") return spec.cron;
-    if (typeof spec.every === "string") return `every ${spec.every}`;
-    if (typeof spec.kind === "string" && spec.kind === "every" && spec.everyMs) {
-      return `every ${spec.everyMs}ms`;
-    }
-    if (typeof spec.kind === "string") return spec.kind;
-  }
-  if (typeof job.cron === "string") return job.cron;
-  if (typeof job.every === "string") return `every ${job.every}`;
-  return undefined;
-}
-
-function jobPrompt(job: Record<string, unknown>) {
-  const payload = job.payload;
-  if (payload && typeof payload === "object") {
-    const body = payload as Record<string, unknown>;
-    if (typeof body.message === "string") return body.message;
-    if (typeof body.prompt === "string") return body.prompt;
-    if (typeof body.text === "string") return body.text;
-  }
-  if (typeof job.prompt === "string") return job.prompt;
-  if (typeof job.message === "string") return job.message;
-  if (typeof job.task === "string") return job.task;
-  return "";
-}
-
-function jobName(job: Record<string, unknown>, index: number) {
-  if (typeof job.name === "string" && job.name.trim()) return job.name.trim();
-  if (typeof job.id === "string" && job.id.trim()) return job.id.trim();
-  return `job-${index + 1}`;
-}
-
-function jobSkill(job: Record<string, unknown>) {
-  if (typeof job.skill === "string") return job.skill;
-  if (Array.isArray(job.skills) && typeof job.skills[0] === "string") return job.skills[0];
-  return undefined;
 }
 
 function detectSource(files: ArchiveFile[], hinted: HandoffSource): HandoffSource {

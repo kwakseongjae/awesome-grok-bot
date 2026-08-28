@@ -1,0 +1,9 @@
+{
+  "jobs": [
+    {
+      "name": "Morning brief",
+      "schedule": "0 9 * * 1-5",
+      "prompt": "Brief unread mail. Do not send."
+    }
+  ]
+}
