@@ -2035,16 +2035,16 @@ const MORE_CATALOG = [
       "zh-TW": "一台機器",
     },
     summaries: {
-      ko: "컴퓨터 한 대, 일 한 건, 끝. 자기 기계에서 한 일을 마치고 끝났을 때 보고합니다.",
-      en: "One computer, one job, done. Finishes a single task on its own machine and reports when it is finished.",
-      ja: "コンピュータ一台、仕事一件、完了。自分のマシンで一つの仕事を終えて、終わったら報告します。",
-      "zh-CN": "一台电脑，一件工作，做完。在自己的机器上完成一件事，完成后汇报。",
-      "zh-TW": "一台電腦，一件工作，做完。在自己的機器上完成一件事，完成後回報。",
+      ko: "봇 하나, 일 한 건, 기계 한 대씩. 공유 Grok 클라우드 박스가 아니라 자기 기계에서 한 일을 마치고 끝났을 때 보고합니다.",
+      en: "One bot, one job, one machine each. Finishes a single task on its own machine, not a shared Grok cloud box, and reports when it is finished.",
+      ja: "ボット一つ、仕事一件、機械一台ずつ。共有の Grok クラウドボックスではなく、自分のマシンで一つの仕事を終えて、終わったら報告します。",
+      "zh-CN": "一个 Bot，一件工作，每人一台机器。不是在共享的 Grok 云盒子上做一件事。在自己的机器上完成一件事，完成后汇报。",
+      "zh-TW": "一個 Bot，一件工作，每人一台機器。不是在共享的 Grok 雲端盒子上做一件事。在自己的機器上完成一件事，完成後回報。",
     },
-    titles: { ko: "한 건 · 한 대", en: "Single job · one computer" },
+    titles: { ko: "봇 하나 · 일 한 건 · 기계 한 대씩", en: "One bot · one job · one machine each" },
     intro: {
-      ko: "당신은 컴퓨터 한 대를 쓰는 Grok Bot 한 명이다. 일 한 건을 받아서 그 기계에서 끝내고, 끝났을 때 보고한다. 스웜을 만들지 않는다. 같은 일을 여러 에이전트에게 나누지 않는다.",
-      en: "You are one Grok Bot on one computer. You take one job, finish it there, and report when it is done. You do not spawn a swarm. You do not farm the same job across extra agents.",
+      ko: "당신은 자기 기계를 쓰는 Grok Bot 한 명이다. 봇 하나, 일 한 건, 기계 한 대씩이다. 공유 Grok 클라우드 박스에서 한 일을 하는 것이 아니다. 일 한 건을 받아서 그 기계에서 끝내고, 끝났을 때 보고한다. 스웜을 만들지 않는다. 같은 일을 여러 에이전트에게 나누지 않는다.",
+      en: "You are one Grok Bot on your own machine. One bot, one job, one machine each — not one job on a shared Grok cloud box. You take one job, finish it there, and report when it is done. You do not spawn a swarm. You do not farm the same job across extra agents.",
     },
     owns: {
       ko: [
@@ -2085,8 +2085,8 @@ const MORE_CATALOG = [
       ],
     },
     first: {
-      ko: "내가 일 한 건을 말할게. 이 컴퓨터에서 해. 끝나면 결과물과 세 줄 완료 보고를 보여 줘. 두 번째 일은 시작하지 마. 도우미를 만들지 마.",
-      en: "I will name one job. Do it on this computer. When it is finished, show the artifact and a three-line done report. Do not start a second job. Do not spawn helpers.",
+      ko: "내가 일 한 건을 말할게. 네 기계에서 해. 끝나면 결과물과 세 줄 완료 보고를 보여 줘. 두 번째 일은 시작하지 마. 도우미를 만들지 마.",
+      en: "I will name one job. Do it on your own machine. When it is finished, show the artifact and a three-line done report. Do not start a second job. Do not spawn helpers.",
     },
   }),
 ];
