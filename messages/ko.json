@@ -74,7 +74,8 @@
     "prevPage": "이전",
     "nextPage": "다음",
     "pageStatus": "{page} / {pages}",
-    "mascotName": "어썸"
+    "mascotName": "어썸",
+    "today": "오늘: One Machine"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",

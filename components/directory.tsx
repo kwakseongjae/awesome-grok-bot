@@ -42,6 +42,9 @@ import { CATEGORIES, type BotListing, type BotKind, type Category, type ListingL
 
 const ALL = "all";
 const PAGE_SIZE = 20;
+const TODAY_LISTING_SLUG = "one-machine";
+
+const listingHref = (slug: string) => `/bots/${slug}` as const;
 
 type Props = {
   bots: BotListing[];
@@ -171,6 +174,14 @@ export function Directory({
 
   return (
     <div id="catalog" className="space-y-6">
+      <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+        <Link
+          href={listingHref(TODAY_LISTING_SLUG)}
+          className="cursor-pointer underline-offset-4 hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+        >
+          {t("home.today")}
+        </Link>
+      </p>
       <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
         <div className="min-w-0 flex-1 space-y-2">
           <Label htmlFor="directory-search">{t("home.searchLabel")}</Label>
@@ -414,10 +425,6 @@ function FilterSelect({
       </Select>
     </div>
   );
-}
-
-function listingHref(slug: string) {
-  return `/bots/${slug}` as const;
 }
 
 function DirectoryTable({ bots }: { bots: BotListing[] }) {

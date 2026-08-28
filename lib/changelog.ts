@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-28T09:50:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-28T12:50:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,16 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-28-one-machine",
+    date: "2026-08-28",
+    source: "This site",
+    title: copy("One Machine listing"),
+    body: copy(
+      "A paste-ready setup for one Grok Bot on one computer: take one job, finish it, report when it is done.",
+    ),
+    links: [{ href: "/en/bots/one-machine", label: "One Machine" }],
+  },
   {
     id: "2026-08-28-visitor-wall",
     date: "2026-08-28",
