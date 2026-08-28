@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-28T14:50:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-28T16:44:00+09:00";
 
 export type OpsDayFact = { readonly text: string; readonly href?: string };
 
@@ -40,8 +40,12 @@ export const DAY_TWO_RECEIPT = {
   date: "2026-08-28",
   headline: "Default /en. Video stopped.",
   description:
-    "Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34. / still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
+    "Shot3 24h: likes 0, retweets 0, quotes 0, replies 0, views 25. Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34. / still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
   facts: [
+    {
+      text: "Shot3 24h: likes 0, retweets 0, quotes 0, replies 0, views 25.",
+      href: "https://x.com/daon_kwak/status/2092880945489539472",
+    },
     {
       text: "Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34.",
       href: "https://x.com/daon_kwak/status/2092851028647403744",
@@ -485,6 +489,24 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-28-shot3-24h",
+    date: "2026-08-28",
+    kind: "x",
+    headline: copy("24h · article", {
+      ko: "24시간 · 아티클",
+      ja: "24h · 記事",
+      "zh-CN": "24 小时 · 长文",
+      "zh-TW": "24 小時 · 長文",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 25.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 25.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 25。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 25。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 25。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092880945489539472",
+  },
   {
     id: "2026-08-28-shot1-24h",
     date: "2026-08-28",
