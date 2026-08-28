@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BRAND_MARK } from "@/lib/brand";
 import { LOCALES, LOCALE_OG, isAppLocale, type AppLocale } from "@/lib/locales";
-import { DAY_ONE_RECEIPT, DAY_TWO_RECEIPT } from "@/lib/ops";
+import { DAY_ONE_RECEIPT, DAY_THREE_RECEIPT, DAY_TWO_RECEIPT } from "@/lib/ops";
 import { OG_IMAGE, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 
 export const SEO_FAQ_KEYS = ["what", "importer", "updates", "inside", "copy", "migrate", "free"] as const;
@@ -24,6 +24,7 @@ export const STATIC_INDEX_PATHS = [
   "how-to",
   "changelog",
   "ops",
+  DAY_THREE_RECEIPT.path,
   DAY_TWO_RECEIPT.path,
   DAY_ONE_RECEIPT.path,
   "install",

@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-28T16:44:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-29T04:20:00+09:00";
 
 export type OpsDayFact = { readonly text: string; readonly href?: string };
 
@@ -40,11 +40,15 @@ export const DAY_TWO_RECEIPT = {
   date: "2026-08-28",
   headline: "Default /en. Video stopped.",
   description:
-    "Shot3 24h: likes 0, retweets 0, quotes 0, replies 0, views 25. Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34. / still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
+    "Shot3 24h: likes 0, retweets 0, quotes 0, replies 0, views 25. Shot2 24h: likes 0, retweets 0, quotes 0, replies 0, views 89. Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34. / still redirects to /en (PR #29). Reviews persist on Neon. Ranking 5 stays file-based. Video work stopped. Nothing posted. Next X is a thought-quote of someone else's post, not a site receipt. Screening continues (like+follow+reply). X API still user-not-enrolled.",
   facts: [
     {
       text: "Shot3 24h: likes 0, retweets 0, quotes 0, replies 0, views 25.",
       href: "https://x.com/daon_kwak/status/2092880945489539472",
+    },
+    {
+      text: "Shot2 24h: likes 0, retweets 0, quotes 0, replies 0, views 89.",
+      href: "https://x.com/daon_kwak/status/2092861599325229402",
     },
     {
       text: "Shot1 24h: likes 0, retweets 0, quotes 0, replies 0, views 34.",
@@ -61,8 +65,33 @@ export const DAY_TWO_RECEIPT = {
   ],
 } as const satisfies OpsDayReceipt;
 
+/** Locked day-three sheet. Headline and fact lines stay English on every locale. */
+export const DAY_THREE_RECEIPT = {
+  slug: "2026-08-29",
+  path: "ops/2026-08-29",
+  date: "2026-08-29",
+  headline: "One machine each.",
+  description:
+    "One Machine catalog is live; copy is now one bot, one job, one machine each. /en/migrate/hermes and /en/migrate/openclaw first HTML contain the paste one-liner (PR #41). No importer. Keys never move. Home visitor wall still live. Logo/mascot not an overhaul.",
+  facts: [
+    {
+      text: "One Machine catalog is live; copy is now one bot, one job, one machine each.",
+      href: "https://getgrokbot.com/en/bots/one-machine",
+    },
+    {
+      text: "/en/migrate/hermes and /en/migrate/openclaw first HTML contain the paste one-liner (PR #41). No importer. Keys never move.",
+      href: "https://github.com/kwakseongjae/awesome-grok-bot/pull/41",
+    },
+    { text: "Home visitor wall still live. Logo/mascot not an overhaul." },
+  ],
+} as const satisfies OpsDayReceipt;
+
 /** Newest first. */
-export const OPS_DAY_RECEIPTS: readonly OpsDayReceipt[] = [DAY_TWO_RECEIPT, DAY_ONE_RECEIPT];
+export const OPS_DAY_RECEIPTS: readonly OpsDayReceipt[] = [
+  DAY_THREE_RECEIPT,
+  DAY_TWO_RECEIPT,
+  DAY_ONE_RECEIPT,
+];
 
 export const opsReceiptBySlug = (slug: string) =>
   OPS_DAY_RECEIPTS.find((receipt) => receipt.slug === slug);
@@ -227,6 +256,23 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-29-day-three-receipt",
+    date: "2026-08-29",
+    title: copy("Day-three receipt", {
+      ko: "사흘차 영수증",
+      ja: "3日目のレシート",
+      "zh-CN": "第三天收据",
+      "zh-TW": "第三天收據",
+    }),
+    body: copy("One sheet at /ops/2026-08-29.", {
+      ko: "/ops/2026-08-29에 한 장.",
+      ja: "/ops/2026-08-29 に1枚。",
+      "zh-CN": "一张在 /ops/2026-08-29。",
+      "zh-TW": "一張在 /ops/2026-08-29。",
+    }),
+    links: [{ href: "/ops/2026-08-29", label: "/ops/2026-08-29" }],
+  },
   {
     id: "2026-08-28-day-two-receipt",
     date: "2026-08-28",
@@ -506,6 +552,24 @@ export const OPS_RESULTS: OpsResult[] = [
       "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 25。",
     }),
     href: "https://x.com/daon_kwak/status/2092880945489539472",
+  },
+  {
+    id: "2026-08-28-shot2-24h",
+    date: "2026-08-28",
+    kind: "x",
+    headline: copy("24h · first-rank QT", {
+      ko: "24시간 · 1순위 QT",
+      ja: "24h · 最優先 QT",
+      "zh-CN": "24 小时 · 第一优先 QT",
+      "zh-TW": "24 小時 · 第一優先 QT",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 89.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 89.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 89。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 89。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 89。",
+    }),
+    href: "https://x.com/daon_kwak/status/2092861599325229402",
   },
   {
     id: "2026-08-28-shot1-24h",
