@@ -1,0 +1,9 @@
+{
+  "jobs": [
+    {
+      "name": "inbox-triage",
+      "cron": "0 9 * * 1-5",
+      "prompt": "Run the inbox triage skill. Draft only. Do not send mail."
+    }
+  ]
+}

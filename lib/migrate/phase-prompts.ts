@@ -1,6 +1,6 @@
-import type { PhaseId } from "@/lib/migrate/playbook";
-import type { HandoffSource } from "@/lib/migrate/types";
-import type { ListingLocale } from "@/lib/types";
+import type { PhaseId } from "./playbook";
+import type { HandoffSource } from "./types";
+import type { ListingLocale } from "../types";
 
 type PromptPair = {
   source: string;

@@ -1,4 +1,4 @@
-import type { HandoffSource } from "@/lib/migrate/types";
+import type { HandoffSource } from "./types";
 
 export const HANDOFF_SOURCES = ["hermes", "openclaw"] as const;
 

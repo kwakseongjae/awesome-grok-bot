@@ -13,6 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "tsx --test scripts/test-migrate-fixture.ts",
     "db:migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
@@ -43,6 +44,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.33.3"

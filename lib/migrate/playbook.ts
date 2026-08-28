@@ -1,4 +1,4 @@
-import type { HandoffSource, ParseResult } from "@/lib/migrate/types";
+import type { HandoffSource, ParseResult } from "./types";
 
 export const PLAYBOOK_STORAGE_KEY = "grok-bot-migrate-playbook";
 export const PHASE_IDS = [0, 1, 2, 3, 4, 5, 6] as const;
@@ -75,6 +75,12 @@ export const goldTasksReady = (tasks: GoldTask[]) => {
   const filled = tasks.filter((task) => task.name.trim() && task.input.trim() && task.expect.trim());
   return filled.length >= MIN_GOLD_TASKS && filled.length <= MAX_GOLD_TASKS;
 };
+
+export const GOLD_TASKS_MISSING = "gold-tasks-missing" as const;
+
+/** Phase 1 does not start without 3–5 gold tasks. Do not invent them. */
+export const phase1StopReason = (tasks: GoldTask[] = []) =>
+  goldTasksReady(tasks) ? null : GOLD_TASKS_MISSING;
 
 export const phaseChecksComplete = (progress: SourceProgress, phase: PhaseId) =>
   PHASE_CHECK_KEYS[phase].every((key) => progress.checks[phase]?.[key] === true);

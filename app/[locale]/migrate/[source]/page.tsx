@@ -5,12 +5,18 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { MigrateDesk } from "@/components/migrate-desk";
 import { MigrateLockup } from "@/components/migrate-lockup";
-import { isHandoffSource } from "@/lib/migrate/source";
+import { HANDOFF_SOURCES, isHandoffSource } from "@/lib/migrate/source";
+import { starterPrompt } from "@/lib/migrate/skill-md";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return HANDOFF_SOURCES.map((source) => ({ source }));
+}
 
 type Props = {
   params: Promise<{ locale: string; source: string }>;
@@ -58,7 +64,7 @@ export default async function MigrateSourcePage({ params }: Props) {
       <h1 className="mt-8 text-4xl font-semibold tracking-tight">{t(titleKey)}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{t("desk.pageLead")}</p>
       <div className="mt-8">
-        <MigrateDesk source={source} />
+        <MigrateDesk source={source} starter={starterPrompt({ origin: SITE_ORIGIN, source, locale: appLocale })} />
       </div>
     </div>
   );

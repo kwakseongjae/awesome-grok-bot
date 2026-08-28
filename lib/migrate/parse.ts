@@ -1,6 +1,6 @@
-import { capRoutines, listingDraftFromProfile, memoryPaste, profilePrompt, routinePaste, skillPaste, splitMemoryChunks } from "@/lib/migrate/packets";
-import type { ArchiveFile, HandoffPacket, HandoffSource, ParseResult } from "@/lib/migrate/types";
-import type { ListingLocale } from "@/lib/types";
+import { capRoutines, listingDraftFromProfile, memoryPaste, profilePrompt, routinePaste, skillPaste, splitMemoryChunks } from "./packets";
+import type { ArchiveFile, HandoffPacket, HandoffSource, ParseResult } from "./types";
+import type { ListingLocale } from "../types";
 
 function basename(path: string) {
   return path.split("/").pop()?.toLowerCase() ?? "";
@@ -190,14 +190,14 @@ export function buildHandoff(files: ArchiveFile[], hinted: HandoffSource, locale
   const heartbeat = findFile(files, ["HEARTBEAT.md"])?.text ?? "";
   const plugins = collectPluginNames(files);
   const name = personaName(soul, identity, source, locale);
-  const prompt = profilePrompt({ name, soul, agents, identity, plugins, locale });
+  const prompt = profilePrompt({ name, soul, user, agents, identity, plugins, locale });
 
   const packets: HandoffPacket[] = [
     {
       id: "profile",
       kind: "profile",
       title: locale === "ko" ? "프로필 · 설정 문구" : "Profile · setup text",
-      source: [soul && "SOUL.md", agents && "AGENTS.md", identity && "IDENTITY.md"].filter(Boolean).join(", ") || "persona",
+      source: [soul && "SOUL.md", user && "USER.md", agents && "AGENTS.md", identity && "IDENTITY.md"].filter(Boolean).join(", ") || "persona",
       body: prompt,
     },
   ];

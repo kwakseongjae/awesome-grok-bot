@@ -28,6 +28,15 @@ export function shouldSkipPath(raw: string) {
   return false;
 }
 
+/** Secret-looking paths. Inventory lists the path as `skipped: secret` and never reads the file. */
+export function isSecretPath(raw: string) {
+  const path = normalizeArchivePath(raw);
+  if (!path) return true;
+  if (SKIP_NAME_RE.test(path) || SKIP_DB_RE.test(path)) return true;
+  if (/(^|\/)(sessions|transcripts)(\/|$)/i.test(path)) return true;
+  return false;
+}
+
 export function isTextPath(raw: string) {
   const path = normalizeArchivePath(raw).toLowerCase();
   return /\.(md|markdown|txt|json|ya?ml|toml)$/.test(path) || /(^|\/)(soul|agents|identity|user|memory|heartbeat|dreams|tools|bootstrap)$/i.test(path);

@@ -1,8 +1,8 @@
-import { PHASE_IDS } from "@/lib/migrate/playbook";
-import { phasePrompt } from "@/lib/migrate/phase-prompts";
-import { sourceLabel } from "@/lib/migrate/source";
-import type { HandoffSource } from "@/lib/migrate/types";
-import type { ListingLocale } from "@/lib/types";
+import { PHASE_IDS } from "./playbook";
+import { phasePrompt } from "./phase-prompts";
+import { sourceLabel } from "./source";
+import type { HandoffSource } from "./types";
+import type { ListingLocale } from "../types";
 
 export const SKILL_NAME = "grok-bot-migrate";
 

@@ -31,9 +31,11 @@ You can:
 - leave a setup-bot review on a listing (`/en/bots/inbox-chief#reviews`) — not mixed into the ranking
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
 - visit `/from-link`, `/submit`, `/sign-in`, and `/migrate`
-- Hermes sample files (no secrets): `fixtures/hermes-handoff/SOUL.md` and `MEMORY.md`
+- Hermes sample files: `fixtures/hermes-handoff/` (SOUL, USER, MEMORY, one skill, one cron). Dummy `.env` and `auth.json` exist only so skip tests can count them — values must never appear in inventory or packets
+- OpenClaw sample files: `fixtures/openclaw-handoff/` (SOUL, AGENTS, USER, MEMORY, HEARTBEAT, openclaw.json, one skill, one cron). Same dummy-secret skip rule. No gold tasks in the fixture; Phase 1 must stop until the human supplies 3–5
+- `pnpm test` runs Phase 0 inventory + Phase 1 Chief packet against both fixtures (no Grok, no importer)
 
-Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is available without a session. Secrets are still stripped from handoff files.
+Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is an optional preview. The default path is paste the one-liner → skill → packets. Secrets are still stripped; dummy fixture keys are never copied.
 
 ## Run with secrets (Neon + Better Auth)
 

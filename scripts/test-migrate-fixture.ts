@@ -1,0 +1,206 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+import { collectArchiveFiles } from "../lib/migrate/archive";
+import {
+  advanceToPhase1,
+  draftChiefPacket,
+  formatInventoryTable,
+  inventoryWorkspace,
+  readWorkspaceDir,
+} from "../lib/migrate/inventory";
+import { buildHandoff } from "../lib/migrate/parse";
+import { GOLD_TASKS_MISSING, goldTasksReady, makeGoldTask } from "../lib/migrate/playbook";
+import { assertSkillMarkdown, renderSkillMarkdown } from "../lib/migrate/skill-md";
+import type { HandoffSource } from "../lib/migrate/types";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
+const OPENCLAW = path.join(ROOT, "fixtures", "openclaw-handoff");
+const FORBIDDEN = [
+  "fixture-dummy-env-value-never-migrate",
+  "fixture-dummy-auth-value-never-migrate",
+  "fixture-dummy-openclaw-env-value-never-migrate",
+  "fixture-dummy-openclaw-auth-value-never-migrate",
+];
+
+const assertNoSecrets = (label: string, text: string) => {
+  for (const value of FORBIDDEN) {
+    assert.equal(text.includes(value), false, `${label} must not contain secret values`);
+  }
+};
+
+const loadSkillMarkdown = async (source: HandoffSource) => {
+  const origin = (process.env.MIGRATE_TEST_ORIGIN || "").replace(/\/$/, "");
+  if (origin) {
+    const response = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);
+    assert.equal(response.status, 200, `${source} skill route must be 200`);
+    assert.match(response.headers.get("content-type") || "", /text\/markdown/);
+    const markdown = await response.text();
+    const missing = assertSkillMarkdown(markdown, source);
+    assert.deepEqual(missing, [], `${source} skill markdown missing ${missing.join(", ")}`);
+    return markdown;
+  }
+  const markdown = renderSkillMarkdown(source, "en");
+  const missing = assertSkillMarkdown(markdown, source);
+  assert.deepEqual(missing, [], `${source} built-in skill missing ${missing.join(", ")}`);
+  return markdown;
+};
+
+const assertSecretSkip = (root: string, envSentinel: string, authSentinel: string) => {
+  const envText = fs.readFileSync(path.join(root, ".env"), "utf8");
+  const authText = fs.readFileSync(path.join(root, "auth.json"), "utf8");
+  assert.match(envText, new RegExp(envSentinel));
+  assert.match(authText, new RegExp(authSentinel));
+  assert.doesNotMatch(envText, /\bsk-[A-Za-z0-9_-]{16,}\b/);
+  assert.doesNotMatch(authText, /\bsk-[A-Za-z0-9_-]{16,}\b/);
+};
+
+test("fixture dummy secret files exist and are not real keys", () => {
+  assertSecretSkip(HERMES, "fixture-dummy-env-value-never-migrate", "fixture-dummy-auth-value-never-migrate");
+  assertSecretSkip(
+    OPENCLAW,
+    "fixture-dummy-openclaw-env-value-never-migrate",
+    "fixture-dummy-openclaw-auth-value-never-migrate",
+  );
+});
+
+test("Hermes Phase 0 inventory counts identity, skill, cron, and skips secrets unread", () => {
+  const scanned = readWorkspaceDir(HERMES);
+  const inventory = inventoryWorkspace(HERMES);
+  const table = formatInventoryTable(inventory);
+
+  assert.equal(inventory.present.soul, true);
+  assert.equal(inventory.present.user, true);
+  assert.equal(inventory.present.memory, true);
+  assert.equal(inventory.identityFiles.length, 3);
+  assert.ok(inventory.skills.some((skill) => skill.name === "morning-brief"));
+  assert.ok(inventory.cron.some((job) => job.name === "morning-brief" && job.schedule === "0 9 * * 1-5"));
+  assert.equal(inventory.skippedSecrets.length, 2);
+  assert.ok(inventory.skippedSecrets.includes(".env"));
+  assert.ok(inventory.skippedSecrets.includes("auth.json"));
+  assert.match(table, /skipped: secret/);
+  assert.match(table, /Skipped secret files: 2/);
+  assertNoSecrets("hermes scan", JSON.stringify(scanned));
+  assertNoSecrets("hermes inventory table", table);
+  assert.equal(
+    scanned.files.some((file) => file.path.endsWith(".env") || file.path.endsWith("auth.json")),
+    false,
+    "secret files must not be opened as readable text",
+  );
+});
+
+test("OpenClaw Phase 0 inventory counts AGENTS/HEARTBEAT/openclaw.json/cron and skips secrets unread", () => {
+  const scanned = readWorkspaceDir(OPENCLAW);
+  const inventory = inventoryWorkspace(OPENCLAW);
+  const table = formatInventoryTable(inventory);
+
+  assert.equal(inventory.present.soul, true);
+  assert.equal(inventory.present.user, true);
+  assert.equal(inventory.present.agents, true);
+  assert.equal(inventory.present.memory, true);
+  assert.equal(inventory.present.heartbeat, true);
+  assert.equal(inventory.present.openclaw, true);
+  assert.ok(inventory.skills.some((skill) => skill.name === "inbox-triage"));
+  assert.ok(inventory.cron.some((job) => job.name === "inbox-triage" && job.schedule === "0 9 * * 1-5"));
+  assert.ok(inventory.tools.includes("telegram"));
+  assert.ok(inventory.tools.includes("filesystem"));
+  assert.equal(inventory.skippedSecrets.length, 2);
+  assert.ok(inventory.skippedSecrets.includes(".env"));
+  assert.ok(inventory.skippedSecrets.includes("auth.json"));
+  assert.match(table, /HEARTBEAT\.md\tpresent \(off default queue\)/);
+  assert.match(table, /skipped: secret/);
+  assertNoSecrets("openclaw scan", JSON.stringify(scanned));
+  assertNoSecrets("openclaw inventory table", table);
+  assert.doesNotMatch(table, /botToken|apiKey/i);
+  assert.equal(
+    scanned.files.some((file) => file.path.endsWith(".env") || file.path.endsWith("auth.json")),
+    false,
+  );
+});
+
+test("Phase 1 Chief packet can be drafted from identity files with no secret strings", () => {
+  const hermes = readWorkspaceDir(HERMES);
+  const hermesPacket = draftChiefPacket(hermes.files, "en", "hermes");
+  const hermesParsed = buildHandoff(hermes.files, "hermes", "en");
+  const hermesProfile = hermesParsed.packets.find((item) => item.kind === "profile");
+
+  assert.match(hermesPacket.source, /SOUL\.md/);
+  assert.match(hermesPacket.source, /USER\.md/);
+  assert.match(hermesPacket.body, /수신함 정리 봇/);
+  assert.match(hermesPacket.body, /fixture operator prefers Korean first/i);
+  assert.ok(hermesProfile);
+  assertNoSecrets("hermes chief packet", hermesPacket.body);
+  assertNoSecrets("hermes handoff packets", JSON.stringify(hermesParsed.packets));
+
+  const openclaw = readWorkspaceDir(OPENCLAW);
+  const openclawPacket = draftChiefPacket(openclaw.files, "en", "openclaw");
+  assert.match(openclawPacket.source, /SOUL\.md/);
+  assert.match(openclawPacket.source, /USER\.md/);
+  assert.match(openclawPacket.source, /AGENTS\.md/);
+  assert.match(openclawPacket.body, /OpenClaw operator fixture/);
+  assert.doesNotMatch(openclawPacket.body, /stays off the default Grok queue/);
+  assertNoSecrets("openclaw chief packet", openclawPacket.body);
+});
+
+test("Phase 1 stops when gold tasks are missing and does not invent them", () => {
+  const hermes = readWorkspaceDir(HERMES);
+  const openclaw = readWorkspaceDir(OPENCLAW);
+  assert.equal(goldTasksReady([]), false);
+  assert.equal(goldTasksReady([makeGoldTask()]), false);
+
+  for (const [label, files, source] of [
+    ["hermes", hermes.files, "hermes"],
+    ["openclaw", openclaw.files, "openclaw"],
+  ] as const) {
+    const result = advanceToPhase1({ files, locale: "en", source, goldTasks: [] });
+    assert.equal(result.stopped, true, `${label} Phase 1 must stop without gold tasks`);
+    assert.equal(result.reason, GOLD_TASKS_MISSING);
+    assert.equal(result.packet, null);
+  }
+});
+
+test("collectArchiveFiles skips dummy secrets without leaking values", async () => {
+  for (const root of [HERMES, OPENCLAW]) {
+    const names = [".env", "auth.json", "SOUL.md", "USER.md", "MEMORY.md"];
+    const inputs = names.map((name) => ({
+      name,
+      bytes: new Uint8Array(fs.readFileSync(path.join(root, name))),
+    }));
+    const collected = await collectArchiveFiles(inputs);
+    assert.ok(collected.skipped.includes(".env"));
+    assert.ok(collected.skipped.includes("auth.json"));
+    assert.equal(
+      collected.files.some((file) => file.path === ".env" || file.path === "auth.json"),
+      false,
+    );
+    assertNoSecrets(`archive ${root}`, JSON.stringify(collected));
+  }
+});
+
+test("skill markdown is the playbook: packets, one Chief, no importer, no secret values", async () => {
+  for (const source of ["hermes", "openclaw"] as const) {
+    const markdown = await loadSkillMarkdown(source);
+    assert.match(markdown, /First Bot is one Chief/);
+    assert.match(markdown, /does not write to Grok/i);
+    assert.match(markdown, /skipped: secret/);
+    assert.match(markdown, /Do not open, print, or move secrets/);
+    assert.match(markdown, /3–5 gold tasks/);
+    assert.doesNotMatch(markdown, /create-bot|official importer|\/api\/migrate\/preview/i);
+    assertNoSecrets(`${source} skill`, markdown);
+  }
+});
+
+test("GET /api/migrate and /api/migrate/preview stay 404 when an origin is set", async () => {
+  const origin = (process.env.MIGRATE_TEST_ORIGIN || "").replace(/\/$/, "");
+  if (!origin) {
+    assert.ok(true, "skip: set MIGRATE_TEST_ORIGIN to hit the app routes");
+    return;
+  }
+  for (const route of ["/api/migrate", "/api/migrate/preview"]) {
+    const response = await fetch(`${origin}${route}`);
+    assert.equal(response.status, 404, `${route} must stay 404 (no importer)`);
+  }
+});
