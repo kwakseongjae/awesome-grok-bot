@@ -1,3 +1,4 @@
+import { SITE_ORIGIN } from "../site";
 import { PHASE_IDS } from "./playbook";
 import { phasePrompt } from "./phase-prompts";
 import { sourceLabel } from "./source";
@@ -37,6 +38,13 @@ ${install}
 
 Do not move keys. First Bot is one Chief. Ask for 3–5 gold tasks first.`;
 };
+
+/** Canonical getgrokbot.com paste. Never wait on `window.location`. */
+export const pasteInstallCommand = (source: HandoffSource, locale: ListingLocale) =>
+  installCommand(SITE_ORIGIN, source, locale);
+
+export const pasteStarter = (source: HandoffSource, locale: ListingLocale) =>
+  starterPrompt({ origin: SITE_ORIGIN, source, locale });
 
 const SECRET_DENY = [
   ".env",

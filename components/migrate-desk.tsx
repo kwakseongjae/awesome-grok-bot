@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { MigrateLockup } from "@/components/migrate-lockup";
@@ -12,8 +12,8 @@ type Props = {
 
 const AFTER_KEYS = ["afterSkill", "afterGold", "afterGate"] as const;
 
-export function MigrateDesk({ source, starter }: Props) {
-  const t = useTranslations("migrate");
+export async function MigrateDesk({ source, starter }: Props) {
+  const t = await getTranslations("migrate");
   const label = sourceLabel(source);
 
   return (
@@ -52,8 +52,8 @@ export function MigrateDesk({ source, starter }: Props) {
   );
 }
 
-export function MigrateHubDesks() {
-  const t = useTranslations("migrate");
+export async function MigrateHubDesks() {
+  const t = await getTranslations("migrate");
 
   return (
     <div className="space-y-8">
