@@ -13,8 +13,15 @@ import {
 } from "../lib/migrate/inventory";
 import { buildHandoff } from "../lib/migrate/parse";
 import { GOLD_TASKS_MISSING, goldTasksReady, makeGoldTask } from "../lib/migrate/playbook";
-import { assertSkillMarkdown, renderSkillMarkdown } from "../lib/migrate/skill-md";
+import {
+  assertSkillMarkdown,
+  pasteInstallCommand,
+  pasteStarter,
+  renderSkillMarkdown,
+} from "../lib/migrate/skill-md";
 import type { HandoffSource } from "../lib/migrate/types";
+import { LOCALES } from "../lib/locales";
+import { SITE_ORIGIN } from "../lib/site";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -202,5 +209,62 @@ test("GET /api/migrate and /api/migrate/preview stay 404 when an origin is set",
   for (const route of ["/api/migrate", "/api/migrate/preview"]) {
     const response = await fetch(`${origin}${route}`);
     assert.equal(response.status, 404, `${route} must stay 404 (no importer)`);
+  }
+});
+
+test("skill landing paste is the canonical one-liner with no origin wait", () => {
+  const desk = fs.readFileSync(path.join(ROOT, "components/migrate-desk.tsx"), "utf8");
+  const page = fs.readFileSync(path.join(ROOT, "app/[locale]/migrate/[source]/page.tsx"), "utf8");
+
+  assert.doesNotMatch(desk, /waitingOrigin|window\.location|use client/);
+  assert.match(page, /pasteStarter/);
+  assert.doesNotMatch(page, /window\.location/);
+
+  for (const locale of LOCALES) {
+    const raw = fs.readFileSync(path.join(ROOT, "messages", `${locale}.json`), "utf8");
+    const messages = JSON.parse(raw) as { migrate?: { desk?: { waitingOrigin?: string } } };
+    assert.equal(messages.migrate?.desk?.waitingOrigin, undefined, `${locale} must not ship waitingOrigin`);
+    assert.doesNotMatch(raw, /Reading this page/);
+
+    const hermesInstall = pasteInstallCommand("hermes", locale);
+    const openclawInstall = pasteInstallCommand("openclaw", locale);
+    const hermesStarter = pasteStarter("hermes", locale);
+    const openclawStarter = pasteStarter("openclaw", locale);
+
+    assert.equal(
+      hermesInstall,
+      `hermes skills install ${SITE_ORIGIN}/api/migrate/skill/hermes?locale=${locale} --category productivity --name grok-bot-migrate --yes`,
+    );
+    assert.equal(
+      openclawInstall,
+      `mkdir -p skills/grok-bot-migrate && curl -fsSL ${SITE_ORIGIN}/api/migrate/skill/openclaw?locale=${locale} -o skills/grok-bot-migrate/SKILL.md`,
+    );
+    assert.match(hermesStarter, /hermes skills install/);
+    assert.match(openclawStarter, /curl -fsSL/);
+    assert.doesNotMatch(hermesStarter, /Reading this page/);
+    assert.doesNotMatch(openclawStarter, /Reading this page/);
+    assertNoSecrets(`${locale} hermes starter`, hermesStarter);
+    assertNoSecrets(`${locale} openclaw starter`, openclawStarter);
+  }
+});
+
+test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no origin wait", async () => {
+  const origin = (process.env.MIGRATE_TEST_ORIGIN || "").replace(/\/$/, "");
+  if (!origin) {
+    assert.ok(true, "skip: set MIGRATE_TEST_ORIGIN to hit the app routes");
+    return;
+  }
+
+  for (const locale of LOCALES) {
+    for (const source of ["hermes", "openclaw"] as const) {
+      const response = await fetch(`${origin}/${locale}/migrate/${source}`);
+      assert.equal(response.status, 200, `${locale}/${source} must be 200`);
+      const html = await response.text();
+      const visible = html.replaceAll("&amp;", "&");
+      const install = pasteInstallCommand(source, locale);
+      assert.equal(visible.includes(install), true, `${locale}/${source} HTML must include ${install}`);
+      assert.equal(html.includes("Reading this page"), false, `${locale}/${source} HTML must not wait on origin`);
+      assert.doesNotMatch(html, /waitingOrigin/);
+    }
   }
 });

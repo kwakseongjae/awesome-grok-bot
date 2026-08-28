@@ -6,9 +6,9 @@ import { Link } from "@/i18n/navigation";
 import { MigrateDesk } from "@/components/migrate-desk";
 import { MigrateLockup } from "@/components/migrate-lockup";
 import { HANDOFF_SOURCES, isHandoffSource } from "@/lib/migrate/source";
-import { starterPrompt } from "@/lib/migrate/skill-md";
+import { pasteStarter } from "@/lib/migrate/skill-md";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
-import { SITE_NAME, SITE_ORIGIN } from "@/lib/site";
+import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
 
 export const dynamic = "force-static";
@@ -42,6 +42,7 @@ export default async function MigrateSourcePage({ params }: Props) {
   const t = await getTranslations("migrate");
   const titleKey = source === "hermes" ? "hermesTitle" : "openclawTitle";
   const appLocale = toAppLocale(locale);
+  const starter = pasteStarter(source, appLocale);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -64,7 +65,7 @@ export default async function MigrateSourcePage({ params }: Props) {
       <h1 className="mt-8 text-4xl font-semibold tracking-tight">{t(titleKey)}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{t("desk.pageLead")}</p>
       <div className="mt-8">
-        <MigrateDesk source={source} starter={starterPrompt({ origin: SITE_ORIGIN, source, locale: appLocale })} />
+        <MigrateDesk source={source} starter={starter} />
       </div>
     </div>
   );

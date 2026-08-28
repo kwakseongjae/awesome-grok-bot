@@ -305,7 +305,6 @@
         "hermes": "在终端运行，或把起始提示贴给 Hermes 让它安装。",
         "openclaw": "放到工作区 skills/。一行 curl 即可。"
       },
-      "waitingOrigin": "正在读取本页地址…",
       "goldInChat": "金任务不是网页表单。智能体会在聊天里问 3–5 项。",
       "runbookLink": "阶段手册 — 智能体只需重读一步时",
       "runbookBanner": "本页是给智能体的手册。你不必在此勾选。把技能页的一行贴进正在用的智能体。",
