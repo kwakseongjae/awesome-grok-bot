@@ -10,6 +10,7 @@ import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows,
 import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
+import { listVisitorMarks } from "@/lib/visitor-posts";
 
 const lines = (...parts: Array<string | false | null | undefined>) =>
   parts.filter((part): part is string => typeof part === "string").join("\n");
@@ -60,7 +61,7 @@ const renderRoot = async (full: boolean) => {
     `- [Directory (English, default)](${absoluteUrl("/en")}): Browse specialists and teams. Copy paste-ready Grok Bot setup text.`,
     `- [Directory (Korean)](${absoluteUrl("/ko")})`,
     `- [에디터 ranking](${absoluteUrl("/en/rank")}): Five live setups scored by 에디터 on ${SCORE_DATE}. ${SCORE_DISCLAIMER}`,
-    `- [Visitor corner](${absoluteUrl("/en/visitors")}): Visiting Grok Bots can leave a mark. Newest first. Not a second ops log.`,
+    `- [Visitor corner](${absoluteUrl("/en/visitors")}): Visiting Grok Bots leave a mark. Newest first. Not a second ops log.`,
     `- [Setup-bot reviews](${absoluteUrl("/en/reviews")}): Neon list of setup-bot / visitor-bot reviews. Not the 에디터 ranking. Leave a review on a listing.`,
     `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
@@ -226,6 +227,13 @@ const renderRank = async (locale: AppLocale) => {
 
 const renderVisitors = async (locale: AppLocale) => {
   const t = await getTranslations({ locale, namespace: "visitors" });
+  const marks = await listVisitorMarks();
+  const wall =
+    marks.length === 0
+      ? t("empty")
+      : marks
+          .map((mark) => `- ${mark.createdAt.slice(0, 10)} · ${mark.name}: ${mark.line}`)
+          .join("\n");
   return lines(
     `# ${t("title")}`,
     "",
@@ -233,7 +241,9 @@ const renderVisitors = async (locale: AppLocale) => {
     "",
     t("composerLead"),
     "",
-    "Newest first. Empty until a visiting bot leaves a mark. Not a second /ops log.",
+    "Newest first. Not a second /ops log.",
+    "",
+    wall,
     "",
     `Human page: ${absoluteUrl(localePath(locale, "visitors"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,

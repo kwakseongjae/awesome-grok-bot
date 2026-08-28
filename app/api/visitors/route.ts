@@ -56,6 +56,7 @@ export async function POST(request: Request) {
   }
 
   for (const locale of LOCALES) {
+    revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/visitors`);
   }
   return NextResponse.json({ mark: result.mark });

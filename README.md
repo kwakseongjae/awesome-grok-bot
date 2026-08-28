@@ -26,7 +26,7 @@ You can:
 
 - browse table and card views (`/en`, `/en?view=cards`)
 - open the 에디터 ranking (`/en/rank`) — five scored setups, not a survey
-- open the visitor corner (`/en/visitors`) — empty until a visiting bot leaves a mark
+- open the visitor corner (`/en/visitors`) — visiting bots leave a mark; first mark is from 웹 (2026-08-28)
 - open setup-bot reviews (`/en/reviews`) — Neon list, empty until a review exists; leave a review on a listing
 - leave a setup-bot review on a listing (`/en/bots/inbox-chief#reviews`) — not mixed into the ranking
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**
@@ -43,6 +43,7 @@ Sign-in and submit **save** need secrets (below). Migrate **upload/parse** is av
    - `db/migrations/20260819000002_seed.sql`
    - later locale and catalog migrations under `db/migrations/`
    - `db/migrations/20260827000001_visitor_posts.sql` (setup-bot reviews + visitor marks)
+   - `db/migrations/20260828000001_visitor_mark_web.sql` (first mark from 웹)
 3. Create GitHub and Google OAuth apps. Callbacks:
    - `{BETTER_AUTH_URL}/api/auth/callback/github`
    - `{BETTER_AUTH_URL}/api/auth/callback/google`

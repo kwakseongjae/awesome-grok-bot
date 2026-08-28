@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { HoneypotField } from "@/components/honeypot-field";
@@ -16,6 +16,10 @@ type Props = {
 export const VisitorMarkComposer = ({ canWrite }: Props) => {
   const t = useTranslations("visitors");
   const router = useRouter();
+  const formId = useId();
+  const nameId = `${formId}-name`;
+  const lineId = `${formId}-line`;
+  const linkId = `${formId}-link`;
   const [name, setName] = useState("");
   const [line, setLine] = useState("");
   const [link, setLink] = useState("");
@@ -26,6 +30,7 @@ export const VisitorMarkComposer = ({ canWrite }: Props) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!canWrite || pending) return;
     setPending(true);
     setMessage(null);
     setError(null);
@@ -60,7 +65,12 @@ export const VisitorMarkComposer = ({ canWrite }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative space-y-4 rounded-lg border bg-card p-4">
+    <form
+      onSubmit={handleSubmit}
+      className="relative space-y-4 rounded-lg border bg-card p-4"
+      aria-label={t("submit")}
+      aria-busy={pending}
+    >
       <p className="text-sm leading-6 text-muted-foreground">{t("composerLead")}</p>
       {!canWrite ? (
         <p className="text-sm leading-6 text-muted-foreground" role="status">
@@ -68,57 +78,64 @@ export const VisitorMarkComposer = ({ canWrite }: Props) => {
         </p>
       ) : null}
       <HoneypotField value={website} onChange={setWebsite} />
-      <div className="space-y-2">
-        <Label htmlFor="visitor-name">{t("name")}</Label>
-        <Input
-          id="visitor-name"
-          name="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          maxLength={POST_LIMITS.name.max}
-          autoComplete="nickname"
-          required
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="visitor-line">{t("line")}</Label>
-        <Input
-          id="visitor-line"
-          name="line"
-          value={line}
-          onChange={(event) => setLine(event.target.value)}
-          maxLength={POST_LIMITS.line.max}
-          required
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="visitor-link">{t("link")}</Label>
-        <Input
-          id="visitor-link"
-          name="link"
-          type="url"
-          value={link}
-          onChange={(event) => setLink(event.target.value)}
-          maxLength={POST_LIMITS.url.max}
-          autoComplete="url"
-          spellCheck={false}
-        />
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button type="submit" disabled={pending || !canWrite} className="cursor-pointer">
-          {t("submit")}
-        </Button>
-        {message ? (
-          <p className="text-sm text-muted-foreground" role="status" aria-live="polite">
-            {message}
-          </p>
-        ) : null}
-        {error ? (
-          <p className="text-sm text-destructive" role="alert" aria-live="assertive">
-            {error}
-          </p>
-        ) : null}
-      </div>
+      <fieldset disabled={!canWrite || pending} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor={nameId}>{t("name")}</Label>
+          <Input
+            id={nameId}
+            name="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            minLength={POST_LIMITS.name.min}
+            maxLength={POST_LIMITS.name.max}
+            autoComplete="nickname"
+            required
+            aria-invalid={Boolean(error) || undefined}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={lineId}>{t("line")}</Label>
+          <Input
+            id={lineId}
+            name="line"
+            value={line}
+            onChange={(event) => setLine(event.target.value)}
+            minLength={POST_LIMITS.line.min}
+            maxLength={POST_LIMITS.line.max}
+            required
+            aria-invalid={Boolean(error) || undefined}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={linkId}>{t("link")}</Label>
+          <Input
+            id={linkId}
+            name="link"
+            type="url"
+            value={link}
+            onChange={(event) => setLink(event.target.value)}
+            maxLength={POST_LIMITS.url.max}
+            autoComplete="url"
+            spellCheck={false}
+            inputMode="url"
+          />
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button type="submit" size="lg" className="cursor-pointer">
+            {t("submit")}
+          </Button>
+          {message ? (
+            <p className="text-sm text-muted-foreground" role="status" aria-live="polite">
+              {message}
+            </p>
+          ) : null}
+          {error ? (
+            <p className="text-sm text-destructive" role="alert" aria-live="assertive">
+              {error}
+            </p>
+          ) : null}
+        </div>
+      </fieldset>
     </form>
   );
 };
