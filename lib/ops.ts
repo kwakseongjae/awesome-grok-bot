@@ -2,7 +2,7 @@ import type { ListingLocale } from "@/lib/types";
 import { SITE_ORIGIN } from "@/lib/site";
 
 /** Bump when the public ops log, proposals, receipts, or results change. */
-export const OPS_UPDATED_AT = "2026-08-28T16:44:00+09:00";
+export const OPS_UPDATED_AT = "2026-08-29T03:39:00+09:00";
 
 export type OpsDayFact = { readonly text: string; readonly href?: string };
 
@@ -61,8 +61,28 @@ export const DAY_TWO_RECEIPT = {
   ],
 } as const satisfies OpsDayReceipt;
 
+/** Locked day-three sheet. Headline and fact lines stay English on every locale. */
+export const DAY_THREE_RECEIPT = {
+  slug: "2026-08-29",
+  path: "ops/2026-08-29",
+  date: "2026-08-29",
+  headline: "The computer stayed on. A job finished.",
+  description:
+    "Live TQ 24h: likes 0, retweets 0, quotes 0, replies 0, views 64.",
+  facts: [
+    {
+      text: "Live TQ 24h: likes 0, retweets 0, quotes 0, replies 0, views 64.",
+      href: "https://x.com/daon_kwak/status/2093045695120859410",
+    },
+  ],
+} as const satisfies OpsDayReceipt;
+
 /** Newest first. */
-export const OPS_DAY_RECEIPTS: readonly OpsDayReceipt[] = [DAY_TWO_RECEIPT, DAY_ONE_RECEIPT];
+export const OPS_DAY_RECEIPTS: readonly OpsDayReceipt[] = [
+  DAY_THREE_RECEIPT,
+  DAY_TWO_RECEIPT,
+  DAY_ONE_RECEIPT,
+];
 
 export const opsReceiptBySlug = (slug: string) =>
   OPS_DAY_RECEIPTS.find((receipt) => receipt.slug === slug);
@@ -227,6 +247,23 @@ export const OPS_PROPOSALS: OpsProposal[] = [
  * Newest first. Prepend new facts; do not rewrite published ids.
  */
 export const OPS_LOG: OpsLogEntry[] = [
+  {
+    id: "2026-08-29-day-three-receipt",
+    date: "2026-08-29",
+    title: copy("Day-three receipt", {
+      ko: "사흘차 영수증",
+      ja: "3日目のレシート",
+      "zh-CN": "第三天收据",
+      "zh-TW": "第三天收據",
+    }),
+    body: copy("One sheet at /ops/2026-08-29.", {
+      ko: "/ops/2026-08-29에 한 장.",
+      ja: "/ops/2026-08-29 に1枚。",
+      "zh-CN": "一张在 /ops/2026-08-29。",
+      "zh-TW": "一張在 /ops/2026-08-29。",
+    }),
+    links: [{ href: "/ops/2026-08-29", label: "/ops/2026-08-29" }],
+  },
   {
     id: "2026-08-28-day-two-receipt",
     date: "2026-08-28",
@@ -489,6 +526,24 @@ export const OPS_LOG: OpsLogEntry[] = [
 
 /** Public metrics. Leave empty until a real number exists. Do not invent counts. */
 export const OPS_RESULTS: OpsResult[] = [
+  {
+    id: "2026-08-29-live-tq-24h",
+    date: "2026-08-29",
+    kind: "x",
+    headline: copy("24h · live TQ", {
+      ko: "24시간 · 라이브 TQ",
+      ja: "24h · ライブ TQ",
+      "zh-CN": "24 小时 · 实时 TQ",
+      "zh-TW": "24 小時 · 即時 TQ",
+    }),
+    detail: copy("X스카우트. likes 0, retweets 0, quotes 0, replies 0, views 64.", {
+      ko: "X스카우트. 좋아요 0, 리트윗 0, 인용 0, 답글 0, 조회 64.",
+      ja: "X스카우트。いいね 0、リポスト 0、引用 0、返信 0、表示 64。",
+      "zh-CN": "X스카우트。喜欢 0、转帖 0、引用 0、回复 0、浏览 64。",
+      "zh-TW": "X스카우트。喜歡 0、轉發 0、引用 0、回覆 0、瀏覽 64。",
+    }),
+    href: "https://x.com/daon_kwak/status/2093045695120859410",
+  },
   {
     id: "2026-08-28-shot3-24h",
     date: "2026-08-28",
