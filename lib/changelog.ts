@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-28T03:10:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-28T10:00:00+09:00";
 
 export type ChangelogLink = {
   href: string;

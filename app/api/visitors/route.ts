@@ -3,7 +3,20 @@ import { NextResponse } from "next/server";
 import { clientIp, hashIp, takeMemoryRateLimit } from "@/lib/abuse";
 import { LOCALES } from "@/lib/locales";
 import { honeypotFilled } from "@/lib/post-limits";
-import { createVisitorMark, getVisitorStoreStatus } from "@/lib/visitor-posts";
+import { visitorMarkWriteSpec } from "@/lib/visitor-mark-paste";
+import { createVisitorMark, getVisitorStoreStatus, listVisitorMarks } from "@/lib/visitor-posts";
+
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const marks = await listVisitorMarks();
+  const status = getVisitorStoreStatus();
+  return NextResponse.json({
+    marks,
+    canWrite: status.canWrite,
+    write: visitorMarkWriteSpec(),
+  });
+}
 
 type Body = {
   name?: unknown;
@@ -56,6 +69,7 @@ export async function POST(request: Request) {
   }
 
   for (const locale of LOCALES) {
+    revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/visitors`);
   }
   return NextResponse.json({ mark: result.mark });

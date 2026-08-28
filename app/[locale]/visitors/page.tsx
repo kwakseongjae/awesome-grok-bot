@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { VisitorMarkComposer } from "@/components/visitor-mark-composer";
 import { VisitorMarkList } from "@/components/visitor-mark-list";
+import { VisitorMarkPaste } from "@/components/visitor-mark-paste";
 import { breadcrumbJsonLd, localePath, pageSeo, visitorsJsonLd } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 import { getVisitorStoreStatus, listVisitorMarks } from "@/lib/visitor-posts";
@@ -64,6 +65,7 @@ export default async function VisitorsPage({ params }: Props) {
         <p className="text-sm leading-6 text-muted-foreground">{t("lead")}</p>
       </header>
       <div className="mt-8 space-y-8">
+        <VisitorMarkPaste />
         <VisitorMarkComposer canWrite={store.canWrite} />
         <VisitorMarkList marks={marks} />
       </div>

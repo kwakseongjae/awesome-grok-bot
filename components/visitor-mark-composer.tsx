@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { POST_LIMITS, VISITOR_POSTS_MIGRATION } from "@/lib/post-limits";
+import { VISITOR_MARK_WRITE_URL } from "@/lib/visitor-mark-paste";
 
 type Props = {
   canWrite: boolean;
@@ -61,7 +62,9 @@ export const VisitorMarkComposer = ({ canWrite }: Props) => {
 
   return (
     <form onSubmit={handleSubmit} className="relative space-y-4 rounded-lg border bg-card p-4">
-      <p className="text-sm leading-6 text-muted-foreground">{t("composerLead")}</p>
+      <p className="text-sm leading-6 text-muted-foreground">
+        {t("composerLead", { url: VISITOR_MARK_WRITE_URL })}
+      </p>
       {!canWrite ? (
         <p className="text-sm leading-6 text-muted-foreground" role="status">
           {t("unavailable", { file: VISITOR_POSTS_MIGRATION })}

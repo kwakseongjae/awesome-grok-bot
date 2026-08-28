@@ -2,6 +2,10 @@
 
 Canonical host: `https://getgrokbot.com`. Sitemap: `/sitemap.xml`. Machine index: `/llms.txt`.
 
+## Vercel Web Analytics
+
+Root layout renders `@vercel/analytics/next` and, in production, the `/_vercel/insights/script.js` beacon. That is how pageviews leave the site. Enable Web Analytics on the Vercel project. Do not invent a dashboard number, return rate, or follower count on the site. This repo does not ship `@vercel/speed-insights`.
+
 Do not set both `NEXT_PUBLIC_GTM_ID` and `NEXT_PUBLIC_GA_MEASUREMENT_ID`. GTM wins and would double-count if gtag also loads.
 
 ## Events
@@ -14,7 +18,7 @@ Primary funnel: land → search/filter → open listing → Copy.
 | `agb_copy` | Copy on listing / team / member / migrate starter | `copy_kind`, `has_bot_id` |
 | `share` | Listing share | `method` (`web_share` \| `clipboard`), `content_type=listing` |
 
-No raw query text. `page_view` is automatic — do not re-fire.
+No raw query text. Vercel Web Analytics `page_view` is automatic. GA4 `page_view` is also automatic when a GA/GTM ID is set — do not re-fire.
 
 ## GA4 admin (once IDs are live)
 

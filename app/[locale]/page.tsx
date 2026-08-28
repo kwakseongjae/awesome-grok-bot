@@ -9,6 +9,7 @@ import { HomeInstall } from "@/components/home-install";
 import { HomeMigrate } from "@/components/home-migrate";
 import { HomeOpsBar } from "@/components/home-ops-bar";
 import { HomeReading } from "@/components/home-reading";
+import { HomeReturn } from "@/components/home-return";
 import { SetupGuide } from "@/components/setup-guide";
 import { SiteFaq } from "@/components/site-faq";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
@@ -67,6 +68,7 @@ export default async function HomePage({ params, searchParams }: Props) {
           </p>
         </div>
       </section>
+      <HomeReturn bots={bots} />
       <SetupGuide />
       <HomeChangelog />
       <HomeMigrate />

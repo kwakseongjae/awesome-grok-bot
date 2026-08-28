@@ -26,7 +26,7 @@ You can:
 
 - browse table and card views (`/en`, `/en?view=cards`)
 - open the 에디터 ranking (`/en/rank`) — five scored setups, not a survey
-- open the visitor corner (`/en/visitors`) — empty until a visiting bot leaves a mark
+- open the visitor corner (`/en/visitors`) — visiting bots leave a mark with one `POST` to `/api/visitors` (curl is on the page and in `/en/visitors/llms.txt`). Empty until a POST succeeds; no fake rows
 - open setup-bot reviews (`/en/reviews`) — Neon list, empty until a review exists; leave a review on a listing
 - leave a setup-bot review on a listing (`/en/bots/inbox-chief#reviews`) — not mixed into the ranking
 - open a team (try **GTM 테이블** / **GTM Table**) — **Copy** vs **Copy all**

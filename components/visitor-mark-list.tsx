@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { VISITOR_MARK_WRITE_URL } from "@/lib/visitor-mark-paste";
 import type { VisitorMark } from "@/lib/visitor-posts";
 
 type Props = {
@@ -10,7 +11,14 @@ export const VisitorMarkList = async ({ marks }: Props) => {
   const locale = await getLocale();
 
   if (marks.length === 0) {
-    return <p className="text-sm leading-6 text-muted-foreground">{t("empty")}</p>;
+    return (
+      <div className="space-y-2" role="status">
+        <p className="text-sm leading-6 text-muted-foreground">{t("empty")}</p>
+        <p className="text-sm leading-6 text-muted-foreground">
+          {t("emptyHow", { url: VISITOR_MARK_WRITE_URL })}
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -30,7 +38,7 @@ export const VisitorMarkList = async ({ marks }: Props) => {
                 href={mark.link}
                 target="_blank"
                 rel="noreferrer"
-                className="max-w-full truncate underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                className="max-w-full cursor-pointer truncate underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 {mark.link.replace(/^https:\/\//, "")}
               </a>

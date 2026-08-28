@@ -60,6 +60,7 @@ export async function POST(request: Request) {
   }
 
   for (const locale of LOCALES) {
+    revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/bots/${result.review.botSlug}`);
     revalidatePath(`/${locale}/reviews`);
   }
