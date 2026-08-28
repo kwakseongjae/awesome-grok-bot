@@ -60,6 +60,13 @@ export const emptyPlaybook = (): PlaybookState => ({
   openclaw: emptyProgress(),
 });
 
+/** Stable empty snapshot for SSR and useSyncExternalStore. */
+const EMPTY_PLAYBOOK: PlaybookState = emptyPlaybook();
+let cachedRaw: string | null | undefined;
+let cachedState: PlaybookState = EMPTY_PLAYBOOK;
+
+export const getServerPlaybook = () => EMPTY_PLAYBOOK;
+
 export const isPhaseId = (value: unknown): value is PhaseId =>
   typeof value === "number" && (PHASE_IDS as readonly number[]).includes(value);
 
@@ -105,11 +112,9 @@ const asProgress = (value: unknown): SourceProgress => {
   };
 };
 
-export const readPlaybook = (): PlaybookState => {
-  if (typeof window === "undefined") return emptyPlaybook();
+const parsePlaybook = (raw: string | null): PlaybookState => {
+  if (!raw) return EMPTY_PLAYBOOK;
   try {
-    const raw = window.localStorage.getItem(PLAYBOOK_STORAGE_KEY);
-    if (!raw) return emptyPlaybook();
     const parsed = JSON.parse(raw) as Partial<PlaybookState> & {
       source?: HandoffSource | null;
       completedThrough?: number;
@@ -119,7 +124,6 @@ export const readPlaybook = (): PlaybookState => {
       routineMap?: Record<string, string>;
       leftovers?: string[];
     };
-    const base = emptyPlaybook();
     if (parsed.hermes || parsed.openclaw) {
       return {
         lastSource: parsed.lastSource ?? parsed.source ?? null,
@@ -128,37 +132,53 @@ export const readPlaybook = (): PlaybookState => {
         openclaw: asProgress(parsed.openclaw),
       };
     }
-    const legacy = asProgress(parsed);
     const source = parsed.source ?? parsed.lastSource ?? null;
+    const legacy = asProgress(parsed);
     return {
-      ...base,
+      ...EMPTY_PLAYBOOK,
       lastSource: source,
       goldTasks: Array.isArray(parsed.goldTasks) ? parsed.goldTasks : [],
-      hermes: source === "hermes" ? legacy : base.hermes,
-      openclaw: source === "openclaw" ? legacy : base.openclaw,
+      hermes: source === "hermes" ? legacy : EMPTY_PLAYBOOK.hermes,
+      openclaw: source === "openclaw" ? legacy : EMPTY_PLAYBOOK.openclaw,
     };
   } catch {
-    return emptyPlaybook();
+    return EMPTY_PLAYBOOK;
   }
+};
+
+export const readPlaybook = (): PlaybookState => {
+  if (typeof window === "undefined") return EMPTY_PLAYBOOK;
+  const raw = window.localStorage.getItem(PLAYBOOK_STORAGE_KEY);
+  if (raw === cachedRaw) return cachedState;
+  cachedRaw = raw;
+  cachedState = parsePlaybook(raw);
+  return cachedState;
 };
 
 const playbookListeners = new Set<() => void>();
 
 export const subscribePlaybook = (listener: () => void) => {
   playbookListeners.add(listener);
+  const onStorage = (event: StorageEvent) => {
+    if (event.key && event.key !== PLAYBOOK_STORAGE_KEY) return;
+    cachedRaw = undefined;
+    listener();
+  };
   if (typeof window !== "undefined") {
-    window.addEventListener("storage", listener);
+    window.addEventListener("storage", onStorage);
   }
   return () => {
     playbookListeners.delete(listener);
     if (typeof window !== "undefined") {
-      window.removeEventListener("storage", listener);
+      window.removeEventListener("storage", onStorage);
     }
   };
 };
 
 export const writePlaybook = (state: PlaybookState) => {
-  window.localStorage.setItem(PLAYBOOK_STORAGE_KEY, JSON.stringify(state));
+  cachedState = state;
+  cachedRaw = JSON.stringify(state);
+  window.localStorage.setItem(PLAYBOOK_STORAGE_KEY, cachedRaw);
   playbookListeners.forEach((listener) => listener());
 };
 

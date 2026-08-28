@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -70,11 +70,6 @@ export function MigrateConsole({ source, phase, locale }: Props) {
     goldNames: state.goldTasks.map((task) => task.name).filter(Boolean),
     skillTitles: skillPackets.map((packet) => packet.title),
   });
-
-  useEffect(() => {
-    if (!ready || state.lastSource === source) return;
-    save((prev) => ({ ...prev, lastSource: source }));
-  }, [ready, save, source, state.lastSource]);
 
   const handleCheck = (key: string, value: boolean) => {
     save((prev) =>

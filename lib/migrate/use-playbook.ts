@@ -2,7 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import {
-  emptyPlaybook,
+  getServerPlaybook,
   readPlaybook,
   subscribePlaybook,
   writePlaybook,
@@ -10,7 +10,7 @@ import {
 } from "@/lib/migrate/playbook";
 
 export const usePlaybook = () => {
-  const state = useSyncExternalStore(subscribePlaybook, readPlaybook, emptyPlaybook);
+  const state = useSyncExternalStore(subscribePlaybook, readPlaybook, getServerPlaybook);
 
   const save = useCallback((next: PlaybookState | ((prev: PlaybookState) => PlaybookState)) => {
     const current = readPlaybook();
