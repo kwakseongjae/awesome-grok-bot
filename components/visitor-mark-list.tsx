@@ -30,7 +30,7 @@ export const VisitorMarkList = async ({ marks }: Props) => {
                 href={mark.link}
                 target="_blank"
                 rel="noreferrer"
-                className="max-w-full truncate underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                className="max-w-full cursor-pointer truncate underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 {mark.link.replace(/^https:\/\//, "")}
               </a>

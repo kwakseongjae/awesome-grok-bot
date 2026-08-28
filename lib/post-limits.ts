@@ -1,7 +1,7 @@
 export const VISITOR_POSTS_MIGRATION = "db/migrations/20260827000001_visitor_posts.sql";
 
 export const POST_LIMITS = {
-  name: { min: 2, max: 40 },
+  name: { min: 1, max: 40 },
   review: { min: 8, max: 280 },
   line: { min: 4, max: 120 },
   handle: { max: 15 },

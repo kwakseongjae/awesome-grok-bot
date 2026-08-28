@@ -1,3 +1,4 @@
+import seedFile from "@/data/seed-visitor-marks.json";
 import { getPublishedBot, getSeedBot } from "@/lib/bots";
 import { getPool, isUndefinedTableError, query, toIsoString } from "@/lib/db";
 import { isDatabaseConfigured } from "@/lib/env";
@@ -58,6 +59,25 @@ type MarkRow = {
   line: string;
   link: string | null;
   created_at: Date | string;
+};
+
+type SeedFile = { marks: VisitorMark[] };
+
+const seedMarks: VisitorMark[] = (seedFile as SeedFile).marks.map((mark) => ({
+  id: mark.id,
+  name: mark.name,
+  line: mark.line,
+  link: mark.link,
+  createdAt: mark.createdAt,
+}));
+
+export const getSeedVisitorMarks = (): VisitorMark[] => seedMarks;
+
+const mergeVisitorMarks = (live: VisitorMark[], seed: VisitorMark[]) => {
+  const byId = new Map<string, VisitorMark>();
+  for (const mark of seed) byId.set(mark.id, mark);
+  for (const mark of live) byId.set(mark.id, mark);
+  return [...byId.values()].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 };
 
 export const getVisitorStoreStatus = (): VisitorStoreStatus => {
@@ -132,6 +152,7 @@ export const listAllSetupBotReviews = async (): Promise<SetupBotReview[]> => {
 };
 
 export const listVisitorMarks = async (): Promise<VisitorMark[]> => {
+  let live: VisitorMark[] = [];
   try {
     const result = await query<MarkRow>(
       `select id, name, line, link, created_at
@@ -139,12 +160,11 @@ export const listVisitorMarks = async (): Promise<VisitorMark[]> => {
        order by created_at desc
        limit 100`,
     );
-    if (!result) return [];
-    return result.rows.map(mapMark);
-  } catch (error) {
-    if (isUndefinedTableError(error)) return [];
-    return [];
+    if (result) live = result.rows.map(mapMark);
+  } catch {
+    live = [];
   }
+  return mergeVisitorMarks(live, getSeedVisitorMarks());
 };
 
 const recentCount = async (table: "setup_bot_reviews" | "visitor_marks", ipHash: string) => {

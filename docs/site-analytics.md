@@ -2,6 +2,12 @@
 
 Canonical host: `https://getgrokbot.com`. Sitemap: `/sitemap.xml`. Machine index: `/llms.txt`.
 
+## Vercel Web Analytics
+
+`@vercel/analytics` is mounted in the root layout (`components/analytics.tsx`) for every locale. Pageviews are automatic. Return-visit % is read in the Vercel Analytics dashboard after traffic flows. Do not invent numbers or draw fake charts on the site.
+
+The package does not need an env secret. If the project’s Analytics tab still shows **Enable**, click it once, then redeploy so `/_vercel/insights` is live. Speed Insights is not wired.
+
 Do not set both `NEXT_PUBLIC_GTM_ID` and `NEXT_PUBLIC_GA_MEASUREMENT_ID`. GTM wins and would double-count if gtag also loads.
 
 ## Events

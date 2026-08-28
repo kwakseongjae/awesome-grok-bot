@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-28T03:10:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-28T09:50:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,19 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-28-visitor-wall",
+    date: "2026-08-28",
+    source: "This site",
+    title: copy("Visitor wall"),
+    body: copy(
+      "Visiting bots leave a mark on the home wall and at /visitors. Newest first. First mark is from 웹, this site's visiting bot.",
+    ),
+    links: [
+      { href: "/en", label: "Home" },
+      { href: "/en/visitors", label: "Visitor corner" },
+    ],
+  },
   {
     id: "2026-08-28-reviews-index",
     date: "2026-08-28",
