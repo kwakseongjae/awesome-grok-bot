@@ -80,6 +80,46 @@ test("catalog ships Video Editor and keeps One Machine", () => {
   assert.match(video?.prompts.en ?? "", /overwrite/i);
 });
 
+test("catalog ships Jess EA, Sanity, and EM team with our setup text", () => {
+  const slugs = CATALOG.map((item) => item.slug);
+  assert.equal(slugs.includes("jess-ea"), true);
+  assert.equal(slugs.includes("sanity"), true);
+  assert.equal(slugs.includes("em-team"), true);
+  assert.equal(slugs.includes("kody"), false);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.some((slug) => slug === "jess-ea"), true);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.some((slug) => slug === "sanity"), true);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.some((slug) => slug === "em-team"), true);
+  assert.equal(new Set(CATALOG.map((item) => item.index)).size, CATALOG.length);
+
+  const jess = CATALOG.find((item) => item.slug === "jess-ea");
+  assert.equal(jess?.kind, "bot");
+  assert.equal(jess?.source_url, "https://x.ai/bot/Nmv2fCQEcQc3EHzVXJZKN");
+  assert.match(jess?.prompts.en ?? "", /weekday/i);
+  assert.match(jess?.prompts.en ?? "", /Do not send unapproved mail/);
+  assert.match(jess?.prompts.en ?? "", /playbook/i);
+  assert.doesNotMatch(jess?.prompts.en ?? "", /Nmv2fCQEcQc3EHzVXJZKN/);
+  assert.doesNotMatch(jess?.prompts.en ?? "", /posts client call summaries without being asked/i);
+
+  const sanity = CATALOG.find((item) => item.slug === "sanity");
+  assert.equal(sanity?.kind, "bot");
+  assert.equal(sanity?.source_url, "https://x.com/ahdumgray/status/2093504459741794550");
+  assert.match(sanity?.prompts.en ?? "", /One job/);
+  assert.match(sanity?.prompts.en ?? "", /swarm/i);
+  assert.match(sanity?.prompts.en ?? "", /Do not publish/);
+  assert.match(sanity?.prompts.en ?? "", /Do not spawn helpers/);
+  assert.doesNotMatch(sanity?.prompts.en ?? "", /x\.ai\/bot\/[A-Za-z0-9]+/);
+
+  const em = CATALOG.find((item) => item.slug === "em-team");
+  assert.equal(em?.kind, "team");
+  assert.equal(em?.source_url, "https://x.com/ZeroAdamEleven/status/2093510488134930915");
+  assert.equal((em?.members?.en ?? []).length, 4);
+  assert.equal(em?.members?.en?.[0]?.name, "Engineering Manager");
+  assert.match(em?.prompts.en ?? "", /One Chief/);
+  assert.match(em?.prompts.en ?? "", /unbounded swarm|Dispatch an unbounded swarm/);
+  assert.match(em?.prompts.en ?? "", /One machine each/);
+  assert.match(em?.intro?.en ?? "", /refuse/i);
+});
+
 test("fixture dummy secret files exist and are not real keys", () => {
   assertSecretSkip(HERMES, "fixture-dummy-env-value-never-migrate", "fixture-dummy-auth-value-never-migrate");
   assertSecretSkip(
@@ -242,6 +282,18 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
   assert.match(desk, /moreTitle/);
   assert.match(desk, /moreIndex/);
   assert.match(desk, /href="\/templates"/);
+  const templatesPage = fs.readFileSync(path.join(ROOT, "app/[locale]/templates/page.tsx"), "utf8");
+  const templatesIndex = fs.readFileSync(path.join(ROOT, "components/templates-index.tsx"), "utf8");
+  const useCaseCard = fs.readFileSync(path.join(ROOT, "components/use-case-card.tsx"), "utf8");
+  assert.match(templatesPage, /featuredSetups/);
+  assert.match(templatesIndex, /pasteInstallCommand/);
+  assert.match(templatesIndex, /TemplateSetupGrid/);
+  assert.ok(
+    templatesIndex.indexOf("HANDOFF_SOURCES.map") < templatesIndex.indexOf("<TemplateSetupGrid"),
+    "migrate one-liners must render before the setup card grid",
+  );
+  assert.match(useCaseCard, /sm:grid-cols-2/);
+  assert.doesNotMatch(useCaseCard, /lg:grid-cols-3/);
   assert.doesNotMatch(page, /window\.location/);
   assert.doesNotMatch(analytics, /copy_kind.*skill|content_type: "migrate"/);
 
@@ -344,6 +396,10 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
   );
   assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
   assert.equal(indexHtml.includes("Video Editor"), true, "templates index must show Video Editor on a card");
+  assert.equal(indexHtml.includes("Jess EA"), true, "templates index must show Jess EA");
+  assert.equal(indexHtml.includes("/en/bots/jess-ea") || indexHtml.includes("/bots/jess-ea"), true, "templates index must link Jess EA listing");
+  assert.equal(indexHtml.includes("Sanity"), true, "templates index must show Sanity");
+  assert.equal(indexHtml.includes("Engineering Manager"), true, "templates index must show Engineering Manager");
   assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
 
   const migrateRoot = await fetch(`${origin}/api/migrate`);

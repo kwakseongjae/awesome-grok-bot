@@ -6,11 +6,15 @@ export const templatesIndexShareUrl = () => `${SITE_ORIGIN}/en/templates`;
 
 /**
  * Share-hub job cards. Hermes/OpenClaw stay a separate featured row.
- * Video Editor is first among listings. One Machine stays in the grid.
+ * Video Editor is first among listings. Jess EA, Sanity, and EM team follow
+ * Fans Weekly. One Machine stays in the grid.
  */
 export const FEATURED_TEMPLATE_SLUGS = [
   "video-editor",
   "x-top-fans",
+  "jess-ea",
+  "sanity",
+  "em-team",
   "sales-outbound",
   "talent-scout",
   "paid-media",

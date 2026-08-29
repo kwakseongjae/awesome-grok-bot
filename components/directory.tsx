@@ -540,6 +540,8 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
           category={t(`category.${bot.category}`)}
           title={bot.name}
           dek={bot.summary}
+          kind={bot.kind}
+          kindLabel={t(`kind.${bot.kind}`)}
         />
       ))}
     </div>

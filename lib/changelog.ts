@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-30T02:10:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-30T06:40:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,21 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-30-jess-sanity-em",
+    date: "2026-08-30",
+    source: "This site",
+    title: copy("Jess EA, Sanity, and Engineering Manager"),
+    body: copy(
+      "Three new setups: Jess EA (weekday recaps, playbook answers, no unapproved mail), Sanity (one CMS job, no swarm), and Engineering Manager (one Chief, small roster, one machine each — refuses unbounded swarm). Templates stay Hermes/OpenClaw migrate first, then a 2-column card grid with category pills. Cards open listing pages with Copy setup. Related share URLs are links only — we did not copy third-party prompt dumps or bot IDs as ours.",
+    ),
+    links: [
+      { href: "/en/templates", label: "Templates" },
+      { href: "/en/bots/jess-ea", label: "Jess EA" },
+      { href: "/en/bots/sanity", label: "Sanity" },
+      { href: "/en/bots/em-team", label: "Engineering Manager" },
+    ],
+  },
   {
     id: "2026-08-29-job-cards-video-editor",
     date: "2026-08-29",

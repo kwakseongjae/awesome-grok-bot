@@ -485,6 +485,9 @@ const EXTRA_SKINS: Record<string, BotSkin> = {
   "one-machine": { shape: "capsule", color: "encre", expression: "attentif" },
   "video-editor": { shape: "triangle", color: "orange", expression: "attentif" },
   "x-top-fans": { shape: "cercle", color: "bleu", expression: "heureux" },
+  "jess-ea": { shape: "galet", color: "bleu", expression: "attentif" },
+  sanity: { shape: "squircle", color: "vert", expression: "curieux" },
+  "em-team": { shape: "hexagone", color: "encre", expression: "fier" },
 };
 
 function hash32(input: string) {

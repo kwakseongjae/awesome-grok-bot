@@ -75,7 +75,7 @@ const renderRoot = async (full: boolean) => {
     ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
-    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus job cards including Video Editor. This site does not write to Grok.`,
+    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus job cards including Video Editor, Jess EA, Sanity, and Engineering Manager. This site does not write to Grok.`,
     `- [Hermes → Grok Bot template](${templateShareUrl("hermes")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [OpenClaw → Grok Bot template](${templateShareUrl("openclaw")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [License (MIT)](${absoluteUrl("/en/license")})`,

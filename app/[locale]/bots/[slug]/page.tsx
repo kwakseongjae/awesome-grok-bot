@@ -11,7 +11,7 @@ import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
 import { ScorePanel } from "@/components/score-panel";
 import { SetupBotReviews } from "@/components/setup-bot-reviews";
-import { UseCaseCard } from "@/components/use-case-card";
+import { UseCaseCard, useCaseGridClass } from "@/components/use-case-card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatTeamCopy } from "@/lib/charter";
@@ -228,7 +228,7 @@ export default async function BotDetailPage({ params }: Props) {
           <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
-          <div className="grid items-start gap-x-8 gap-y-10 sm:grid-cols-2">
+          <div className={useCaseGridClass}>
             {related.map((item) => (
               <UseCaseCard
                 key={item.id}
@@ -236,6 +236,8 @@ export default async function BotDetailPage({ params }: Props) {
                 category={t(`category.${item.category}`)}
                 title={item.name}
                 dek={item.summary}
+                kind={item.kind}
+                kindLabel={t(`kind.${item.kind}`)}
               />
             ))}
           </div>
