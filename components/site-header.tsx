@@ -8,6 +8,7 @@ import { GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { useTranslations } from "next-intl";
 
 const NAV_ITEMS = [
+  { href: "/templates" as const, key: "templates" as const },
   { href: "/how-to" as const, key: "howTo" as const },
   { href: "/install" as const, key: "install" as const },
   { href: "/changelog" as const, key: "changelog" as const },

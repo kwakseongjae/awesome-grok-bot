@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
+  { href: "/templates" as const, key: "templates" as const },
   { href: "/how-to" as const, key: "howTo" as const },
   { href: "/install" as const, key: "install" as const },
   { href: "/changelog" as const, key: "changelog" as const },

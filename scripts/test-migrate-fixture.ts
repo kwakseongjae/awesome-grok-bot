@@ -23,7 +23,15 @@ import {
 import type { HandoffSource } from "../lib/migrate/types";
 import { LOCALES } from "../lib/locales";
 import { SITE_ORIGIN } from "../lib/site";
-import { templatesIndexShareUrl } from "../lib/templates";
+import {
+  FEATURED_GUIDE_AT,
+  MIGRATE_TEMPLATE_AT,
+  PRIMARY_TEMPLATE_SLUGS,
+  formatGuideDate,
+  grainInk,
+  grainToneForSlug,
+  templatesIndexShareUrl,
+} from "../lib/templates";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -239,6 +247,7 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
   for (const locale of LOCALES) {
     const raw = fs.readFileSync(path.join(ROOT, "messages", `${locale}.json`), "utf8");
     const messages = JSON.parse(raw) as {
+      nav?: { templates?: string };
       migrate?: {
         desk?: {
           waitingOrigin?: string;
@@ -249,7 +258,13 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
           copySkill?: string;
         };
       };
-      templates?: { title?: string };
+      templates?: {
+        title?: string;
+        featuredTitle?: string;
+        featuredLead?: string;
+        readMore?: string;
+        allTemplates?: string;
+      };
     };
     assert.equal(messages.migrate?.desk?.waitingOrigin, undefined, `${locale} must not ship waitingOrigin`);
     assert.equal(typeof messages.migrate?.desk?.templateEyebrow, "string", `${locale} templateEyebrow`);
@@ -257,6 +272,11 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
     assert.equal(typeof messages.migrate?.desk?.moreTitle, "string", `${locale} moreTitle`);
     assert.equal(typeof messages.migrate?.desk?.moreIndex, "string", `${locale} moreIndex`);
     assert.equal(typeof messages.templates?.title, "string", `${locale} templates.title`);
+    assert.equal(typeof messages.templates?.featuredTitle, "string", `${locale} templates.featuredTitle`);
+    assert.equal(typeof messages.templates?.featuredLead, "string", `${locale} templates.featuredLead`);
+    assert.equal(typeof messages.templates?.readMore, "string", `${locale} templates.readMore`);
+    assert.equal(typeof messages.templates?.allTemplates, "string", `${locale} templates.allTemplates`);
+    assert.equal(typeof messages.nav?.templates, "string", `${locale} nav.templates`);
     assert.equal(messages.migrate?.desk?.copySkill, "SKILL.md", `${locale} copySkill stays SKILL.md`);
     assert.doesNotMatch(raw, /Reading this page/);
     assert.doesNotMatch(messages.migrate?.desk?.skillHint ?? "", /write to Grok|importer/i);
@@ -320,11 +340,46 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
   assert.equal(indexHtml.includes(templateShareUrl("hermes")), true, "templates index must include Hermes share URL");
   assert.equal(indexHtml.includes(templateShareUrl("openclaw")), true, "templates index must include OpenClaw share URL");
   assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
+  assert.equal(indexHtml.includes("grain-thumb"), true, "templates index must render grain thumbs");
+  assert.equal(indexHtml.includes("How we run this"), true, "templates index must feature how we run this");
+  assert.equal(indexHtml.includes("Read More"), true, "templates index must include the Read More pill");
+  assert.equal(indexHtml.includes("How I run multiple teams"), false, "templates index must not copy x.ai article titles");
   assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
+
+  for (const locale of LOCALES) {
+    const localized = await fetch(`${origin}/${locale}/templates`);
+    assert.equal(localized.status, 200, `/${locale}/templates must be 200`);
+  }
 
   for (const source of ["hermes", "openclaw"] as const) {
     const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);
     assert.equal(skill.status, 200, `${source} skill API must stay 200`);
     assert.match(skill.headers.get("content-type") || "", /text\/markdown/);
   }
+});
+
+test("templates index recreates the official guides card system without x.ai article copy", () => {
+  const index = fs.readFileSync(path.join(ROOT, "components/templates-index.tsx"), "utf8");
+  const card = fs.readFileSync(path.join(ROOT, "components/guide-card.tsx"), "utf8");
+  const grain = fs.readFileSync(path.join(ROOT, "components/grain-thumb.tsx"), "utf8");
+  const home = fs.readFileSync(path.join(ROOT, "app/[locale]/page.tsx"), "utf8");
+
+  assert.match(grain, /grain-thumb/);
+  assert.match(card, /rounded-full/);
+  assert.match(card, /lg:grid-cols-\[minmax\(0,0\.7fr\)_minmax\(0,1\.3fr\)\]/);
+  assert.match(index, /GuideHero/);
+  assert.match(index, /migrate\/hermes/);
+  assert.match(index, /migrate\/openclaw/);
+  assert.match(home, /TemplatesIndex/);
+  assert.doesNotMatch(index, /How I run multiple teams/);
+  assert.doesNotMatch(card, /create-bot|official importer|\/api\/migrate\/preview/);
+  assert.deepEqual([...PRIMARY_TEMPLATE_SLUGS], ["inbox-chief", "gtm-table", "launch-desk", "ops-pulse"]);
+  assert.equal(grainToneForSlug("inbox-chief"), "ash");
+  assert.equal(grainToneForSlug("gtm-table"), "ember");
+  assert.equal(grainToneForSlug("hermes"), "clay");
+  assert.equal(grainToneForSlug("openclaw"), "pine");
+  assert.equal(grainInk("ash"), "light");
+  assert.equal(grainInk("dusk"), "dark");
+  assert.match(formatGuideDate(FEATURED_GUIDE_AT, "en"), /2026/);
+  assert.match(formatGuideDate(MIGRATE_TEMPLATE_AT, "en"), /2026/);
 });

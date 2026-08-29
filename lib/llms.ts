@@ -473,6 +473,10 @@ const renderTemplates = async (locale: AppLocale) => {
     "",
     `> ${t("lead")}`,
     "",
+    `## ${t("featuredTitle")}`,
+    "",
+    t("featuredLead"),
+    "",
     koCopy(locale)
       ? "사이트가 Grok에 쓰지 않습니다. 이전 템플릿은 한 줄 Copy. 다른 설정은 디렉터리 목록입니다."
       : "This site does not write to Grok. Migrate templates are one Copy. Other setups are directory listings.",

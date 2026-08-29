@@ -3,10 +3,22 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { GrainThumb } from "@/components/grain-thumb";
+import { GuideCard } from "@/components/guide-card";
 import { JsonLd } from "@/components/json-ld";
+import { SetupGuide } from "@/components/setup-guide";
 import { SiteFaq } from "@/components/site-faq";
+import { listPublishedBots } from "@/lib/bots";
 import { breadcrumbJsonLd, HOW_TO_STEP_KEYS, howToJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { GROK_BOT, SITE_NAME } from "@/lib/site";
+import {
+  FEATURED_GUIDE_AT,
+  MIGRATE_TEMPLATE_AT,
+  formatGuideDate,
+  grainSeed,
+  grainToneForSlug,
+  pickListingsBySlug,
+} from "@/lib/templates";
 
 export const dynamic = "force-dynamic";
 
@@ -64,10 +76,15 @@ export default async function HowToPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(toAppLocale(locale));
   const t = await getTranslations("howTo");
+  const templates = await getTranslations("templates");
+  const migrate = await getTranslations("migrate.home");
   const appLocale = toAppLocale(locale);
+  const bots = await listPublishedBots({ locale: appLocale });
+  const related = pickListingsBySlug(bots, ["inbox-chief", "one-machine"]);
+  const migrateDate = formatGuideDate(MIGRATE_TEMPLATE_AT, appLocale);
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-16">
       <JsonLd
         data={howToJsonLd({
           locale: appLocale,
@@ -86,8 +103,19 @@ export default async function HowToPage({ params }: Props) {
         ])}
       />
       <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">{t("eyebrow")}</p>
+      <p className="mt-3 text-xs text-muted-foreground">{formatGuideDate(FEATURED_GUIDE_AT, appLocale)}</p>
       <h1 className="mt-3 text-4xl font-semibold tracking-tight">{t("title")}</h1>
       <p className="mt-3 max-w-2xl text-muted-foreground">{t("lead")}</p>
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{templates("featuredLead")}</p>
+
+      <div className="mt-8 overflow-hidden rounded-2xl border border-border/80">
+        <GrainThumb
+          title={templates("featuredTitle")}
+          tone="dusk"
+          seed={grainSeed("how-we-run")}
+          size="hero"
+        />
+      </div>
 
       <p className="mt-4 text-sm text-muted-foreground">
         {t("download")}{" "}
@@ -123,7 +151,7 @@ export default async function HowToPage({ params }: Props) {
         </figcaption>
       </figure>
 
-      <ol className="mt-10 space-y-8">
+      <ol className="mt-10 max-w-3xl space-y-8">
         {STEP_KEYS.map((key, index) => {
           const links = STEP_LINKS[key] ?? [];
           return (
@@ -191,6 +219,48 @@ export default async function HowToPage({ params }: Props) {
           ))}
         </ul>
       </section>
+
+      <section className="mt-14 space-y-6">
+        <h2 className="text-lg font-semibold tracking-tight">{templates("setupsTitle")}</h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {related.map((item) => (
+            <GuideCard
+              key={item.id}
+              href={`/bots/${item.slug}`}
+              title={item.name}
+              date={formatGuideDate(item.added_at, appLocale)}
+              tone={grainToneForSlug(item.slug)}
+              seed={grainSeed(item.slug)}
+            />
+          ))}
+          <GuideCard
+            href="/migrate/hermes"
+            title={migrate("hermes")}
+            date={migrateDate}
+            tone={grainToneForSlug("hermes")}
+            seed={grainSeed("hermes")}
+          />
+          <GuideCard
+            href="/migrate/openclaw"
+            title={migrate("openclaw")}
+            date={migrateDate}
+            tone={grainToneForSlug("openclaw")}
+            seed={grainSeed("openclaw")}
+          />
+        </div>
+        <p className="text-sm">
+          <Link
+            href="/templates"
+            className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {templates("allTemplates")}
+          </Link>
+        </p>
+      </section>
+
+      <div className="mt-14">
+        <SetupGuide />
+      </div>
 
       <div className="mt-14">
         <SiteFaq />

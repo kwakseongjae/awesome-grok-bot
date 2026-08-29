@@ -61,7 +61,8 @@ trademark fills (`--mark-*`). OAuth buttons use `--brand-google-*` and
 `--brand-github-*` so Google/GitHub identity is not flattened into ink.
 Listing avatars use the Grok Bot customizer palette in
 `lib/grok-bot-blob.ts`. The huddle mascot is the raster at
-`/brand/mascot/awesome.png`.
+`/brand/mascot/awesome.png`. Guide thumbs use named grain tones in
+`app/globals.css` (`.grain-thumb`). Hero thumbs use `rounded-2xl`.
 
 ## Type
 
@@ -73,6 +74,8 @@ Listing avatars use the Grok Bot customizer palette in
 ## CTA voice
 
 - Primary · ink fill, paper type, radius 0.5rem, no glow.
+- Featured guide **Read More** is a pill (`rounded-full`) to match the
+  official Grok Bot guides index. Not used on other CTAs.
 - Secondary · hairline outline, paper fill.
 - Detail action labels are English **Copy** / **Copy all**
   (this listing vs the whole team). Home listings show install
@@ -81,7 +84,10 @@ Listing avatars use the Grok Bot customizer palette in
 
 ## Motion stance
 
-- Motion-cut. No bounce, no gradient wash, no glow, no scroll-reveal.
+- Motion-cut. No bounce, no gradient wash on UI chrome, no glow, no scroll-reveal.
+- Guide/template thumbs are grainy gradient *images* with an overlay title
+  (x.ai/bot/guides card system). They are not chrome. Hover stays opacity /
+  background only — no image scale.
 - Hover: opacity / background only, ≤150ms.
 - Reduced-motion: disable animation and non-essential transition.
 - Home hero: listings start on a circle and orbit slowly. No orbit
@@ -137,6 +143,7 @@ data may still use `charter` / `success` as keys.
 
 - No warm beige, orange `#c45c26`, cream oklch, or AI purple/pink on UI chrome.
   Listing avatars may use the Grok Bot customizer palette (including violet).
+  Guide thumbs may use dusk/grain colour inside the thumbnail only.
 - No Inter / Roboto / Poppins / system-ui as a display face.
 - No italic headings, bounce, glassmorphism, or gradient CTA.
 - Contrast: body text ≥ 4.5:1. Keyboard focus always visible.

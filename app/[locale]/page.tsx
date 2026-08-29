@@ -6,18 +6,18 @@ import { Directory } from "@/components/directory";
 import { HeroHuddle } from "@/components/hero-huddle";
 import { HomeChangelog } from "@/components/home-changelog";
 import { HomeInstall } from "@/components/home-install";
-import { HomeMigrate } from "@/components/home-migrate";
 import { HomeOpsBar } from "@/components/home-ops-bar";
 import { HomeReading } from "@/components/home-reading";
 import { HomeVisitorWall } from "@/components/home-visitor-wall";
-import { SetupGuide } from "@/components/setup-guide";
 import { SiteFaq } from "@/components/site-faq";
+import { TemplatesIndex } from "@/components/templates-index";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
 import { rankingRows } from "@/lib/scores";
 import { pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
+import { templatesIndexShareUrl } from "@/lib/templates";
 import { getVisitorStoreStatus, listVisitorMarks } from "@/lib/visitor-posts";
 
 export const dynamic = "force-dynamic";
@@ -73,10 +73,15 @@ export default async function HomePage({ params, searchParams }: Props) {
           </p>
         </div>
       </section>
+      <TemplatesIndex
+        listings={bots}
+        locale={uiLocale}
+        shareUrl={templatesIndexShareUrl()}
+        featuredTitleAs="h2"
+        compact
+      />
       <HomeVisitorWall marks={marks} canWrite={store.canWrite} />
-      <SetupGuide />
       <HomeChangelog />
-      <HomeMigrate />
       <HomeInstall />
       <HomeReading />
       <CatalogRank rows={rankingRows(bots)} />
