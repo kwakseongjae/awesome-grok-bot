@@ -682,10 +682,21 @@
     "migrateTitle": "遷移模板",
     "migrateLead": "把一行貼進正在用的智能體。金鑰留下。",
     "setupsTitle": "其他設定",
-    "setupsLead": "專家與團隊。Copy 設定文並貼進 Grok Bot。",
+    "setupsLead": "本目錄的專家與團隊。可搜尋或選分類。Copy 設定文，再開啟條目。本站不寫入 Grok。",
     "byDirectory": "by this directory",
     "directory": "全部條目",
-    "back": "返回目錄"
+    "back": "返回目錄",
+    "search": "依名稱或摘要搜尋",
+    "searchLabel": "搜尋設定",
+    "all": "全部",
+    "clear": "清除",
+    "empty": "沒有符合的設定。",
+    "emptyHint": "換一個搜尋詞，或選全部。",
+    "results": "{count, plural, other {# 筆}}",
+    "copySetup": "Copy setup text",
+    "openListing": "開啟條目",
+    "openListingAria": "開啟 {name} 條目",
+    "categories": "分類"
   },
   "guides": {
     "eyebrow": "指南",

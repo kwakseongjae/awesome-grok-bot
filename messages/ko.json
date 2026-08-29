@@ -682,10 +682,21 @@
     "migrateTitle": "이전 템플릿",
     "migrateLead": "쓰던 에이전트에 한 줄을 붙입니다. 키는 옮기지 않습니다.",
     "setupsTitle": "다른 설정",
-    "setupsLead": "전문가와 팀. 설정 문구를 Copy해 Grok Bot에 붙입니다.",
+    "setupsLead": "이 디렉터리의 전문가와 팀. 검색하거나 분류를 고릅니다. 설정 문구를 Copy한 뒤 목록을 엽니다. 사이트가 Grok에 쓰지 않습니다.",
     "byDirectory": "이 디렉터리",
     "directory": "전체 목록",
-    "back": "디렉터리로 돌아가기"
+    "back": "디렉터리로 돌아가기",
+    "search": "이름이나 요약으로 검색",
+    "searchLabel": "설정 검색",
+    "all": "전체",
+    "clear": "지우기",
+    "empty": "맞는 설정이 없습니다.",
+    "emptyHint": "검색어를 바꾸거나 전체를 고르세요.",
+    "results": "{count, plural, other {#개}}",
+    "copySetup": "Copy setup text",
+    "openListing": "목록 열기",
+    "openListingAria": "{name} 목록 열기",
+    "categories": "분류"
   },
   "guides": {
     "eyebrow": "가이드",

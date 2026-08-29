@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-30T02:10:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-30T06:40:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,21 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-29-jess-sanity-templates",
+    date: "2026-08-29",
+    source: "This site",
+    title: copy("Jess, Sanity, and templates search"),
+    body: copy(
+      "Jess (executive assistant) and Sanity (CMS drafts, no publish) are original listings. Eng Table is the engineering team — issue → repro → debug — reused on templates, not a second slug. Templates keep Hermes and OpenClaw first, then search, category pills, and denser cards with Copy setup text / Open listing. Not grokbot.wtf's catalog, not x.ai/bot IDs, not an importer.",
+    ),
+    links: [
+      { href: "/en/templates", label: "Templates" },
+      { href: "/en/bots/jess", label: "Jess" },
+      { href: "/en/bots/sanity", label: "Sanity" },
+      { href: "/en/bots/eng-table", label: "Eng Table" },
+    ],
+  },
   {
     id: "2026-08-29-job-cards-video-editor",
     date: "2026-08-29",

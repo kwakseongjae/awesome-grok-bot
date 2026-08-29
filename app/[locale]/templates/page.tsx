@@ -7,7 +7,7 @@ import { TemplatesIndex } from "@/components/templates-index";
 import { listPublishedBots } from "@/lib/bots";
 import { breadcrumbJsonLd, localePath, pageSeo, templatesJsonLd } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
-import { featuredSetups, templatesIndexShareUrl } from "@/lib/templates";
+import { catalogSetups, templatesIndexShareUrl } from "@/lib/templates";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +33,7 @@ export default async function TemplatesPage({ params }: Props) {
   setRequestLocale(appLocale);
   const t = await getTranslations("templates");
   const bots = await listPublishedBots({ locale: appLocale });
-  const listings = featuredSetups(bots);
+  const listings = catalogSetups(bots);
   const shareUrl = templatesIndexShareUrl();
 
   return (

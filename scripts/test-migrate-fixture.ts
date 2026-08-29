@@ -24,7 +24,8 @@ import type { HandoffSource } from "../lib/migrate/types";
 import { LOCALES } from "../lib/locales";
 import { SITE_ORIGIN } from "../lib/site";
 import { CATALOG } from "../data/catalog";
-import { FEATURED_TEMPLATE_SLUGS, templatesIndexShareUrl } from "../lib/templates";
+import { catalogSetups, FEATURED_TEMPLATE_SLUGS, templatesIndexShareUrl } from "../lib/templates";
+import { expandCatalog } from "../lib/catalog";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -78,6 +79,47 @@ test("catalog ships Video Editor and keeps One Machine", () => {
   const video = CATALOG.find((item) => item.slug === "video-editor");
   assert.match(video?.prompts.en ?? "", /Do not post/);
   assert.match(video?.prompts.en ?? "", /overwrite/i);
+});
+
+test("catalog ships Jess, Sanity, and reuses Eng Table as the EM team", () => {
+  const slugs = CATALOG.map((item) => item.slug);
+  assert.equal(slugs.includes("jess"), true);
+  assert.equal(slugs.includes("sanity"), true);
+  assert.equal(slugs.includes("eng-table"), true);
+  assert.equal(slugs.includes("em-team"), false);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.includes("jess"), true);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.includes("sanity"), true);
+  assert.equal(FEATURED_TEMPLATE_SLUGS.includes("eng-table"), true);
+
+  const jess = CATALOG.find((item) => item.slug === "jess");
+  const sanity = CATALOG.find((item) => item.slug === "sanity");
+  const eng = CATALOG.find((item) => item.slug === "eng-table");
+  assert.match(jess?.prompts.en ?? "", /Name: Jess/);
+  assert.match(jess?.prompts.en ?? "", /Executive assistant/);
+  assert.match(jess?.prompts.en ?? "", /Do not send/);
+  assert.match(jess?.prompts.en ?? "", /calendar/i);
+  assert.doesNotMatch(jess?.prompts.en ?? "", /x\.ai\/bot\/[A-Za-z0-9_-]{8,}/);
+  assert.match(sanity?.prompts.en ?? "", /Name: Sanity/);
+  assert.match(sanity?.prompts.en ?? "", /Does not publish|Do not publish/);
+  assert.doesNotMatch(sanity?.prompts.en ?? "", /x\.ai\/bot\/[A-Za-z0-9_-]{8,}/);
+  assert.match(eng?.prompts.en ?? "", /Issue → repro → debug/);
+  assert.match(eng?.prompts.en ?? "", /Ship to production/);
+  assert.equal(jess?.source_url, null);
+  assert.equal(sanity?.source_url, null);
+});
+
+test("templates catalog lists the full directory with pinned slugs first", () => {
+  const bots = expandCatalog().filter((bot) => bot.locale === "en");
+  const setups = catalogSetups(bots);
+  assert.equal(setups[0]?.slug, "video-editor");
+  const slugs = setups.map((bot) => bot.slug);
+  assert.equal(new Set(slugs).size, slugs.length);
+  assert.ok(slugs.includes("jess"));
+  assert.ok(slugs.includes("sanity"));
+  assert.ok(slugs.includes("eng-table"));
+  assert.ok(slugs.includes("inbox-chief"));
+  assert.ok(slugs.length >= CATALOG.length);
+  assert.ok(slugs.indexOf("jess") < slugs.indexOf("inbox-chief"));
 });
 
 test("fixture dummy secret files exist and are not real keys", () => {
@@ -262,7 +304,7 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
           copySkill?: string;
         };
       };
-      templates?: { title?: string };
+      templates?: { title?: string; copySetup?: string; openListing?: string };
     };
     assert.equal(messages.migrate?.desk?.waitingOrigin, undefined, `${locale} must not ship waitingOrigin`);
     assert.equal(typeof messages.migrate?.desk?.templateEyebrow, "string", `${locale} templateEyebrow`);
@@ -270,6 +312,9 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
     assert.equal(typeof messages.migrate?.desk?.moreTitle, "string", `${locale} moreTitle`);
     assert.equal(typeof messages.migrate?.desk?.moreIndex, "string", `${locale} moreIndex`);
     assert.equal(typeof messages.templates?.title, "string", `${locale} templates.title`);
+    assert.equal(typeof messages.templates?.copySetup, "string", `${locale} templates.copySetup`);
+    assert.equal(typeof messages.templates?.openListing, "string", `${locale} templates.openListing`);
+    assert.equal(messages.templates?.copySetup, "Copy setup text", `${locale} copySetup stays English`);
     assert.equal(messages.migrate?.desk?.copySkill, "SKILL.md", `${locale} copySkill stays SKILL.md`);
     assert.doesNotMatch(raw, /Reading this page/);
     assert.doesNotMatch(messages.migrate?.desk?.skillHint ?? "", /write to Grok|importer/i);
@@ -344,6 +389,15 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
   );
   assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
   assert.equal(indexHtml.includes("Video Editor"), true, "templates index must show Video Editor on a card");
+  assert.equal(indexHtml.includes("Jess"), true, "templates index must show Jess");
+  assert.equal(indexHtml.includes("Sanity"), true, "templates index must show Sanity");
+  assert.equal(indexHtml.includes("Eng Table"), true, "templates index must show Eng Table");
+  assert.equal(indexHtml.includes("Copy setup text"), true, "templates cards must offer Copy setup text");
+  assert.equal(indexHtml.includes("Open listing"), true, "templates cards must offer Open listing");
+  assert.equal(indexHtml.includes("templates-search"), true, "templates index must include search");
+  assert.doesNotMatch(indexHtml, /Add to Grok Bot/i);
+  assert.doesNotMatch(indexHtml, /grokbot\.wtf/);
+  assert.doesNotMatch(indexHtml, /x\.ai\/bot\/[A-Za-z0-9_-]{8,}/);
   assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
 
   const migrateRoot = await fetch(`${origin}/api/migrate`);
@@ -351,6 +405,16 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
 
   const guides = await fetch(`${origin}/en/guides`);
   assert.equal(guides.status, 200, "/en/guides must be 200");
+
+  for (const slug of ["jess", "sanity", "eng-table", "video-editor"] as const) {
+    const listing = await fetch(`${origin}/en/bots/${slug}`);
+    assert.equal(listing.status, 200, `/en/bots/${slug} must be 200`);
+  }
+
+  for (const locale of LOCALES) {
+    const jess = await fetch(`${origin}/${locale}/bots/jess`);
+    assert.equal(jess.status, 200, `/${locale}/bots/jess must be 200`);
+  }
 
   for (const source of ["hermes", "openclaw"] as const) {
     const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);

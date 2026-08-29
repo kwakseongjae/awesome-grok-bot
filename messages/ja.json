@@ -682,10 +682,21 @@
     "migrateTitle": "移行テンプレート",
     "migrateLead": "使っているエージェントに一行を貼ります。キーは移しません。",
     "setupsTitle": "ほかの設定",
-    "setupsLead": "スペシャリストとチーム。設定文を Copy して Grok Bot に貼ります。",
+    "setupsLead": "このディレクトリのスペシャリストとチーム。検索するか分類を選びます。設定文を Copy して掲載を開きます。このサイトは Grok に書きません。",
     "byDirectory": "by this directory",
     "directory": "すべての掲載",
-    "back": "ディレクトリに戻る"
+    "back": "ディレクトリに戻る",
+    "search": "名前や要約で検索",
+    "searchLabel": "設定を検索",
+    "all": "すべて",
+    "clear": "クリア",
+    "empty": "合う設定がありません。",
+    "emptyHint": "検索語を変えるか、すべてを選んでください。",
+    "results": "{count, plural, other {#件}}",
+    "copySetup": "Copy setup text",
+    "openListing": "掲載を開く",
+    "openListingAria": "{name} の掲載を開く",
+    "categories": "分類"
   },
   "guides": {
     "eyebrow": "ガイド",
