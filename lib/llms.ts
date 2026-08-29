@@ -8,6 +8,7 @@ import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
 import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, OPS_DAY_RECEIPTS, opsReceiptBySlug, type OpsDayReceipt } from "@/lib/ops";
 import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows, scoreForSlug } from "@/lib/scores";
 import { skillUrl, starterPrompt, templateShareUrl } from "@/lib/migrate/skill-md";
+import { templatesIndexShareUrl, featuredSetups } from "@/lib/templates";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
 import { listVisitorMarks } from "@/lib/visitor-posts";
@@ -35,6 +36,7 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
     if (receipt) return renderOpsReceipt(maybeLocale, receipt);
   }
   if (rest[0] === "install" && rest.length === 1) return renderInstall(maybeLocale);
+  if (rest[0] === "templates" && rest.length === 1) return renderTemplates(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 1) return renderMigrateHub(maybeLocale);
   if (rest[0] === "migrate" && rest.length === 2 && isHandoffSource(rest[1])) {
     return renderMigrateSource(maybeLocale, rest[1]);
@@ -71,6 +73,7 @@ const renderRoot = async (full: boolean) => {
     ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
+    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus other Grok Bot setups. This site does not write to Grok.`,
     `- [Hermes → Grok Bot template](${templateShareUrl("hermes")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [OpenClaw → Grok Bot template](${templateShareUrl("openclaw")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [License (MIT)](${absoluteUrl("/en/license")})`,
@@ -174,6 +177,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
       (receipt) => `- ${receipt.date} receipt: ${absoluteUrl(localePath(locale, receipt.path))}`,
     ),
     `- Install agents: ${absoluteUrl(localePath(locale, "install"))}`,
+    `- Templates: ${absoluteUrl(localePath(locale, "templates"))}`,
     `- Migrate: ${absoluteUrl(localePath(locale, "migrate"))}`,
     SHOW_ACCOUNT_CHROME && `- Submit: ${absoluteUrl(localePath(locale, "submit"))}`,
     `- Root index: ${absoluteUrl("/llms.txt")}`,
@@ -457,6 +461,40 @@ const renderInstall = async (locale: AppLocale) => {
   );
 };
 
+const renderTemplates = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "templates" });
+  const listings = featuredSetups(await listPublishedBots({ locale }));
+  const setups = listings
+    .map((bot) => `- [${bot.name}](${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}): ${bot.summary}`)
+    .join("\n");
+
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    koCopy(locale)
+      ? "사이트가 Grok에 쓰지 않습니다. 이전 템플릿은 한 줄 Copy. 다른 설정은 디렉터리 목록입니다."
+      : "This site does not write to Grok. Migrate templates are one Copy. Other setups are directory listings.",
+    "",
+    `Share URL (English): ${templatesIndexShareUrl()}`,
+    `Human page: ${absoluteUrl(localePath(locale, "templates"))}`,
+    "",
+    `## ${t("migrateTitle")}`,
+    "",
+    `- Hermes: ${templateShareUrl("hermes")}`,
+    `- OpenClaw: ${templateShareUrl("openclaw")}`,
+    `- Skill markdown: ${SITE_ORIGIN}/api/migrate/skill/{hermes|openclaw}?locale=${locale}`,
+    "",
+    `## ${t("setupsTitle")}`,
+    "",
+    setups || "- (empty)",
+    "",
+    `- ${t("directory")}: ${absoluteUrl(localePath(locale))}`,
+    "",
+  );
+};
+
 const renderMigrateHub = async (locale: AppLocale) => {
   const t = await getTranslations({ locale, namespace: "migrate" });
   return lines(
@@ -477,12 +515,12 @@ const renderMigrateHub = async (locale: AppLocale) => {
     "",
     "## Templates",
     "",
-    `- Hermes share URL: ${templateShareUrl("hermes")}`,
-    `- OpenClaw share URL: ${templateShareUrl("openclaw")}`,
+    `- Templates: ${absoluteUrl(localePath(locale, "templates"))}`,
+    `- Share URL (English): ${templatesIndexShareUrl()}`,
     `- Hermes: ${absoluteUrl(localePath(locale, "migrate/hermes"))}`,
     `- OpenClaw: ${absoluteUrl(localePath(locale, "migrate/openclaw"))}`,
     `- Skill markdown: ${SITE_ORIGIN}/api/migrate/skill/{hermes|openclaw}?locale=${locale}`,
-    `- More templates (directory): ${absoluteUrl(localePath(locale))}`,
+    `- More templates: ${templatesIndexShareUrl()}`,
     "",
     `Human page: ${absoluteUrl(localePath(locale, "migrate"))}`,
     "",
@@ -525,7 +563,7 @@ const renderMigrateSource = async (locale: AppLocale, source: "hermes" | "opencl
     `- Share URL (English): ${templateShareUrl(source)}`,
     `- Skill: ${skillUrl(SITE_ORIGIN, source, locale)}`,
     `- Human page: ${absoluteUrl(localePath(locale, `migrate/${source}`))}`,
-    `- More templates: ${absoluteUrl(localePath(locale))}`,
+    `- More templates: ${templatesIndexShareUrl()}`,
     `- Runbook (agents only): ${absoluteUrl(localePath(locale, `migrate/${source}/0`))}`,
     "",
   );

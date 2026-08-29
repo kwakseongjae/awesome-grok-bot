@@ -17,7 +17,6 @@ const AFTER_KEYS = ["afterSkill", "afterGold", "afterGate"] as const;
 
 export async function MigrateDesk({ source, starter, skillMarkdown, shareUrl }: Props) {
   const t = await getTranslations("migrate");
-  const nav = await getTranslations("nav");
   const bot = await getTranslations("bot");
   const label = sourceLabel(source);
   const other = source === "hermes" ? "openclaw" : "hermes";
@@ -84,10 +83,10 @@ export async function MigrateDesk({ source, starter, skillMarkdown, shareUrl }: 
         <ul className="space-y-2 text-sm leading-6">
           <li>
             <Link
-              href="/"
+              href="/templates"
               className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
             >
-              {nav("directory")}
+              {t("desk.moreIndex")}
             </Link>
             <span className="text-muted-foreground"> · {t("desk.moreDirectoryLead")}</span>
           </li>

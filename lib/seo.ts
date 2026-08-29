@@ -31,6 +31,7 @@ export const STATIC_INDEX_PATHS = [
   "migrate",
   "migrate/hermes",
   "migrate/openclaw",
+  "templates",
   ...(SHOW_ACCOUNT_CHROME ? (["submit", "from-link"] as const) : []),
   "license",
 ] as const;
@@ -362,6 +363,24 @@ export const reviewsJsonLd = ({
   description,
   inLanguage: locale,
   url: absoluteUrl(localePath(locale, "reviews")),
+  publisher: { "@id": `${SITE_ORIGIN}/#org` },
+});
+
+export const templatesJsonLd = ({
+  locale,
+  name,
+  description,
+}: {
+  locale: string;
+  name: string;
+  description: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name,
+  description,
+  inLanguage: locale,
+  url: absoluteUrl(localePath(locale, "templates")),
   publisher: { "@id": `${SITE_ORIGIN}/#org` },
 });
 

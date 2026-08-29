@@ -23,6 +23,7 @@ import {
 import type { HandoffSource } from "../lib/migrate/types";
 import { LOCALES } from "../lib/locales";
 import { SITE_ORIGIN } from "../lib/site";
+import { templatesIndexShareUrl } from "../lib/templates";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -226,11 +227,14 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
   assert.match(desk, /skillMarkdown/);
   assert.match(desk, /ShareButton/);
   assert.match(desk, /moreTitle/);
+  assert.match(desk, /moreIndex/);
+  assert.match(desk, /href="\/templates"/);
   assert.doesNotMatch(page, /window\.location/);
   assert.doesNotMatch(analytics, /copy_kind.*skill|content_type: "migrate"/);
 
   assert.equal(templateShareUrl("hermes"), `${SITE_ORIGIN}/en/migrate/hermes`);
   assert.equal(templateShareUrl("openclaw"), `${SITE_ORIGIN}/en/migrate/openclaw`);
+  assert.equal(templatesIndexShareUrl(), `${SITE_ORIGIN}/en/templates`);
 
   for (const locale of LOCALES) {
     const raw = fs.readFileSync(path.join(ROOT, "messages", `${locale}.json`), "utf8");
@@ -241,14 +245,18 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
           templateEyebrow?: string;
           skillHint?: string;
           moreTitle?: string;
+          moreIndex?: string;
           copySkill?: string;
         };
       };
+      templates?: { title?: string };
     };
     assert.equal(messages.migrate?.desk?.waitingOrigin, undefined, `${locale} must not ship waitingOrigin`);
     assert.equal(typeof messages.migrate?.desk?.templateEyebrow, "string", `${locale} templateEyebrow`);
     assert.equal(typeof messages.migrate?.desk?.skillHint, "string", `${locale} skillHint`);
     assert.equal(typeof messages.migrate?.desk?.moreTitle, "string", `${locale} moreTitle`);
+    assert.equal(typeof messages.migrate?.desk?.moreIndex, "string", `${locale} moreIndex`);
+    assert.equal(typeof messages.templates?.title, "string", `${locale} templates.title`);
     assert.equal(messages.migrate?.desk?.copySkill, "SKILL.md", `${locale} copySkill stays SKILL.md`);
     assert.doesNotMatch(raw, /Reading this page/);
     assert.doesNotMatch(messages.migrate?.desk?.skillHint ?? "", /write to Grok|importer/i);
@@ -301,8 +309,18 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
       assert.equal(html.includes("skipped: secret"), true, `${locale}/${source} HTML must keep secret-skip`);
       assert.equal(html.includes("Reading this page"), false, `${locale}/${source} HTML must not wait on origin`);
       assert.doesNotMatch(html, /waitingOrigin/);
+      assert.equal(html.includes("/templates"), true, `${locale}/${source} HTML must link to templates index`);
     }
   }
+
+  const index = await fetch(`${origin}/en/templates`);
+  assert.equal(index.status, 200, "/en/templates must be 200");
+  const indexHtml = (await index.text()).replaceAll("&amp;", "&");
+  assert.equal(indexHtml.includes(templatesIndexShareUrl()), true, "templates index must include share URL");
+  assert.equal(indexHtml.includes(templateShareUrl("hermes")), true, "templates index must include Hermes share URL");
+  assert.equal(indexHtml.includes(templateShareUrl("openclaw")), true, "templates index must include OpenClaw share URL");
+  assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
+  assert.doesNotMatch(indexHtml, /official importer/i);
 
   for (const source of ["hermes", "openclaw"] as const) {
     const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);

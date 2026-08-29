@@ -308,6 +308,7 @@
       "templateEyebrow": "模板",
       "skillHint": "这一行会安装的文件。若想放文件而不是拉取，复制到 skills/grok-bot-migrate/SKILL.md。",
       "moreTitle": "更多模板",
+      "moreIndex": "模板目录",
       "moreDirectoryLead": "专家与团队。Copy 设定文并贴进 Grok Bot。",
       "goldInChat": "金任务不是网页表单。智能体会在聊天里问 3–5 项。",
       "runbookLink": "阶段手册 — 智能体只需重读一步时",
@@ -650,11 +651,23 @@
     "howToUse": "使用方法",
     "colUse": "How to use",
     "colMove": "迁移",
+    "templates": "模板",
     "migrate": "迁移",
     "colDirectory": "分类",
     "colLegal": "许可",
     "llms": "llms.txt",
     "copyright": "© {year} Awesome Grok Bot"
+  },
+  "templates": {
+    "eyebrow": "模板",
+    "title": "Grok Bot 模板",
+    "lead": "官方 Hermes、OpenClaw 迁移模板，以及其他可贴进 Grok Bot 的设定。本站不写入 Grok。",
+    "migrateTitle": "迁移模板",
+    "migrateLead": "把一行贴进正在用的智能体。密钥留下。",
+    "setupsTitle": "其他设定",
+    "setupsLead": "专家与团队。Copy 设定文并贴进 Grok Bot。",
+    "directory": "全部条目",
+    "back": "返回目录"
   },
   "license": {
     "title": "许可",
