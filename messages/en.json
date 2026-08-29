@@ -78,7 +78,8 @@
     "mascotName": "Awesome",
     "today": "Today: One Machine",
     "jobsTitle": "Jobs",
-    "jobsLead": "Pick a specialist. Open the listing to copy setup text."
+    "jobsLead": "Pick a specialist. Open the listing to copy setup text.",
+    "jobsMore": "All listings"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",

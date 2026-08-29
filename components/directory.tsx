@@ -5,9 +5,9 @@ import { ChevronLeftIcon, ChevronRightIcon, LayoutGridIcon, ListIcon, SlidersHor
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
-import { GuideTile, guideTileGridClass } from "@/components/guide-tile";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
+import { UseCaseCard, useCaseGridClass } from "@/components/use-case-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { directoryHref, type DirectoryView } from "@/lib/directory-view";
 import { integrationLabel } from "@/lib/integrations";
@@ -163,11 +163,9 @@ export function Directory({
   };
 
   const filterFieldProps = {
-    category,
     integration,
     kind,
     integrations,
-    onCategoryChange: handleCategoryChange,
     onIntegrationChange: setIntegration,
     onKindChange: (value: string) => setKind(value as BotKind | typeof ALL),
   };
@@ -237,6 +235,42 @@ export function Directory({
             </Link>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2" role="group" aria-label={t("filters.category")}>
+        <button
+          type="button"
+          aria-pressed={category === ALL}
+          className={cn(
+            "cursor-pointer rounded-full border px-3 py-1.5 text-sm tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50",
+            category === ALL
+              ? "border-foreground bg-foreground text-background"
+              : "border-border bg-background text-foreground hover:bg-muted/40",
+          )}
+          onClick={() => handleCategoryChange(ALL)}
+        >
+          {t("filters.anyCategory")} {bots.length}
+        </button>
+        {CATEGORIES.map((item) => {
+          const count = bots.filter((bot) => bot.category === item).length;
+          if (count === 0) return null;
+          return (
+            <button
+              key={item}
+              type="button"
+              aria-pressed={category === item}
+              className={cn(
+                "cursor-pointer rounded-full border px-3 py-1.5 text-sm tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50",
+                category === item
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border bg-background text-foreground hover:bg-muted/40",
+              )}
+              onClick={() => handleCategoryChange(item)}
+            >
+              {t(`category.${item}`)} {count}
+            </button>
+          );
+        })}
       </div>
 
       <div className="hidden lg:block">
@@ -318,20 +352,16 @@ export function Directory({
 
 function FilterFields({
   idPrefix,
-  category,
   integration,
   kind,
   integrations,
-  onCategoryChange,
   onIntegrationChange,
   onKindChange,
 }: {
   idPrefix: string;
-  category: string;
   integration: string;
   kind: string;
   integrations: string[];
-  onCategoryChange: (value: string) => void;
   onIntegrationChange: (value: string) => void;
   onKindChange: (value: string) => void;
 }) {
@@ -339,21 +369,7 @@ function FilterFields({
   const uiLocale = useLocale() as ListingLocale;
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      <FilterSelect
-        id={`${idPrefix}-category`}
-        label={t("filters.category")}
-        value={category}
-        onChange={onCategoryChange}
-        placeholder={t("filters.anyCategory")}
-        options={[
-          { value: ALL, label: t("filters.anyCategory") },
-          ...CATEGORIES.map((item) => ({
-            value: item,
-            label: t(`category.${item}`),
-          })),
-        ]}
-      />
+    <div className="grid gap-3 sm:grid-cols-2">
       <FilterSelect
         id={`${idPrefix}-integration`}
         label={t("filters.integration")}
@@ -516,16 +532,14 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
 
   return (
-    <div className={guideTileGridClass}>
+    <div className={useCaseGridClass}>
       {bots.map((bot) => (
-        <GuideTile
+        <UseCaseCard
           key={bot.id}
           href={listingHref(bot.slug)}
+          category={t(`category.${bot.category}`)}
           title={bot.name}
-          kicker={t("card.by", { handle: bot.contributor_handle })}
           dek={bot.summary}
-          slug={bot.slug}
-          name={bot.name}
         />
       ))}
     </div>

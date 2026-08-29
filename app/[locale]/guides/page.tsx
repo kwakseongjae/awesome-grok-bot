@@ -71,6 +71,7 @@ export default async function GuidesPage({ params }: Props) {
           cta={card("readMore")}
           name={t(featured.titleKey)}
           heading="h1"
+          tone="violet"
           media={<GuideCardMedia kind={featured.media} />}
         />
       </div>
@@ -82,8 +83,8 @@ export default async function GuidesPage({ params }: Props) {
             href={item.href}
             title={t(item.titleKey)}
             kicker={t("byDirectory")}
-            dek={t(item.blurbKey)}
             name={t(item.titleKey)}
+            tone={item.media === "hermes" ? "bleu" : item.media === "openclaw" ? "turquoise" : "bleu"}
             media={<GuideCardMedia kind={item.media} />}
           />
         ))}
@@ -93,9 +94,9 @@ export default async function GuidesPage({ params }: Props) {
             href={item.href}
             title={t(item.titleKey)}
             kicker={t("byOfficial")}
-            dek={t(item.blurbKey)}
             name={t(item.titleKey)}
             external
+            tone="gris"
             media={<GuideCardMedia kind={item.media} />}
           />
         ))}

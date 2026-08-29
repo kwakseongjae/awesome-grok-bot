@@ -50,7 +50,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     source: "This site",
     title: copy("Job cards and Video Editor"),
     body: copy(
-      "Templates and the directory card view follow the official Grok Bot guides index: a two-column featured story, then image tiles with title on the image and a short dek below. Hermes and OpenClaw stay featured migrate stories with the same one-liners. Video Editor is first in the tile grid. Setup order is do once, then skill, then routine.",
+      "Templates follow the official guides index for Hermes and OpenClaw (featured story plus one-liners), then a use-cases text grid for other setups including Video Editor. Home job kinds are pill tabs. Listing pages use a share card with Copy and Open. Hermes and OpenClaw migrate one-liners are unchanged.",
     ),
     links: [
       { href: "/en/templates", label: "Templates" },

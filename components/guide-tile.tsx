@@ -1,6 +1,8 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { ListingFace } from "@/components/listing-face";
+import { TileMesh } from "@/components/tile-mesh";
+import { skinForFace, type ColorId } from "@/lib/grok-bot-blob";
 import { cn } from "@/lib/utils";
 
 type AppHref = ComponentProps<typeof Link>["href"];
@@ -8,10 +10,11 @@ type AppHref = ComponentProps<typeof Link>["href"];
 type Props = {
   title: string;
   kicker: string;
-  dek: string;
+  dek?: string;
   href: string;
   name: string;
   slug?: string;
+  tone?: ColorId;
   heading?: "h2" | "h3";
   external?: boolean;
   media?: ReactNode;
@@ -27,14 +30,17 @@ export function GuideTile({
   href,
   name,
   slug,
+  tone,
   heading = "h3",
   external = false,
   media,
 }: Props) {
   const Heading = heading;
+  const color = tone ?? skinForFace(slug ?? name)?.color ?? "encre";
   const body = (
     <>
-      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg bg-foreground">
+      <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-lg">
+        <TileMesh color={color} />
         <div className="absolute inset-0 flex items-center justify-center opacity-40 transition-opacity duration-150 group-hover:opacity-30">
           {media ?? <ListingFace slug={slug} name={name} size={128} decorative motion />}
         </div>
@@ -45,9 +51,9 @@ export function GuideTile({
           {title}
         </p>
       </div>
-      <p className="mt-3 font-mono text-xs tracking-tight text-muted-foreground">{kicker}</p>
+      <p className="mt-3 text-sm text-muted-foreground">{kicker}</p>
       <Heading className="mt-1 text-base font-semibold tracking-tight">{title}</Heading>
-      <p className="mt-1 line-clamp-2 text-sm leading-6 text-muted-foreground">{dek}</p>
+      {dek ? <p className="mt-1 line-clamp-2 text-sm leading-6 text-muted-foreground">{dek}</p> : null}
     </>
   );
 

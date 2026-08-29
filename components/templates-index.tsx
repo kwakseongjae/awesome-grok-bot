@@ -1,9 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { GuideFeatured } from "@/components/guide-featured";
-import { GuideTile, guideTileGridClass } from "@/components/guide-tile";
 import { MigrateLockup } from "@/components/migrate-lockup";
 import { ShareButton } from "@/components/share-button";
+import { UseCaseCard, useCaseGridClass } from "@/components/use-case-card";
 import { pasteInstallCommand, templateShareUrl } from "@/lib/migrate/skill-md";
 import { HANDOFF_SOURCES, sourceLabel } from "@/lib/migrate/source";
 import type { BotListing, ListingLocale } from "@/lib/types";
@@ -18,7 +18,7 @@ export async function TemplatesIndex({ listings, shareUrl, locale }: Props) {
   const t = await getTranslations("templates");
   const migrate = await getTranslations("migrate");
   const bot = await getTranslations("bot");
-  const card = await getTranslations("card");
+  const category = await getTranslations("category");
 
   return (
     <div className="space-y-16">
@@ -55,6 +55,7 @@ export async function TemplatesIndex({ listings, shareUrl, locale }: Props) {
               dek={migrate(`desk.cardLead.${source}`)}
               cta={source === "hermes" ? migrate("desk.openHermes") : migrate("desk.openOpenclaw")}
               name={title}
+              tone={source === "hermes" ? "bleu" : "turquoise"}
               media={<MigrateLockup source={source} compact />}
               note={
                 <>
@@ -81,16 +82,14 @@ export async function TemplatesIndex({ listings, shareUrl, locale }: Props) {
           </h2>
           <p className="text-sm leading-6 text-muted-foreground">{t("setupsLead")}</p>
         </div>
-        <div className={guideTileGridClass}>
+        <div className={useCaseGridClass}>
           {listings.map((item) => (
-            <GuideTile
+            <UseCaseCard
               key={item.id}
               href={`/bots/${item.slug}`}
+              category={category(item.category)}
               title={item.name}
-              kicker={card("by", { handle: item.contributor_handle })}
               dek={item.summary}
-              slug={item.slug}
-              name={item.name}
             />
           ))}
         </div>

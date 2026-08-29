@@ -2,8 +2,10 @@ import type { ComponentProps, ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
+import { TileMesh } from "@/components/tile-mesh";
 import { buttonVariants } from "@/components/ui/button";
 import type { CopyKind } from "@/lib/analytics";
+import type { ColorId } from "@/lib/grok-bot-blob";
 import { cn } from "@/lib/utils";
 
 type AppHref = ComponentProps<typeof Link>["href"];
@@ -25,6 +27,7 @@ type Props = {
   cta: string;
   name: string;
   heading?: "h1" | "h2";
+  tone?: ColorId;
   media: ReactNode;
   note?: ReactNode;
   copy?: GuideFeaturedCopy;
@@ -43,9 +46,13 @@ export function GuideFeatured({
   copy,
   external = false,
   heading = "h2",
+  tone = "encre",
 }: Props) {
   const Heading = heading;
-  const ctaClass = cn(buttonVariants({ variant: "default", size: "sm" }), "cursor-pointer");
+  const ctaClass = cn(
+    buttonVariants({ variant: "default", size: "sm" }),
+    "cursor-pointer rounded-full px-4",
+  );
   const titleClass =
     "mt-3 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl";
 
@@ -109,7 +116,8 @@ export function GuideFeatured({
           )}
         </div>
       </div>
-      <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-lg bg-foreground">
+      <div className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-lg">
+        <TileMesh color={tone} />
         <div className="absolute inset-0 flex items-center justify-center opacity-50">{media}</div>
         <p
           className="relative z-10 max-w-[16ch] px-6 text-center text-2xl font-semibold tracking-tight text-balance text-background sm:text-3xl"

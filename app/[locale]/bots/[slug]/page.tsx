@@ -5,18 +5,21 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
-import { GuideTile } from "@/components/guide-tile";
 import { ListingFace } from "@/components/listing-face";
+import { ShareCard } from "@/components/share-card";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
 import { ScorePanel } from "@/components/score-panel";
 import { SetupBotReviews } from "@/components/setup-bot-reviews";
+import { UseCaseCard } from "@/components/use-case-card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { scoreForSlug } from "@/lib/scores";
-import { SITE_NAME } from "@/lib/site";
+import { GROK_BOT, SITE_NAME } from "@/lib/site";
 import { getVisitorStoreStatus, listSetupBotReviews } from "@/lib/visitor-posts";
 import type { ListingLocale } from "@/lib/types";
 
@@ -80,55 +83,58 @@ export default async function BotDetailPage({ params }: Props) {
         ← {t("bot.back")}
       </Link>
 
-      <article className="mt-8 overflow-hidden rounded-lg border bg-card">
-        <div className="flex aspect-[16/10] items-center justify-center bg-muted p-8">
-          <ListingFace slug={bot.slug} name={bot.name} size={128} motion />
-        </div>
-        <header className="space-y-4 p-5 sm:p-8">
-          <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
-          <p className="font-mono text-xs tracking-tight text-muted-foreground">
-            {t("card.by", { handle: bot.contributor_handle })}
-          </p>
-          <p className="text-lg text-muted-foreground">{bot.summary}</p>
-          <div className="flex flex-wrap items-center gap-2">
-            <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-            <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-            {scored ? (
-              <ScoreBadge
-                score={scored.score}
-                label={t("rank.scoreAria", { score: scored.score })}
-              />
-            ) : null}
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <CopyButton
-              text={bot.prompt}
-              label={t("bot.copy")}
-              copiedLabel={t("bot.copied")}
-              ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
-              botId={bot.id}
-              copyKind="listing"
-            />
-            {bot.kind === "team" ? (
-              <CopyButton
-                text={formatTeamCopy(bot)}
-                label={t("bot.copyAll")}
-                copiedLabel={t("bot.copied")}
-                ariaLabel={t("a11y.copyAll", { name: bot.name })}
-                botId={bot.id}
-                copyKind="team"
-                variant="ghost"
-              />
-            ) : null}
-            <ShareButton title={bot.name} url={shareUrl} />
-          </div>
-          <p className="text-sm text-muted-foreground">{t("bot.copyHint")}</p>
+      <div className="mx-auto mt-8 max-w-lg">
+        <ShareCard
+          name={bot.name}
+          slug={bot.slug}
+          byline={t("card.by", { handle: bot.contributor_handle })}
+          dek={bot.summary}
+        >
+          <CopyButton
+            text={bot.prompt}
+            label={t("bot.copy")}
+            copiedLabel={t("bot.copied")}
+            ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
+            botId={bot.id}
+            copyKind="listing"
+          />
           {bot.kind === "team" ? (
-            <p className="text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
+            <CopyButton
+              text={formatTeamCopy(bot)}
+              label={t("bot.copyAll")}
+              copiedLabel={t("bot.copied")}
+              ariaLabel={t("a11y.copyAll", { name: bot.name })}
+              botId={bot.id}
+              copyKind="team"
+              variant="ghost"
+            />
           ) : null}
-          <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
-        </header>
-      </article>
+          <a
+            href={GROK_BOT.product}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}
+          >
+            {t("card.open")}
+          </a>
+          <ShareButton title={bot.name} url={shareUrl} />
+        </ShareCard>
+        <p className="mt-3 text-center text-sm text-muted-foreground">{t("bot.copyHint")}</p>
+        {bot.kind === "team" ? (
+          <p className="mt-1 text-center text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
+        ) : null}
+        <p className="mt-1 text-center text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+          <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+          {scored ? (
+            <ScoreBadge
+              score={scored.score}
+              label={t("rank.scoreAria", { score: scored.score })}
+            />
+          ) : null}
+        </div>
+      </div>
 
       {scored ? <ScorePanel entry={scored} /> : null}
 
@@ -222,16 +228,14 @@ export default async function BotDetailPage({ params }: Props) {
           <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
-          <div className="grid items-start gap-x-6 gap-y-10 sm:grid-cols-2">
+          <div className="grid items-start gap-x-8 gap-y-10 sm:grid-cols-2">
             {related.map((item) => (
-              <GuideTile
+              <UseCaseCard
                 key={item.id}
                 href={`/bots/${item.slug}`}
+                category={t(`category.${item.category}`)}
                 title={item.name}
-                kicker={t("card.by", { handle: item.contributor_handle })}
                 dek={item.summary}
-                slug={item.slug}
-                name={item.name}
               />
             ))}
           </div>

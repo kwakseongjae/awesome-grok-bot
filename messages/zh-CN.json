@@ -78,7 +78,8 @@
     "mascotName": "Awesome",
     "today": "今日：One Machine",
     "jobsTitle": "岗位",
-    "jobsLead": "选一个专家。打开条目再 Copy 设定文。"
+    "jobsLead": "选一个专家。打开条目再 Copy 设定文。",
+    "jobsMore": "全部条目"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
