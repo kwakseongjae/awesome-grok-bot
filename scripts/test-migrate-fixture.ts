@@ -320,7 +320,7 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
   assert.equal(indexHtml.includes(templateShareUrl("hermes")), true, "templates index must include Hermes share URL");
   assert.equal(indexHtml.includes(templateShareUrl("openclaw")), true, "templates index must include OpenClaw share URL");
   assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
-  assert.doesNotMatch(indexHtml, /official importer/i);
+  assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
 
   for (const source of ["hermes", "openclaw"] as const) {
     const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);
