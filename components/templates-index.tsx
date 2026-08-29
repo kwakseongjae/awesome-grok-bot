@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { GuideFeatured } from "@/components/guide-featured";
 import { MigrateLockup } from "@/components/migrate-lockup";
 import { ShareButton } from "@/components/share-button";
-import { UseCaseCard, useCaseGridClass } from "@/components/use-case-card";
+import { TemplatesCatalog } from "@/components/templates-catalog";
 import { pasteInstallCommand, templateShareUrl } from "@/lib/migrate/skill-md";
 import { HANDOFF_SOURCES, sourceLabel } from "@/lib/migrate/source";
 import type { BotListing, ListingLocale } from "@/lib/types";
@@ -18,7 +18,6 @@ export async function TemplatesIndex({ listings, shareUrl, locale }: Props) {
   const t = await getTranslations("templates");
   const migrate = await getTranslations("migrate");
   const bot = await getTranslations("bot");
-  const category = await getTranslations("category");
 
   return (
     <div className="space-y-16">
@@ -82,17 +81,17 @@ export async function TemplatesIndex({ listings, shareUrl, locale }: Props) {
           </h2>
           <p className="text-sm leading-6 text-muted-foreground">{t("setupsLead")}</p>
         </div>
-        <div className={useCaseGridClass}>
-          {listings.map((item) => (
-            <UseCaseCard
-              key={item.id}
-              href={`/bots/${item.slug}`}
-              category={category(item.category)}
-              title={item.name}
-              dek={item.summary}
-            />
-          ))}
-        </div>
+        <TemplatesCatalog
+          listings={listings.map((item) => ({
+            id: item.id,
+            slug: item.slug,
+            name: item.name,
+            summary: item.summary,
+            prompt: item.prompt,
+            category: item.category,
+            kind: item.kind,
+          }))}
+        />
         <p className="text-sm">
           <Link
             href="/"

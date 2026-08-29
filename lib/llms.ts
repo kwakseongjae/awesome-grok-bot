@@ -8,7 +8,7 @@ import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
 import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, OPS_DAY_RECEIPTS, opsReceiptBySlug, type OpsDayReceipt } from "@/lib/ops";
 import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows, scoreForSlug } from "@/lib/scores";
 import { skillUrl, starterPrompt, templateShareUrl } from "@/lib/migrate/skill-md";
-import { templatesIndexShareUrl, featuredSetups } from "@/lib/templates";
+import { catalogSetups, templatesIndexShareUrl } from "@/lib/templates";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { HOW_TO_STEP_KEYS, absoluteUrl, localePath, llmsPath } from "@/lib/seo";
 import { listVisitorMarks } from "@/lib/visitor-posts";
@@ -75,7 +75,7 @@ const renderRoot = async (full: boolean) => {
     ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
-    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus job cards including Video Editor. This site does not write to Grok.`,
+    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus job cards including Video Editor, Jess, Sanity, and Eng Table. This site does not write to Grok.`,
     `- [Hermes → Grok Bot template](${templateShareUrl("hermes")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [OpenClaw → Grok Bot template](${templateShareUrl("openclaw")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [License (MIT)](${absoluteUrl("/en/license")})`,
@@ -482,7 +482,7 @@ const renderInstall = async (locale: AppLocale) => {
 
 const renderTemplates = async (locale: AppLocale) => {
   const t = await getTranslations({ locale, namespace: "templates" });
-  const listings = featuredSetups(await listPublishedBots({ locale }));
+  const listings = catalogSetups(await listPublishedBots({ locale }));
   const setups = listings
     .map((bot) => `- [${bot.name}](${absoluteUrl(localePath(locale, `bots/${bot.slug}`))}): ${bot.summary}`)
     .join("\n");

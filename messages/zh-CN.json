@@ -682,10 +682,21 @@
     "migrateTitle": "迁移模板",
     "migrateLead": "把一行贴进正在用的智能体。密钥留下。",
     "setupsTitle": "其他设定",
-    "setupsLead": "专家与团队。Copy 设定文并贴进 Grok Bot。",
+    "setupsLead": "本目录的专家与团队。可搜索或选分类。Copy 设定文，再打开条目。本站不写入 Grok。",
     "byDirectory": "by this directory",
     "directory": "全部条目",
-    "back": "返回目录"
+    "back": "返回目录",
+    "search": "按名称或摘要搜索",
+    "searchLabel": "搜索设定",
+    "all": "全部",
+    "clear": "清除",
+    "empty": "没有匹配的设定。",
+    "emptyHint": "换一个搜索词，或选全部。",
+    "results": "{count, plural, other {# 条}}",
+    "copySetup": "Copy setup text",
+    "openListing": "打开条目",
+    "openListingAria": "打开 {name} 条目",
+    "categories": "分类"
   },
   "guides": {
     "eyebrow": "指南",
