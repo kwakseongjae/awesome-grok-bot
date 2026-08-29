@@ -5,7 +5,7 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
-import { JobCard } from "@/components/job-card";
+import { GuideTile } from "@/components/guide-tile";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
@@ -85,9 +85,11 @@ export default async function BotDetailPage({ params }: Props) {
           <ListingFace slug={bot.slug} name={bot.name} size={128} motion />
         </div>
         <header className="space-y-4 p-5 sm:p-8">
+          <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
           <p className="font-mono text-xs tracking-tight text-muted-foreground">
             {t("card.by", { handle: bot.contributor_handle })}
           </p>
+          <p className="text-lg text-muted-foreground">{bot.summary}</p>
           <div className="flex flex-wrap items-center gap-2">
             <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
             <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
@@ -98,8 +100,6 @@ export default async function BotDetailPage({ params }: Props) {
               />
             ) : null}
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
-          <p className="text-lg text-muted-foreground">{bot.summary}</p>
           <div className="flex flex-wrap items-center gap-2">
             <CopyButton
               text={bot.prompt}
@@ -222,17 +222,16 @@ export default async function BotDetailPage({ params }: Props) {
           <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
-          <div className="grid items-stretch gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-x-6 gap-y-10 sm:grid-cols-2">
             {related.map((item) => (
-              <JobCard
+              <GuideTile
                 key={item.id}
                 href={`/bots/${item.slug}`}
                 title={item.name}
-                byline={t("card.by", { handle: item.contributor_handle })}
-                blurb={item.summary}
+                kicker={t("card.by", { handle: item.contributor_handle })}
+                dek={item.summary}
                 slug={item.slug}
                 name={item.name}
-                openLabel={t("card.open")}
               />
             ))}
           </div>

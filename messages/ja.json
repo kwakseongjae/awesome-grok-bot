@@ -76,7 +76,9 @@
     "nextPage": "次へ",
     "pageStatus": "{page} / {pages}",
     "mascotName": "Awesome",
-    "today": "今日: One Machine"
+    "today": "今日: One Machine",
+    "jobsTitle": "ジョブ",
+    "jobsLead": "専門家を選び、掲載ページで設定文を Copy します。"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
@@ -509,6 +511,7 @@
   },
   "howTo": {
     "eyebrow": "チュートリアル",
+    "backGuides": "ガイドへ戻る",
     "title": "How to use Grok Bot",
     "lead": "チャット欄を開くより、同僚を雇う作業に近いです。空の Bot 一つから始め、一度見せて、それからチームを増やします。",
     "download": "デスクトップアプリは公式オンボーディングから入れます。",
@@ -710,6 +713,7 @@
   },
   "card": {
     "open": "開く",
+    "readMore": "続きを読む",
     "by": "by @{handle}"
   },
   "license": {

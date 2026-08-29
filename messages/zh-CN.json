@@ -76,7 +76,9 @@
     "nextPage": "下一页",
     "pageStatus": "{page} / {pages}",
     "mascotName": "Awesome",
-    "today": "今日：One Machine"
+    "today": "今日：One Machine",
+    "jobsTitle": "岗位",
+    "jobsLead": "选一个专家。打开条目再 Copy 设定文。"
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
@@ -509,6 +511,7 @@
   },
   "howTo": {
     "eyebrow": "教程",
+    "backGuides": "返回指南",
     "title": "How to use Grok Bot",
     "lead": "更像雇一位同事，而不是打开聊天框。从一只空 Bot 开始，演示一次工作，再扩大团队。",
     "download": "桌面应用在官方引导页下载。",
@@ -710,6 +713,7 @@
   },
   "card": {
     "open": "打开",
+    "readMore": "阅读全文",
     "by": "by @{handle}"
   },
   "license": {

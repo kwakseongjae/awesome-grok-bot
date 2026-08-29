@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-30T01:30:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-30T02:10:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -50,7 +50,7 @@ export const CHANGELOG: ChangelogEntry[] = [
     source: "This site",
     title: copy("Job cards and Video Editor"),
     body: copy(
-      "Templates, listings, and the directory card view now follow official Grok Bot share-card layout: image, title, byline, short blurb, Copy or Open. Video Editor and X Top 100 Fans Weekly are live. Setup order is do once, then skill, then routine. Hermes and OpenClaw migrate one-liners are unchanged.",
+      "Templates and the directory card view follow the official Grok Bot guides index: a two-column featured story, then image tiles with title on the image and a short dek below. Hermes and OpenClaw stay featured migrate stories with the same one-liners. Video Editor is first in the tile grid. Setup order is do once, then skill, then routine.",
     ),
     links: [
       { href: "/en/templates", label: "Templates" },

@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon, LayoutGridIcon, ListIcon, SlidersHor
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
-import { JobCard } from "@/components/job-card";
+import { GuideTile, guideTileGridClass } from "@/components/guide-tile";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -516,17 +516,16 @@ function DirectoryCards({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
 
   return (
-    <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className={guideTileGridClass}>
       {bots.map((bot) => (
-        <JobCard
+        <GuideTile
           key={bot.id}
           href={listingHref(bot.slug)}
           title={bot.name}
-          byline={t("card.by", { handle: bot.contributor_handle })}
-          blurb={bot.summary}
+          kicker={t("card.by", { handle: bot.contributor_handle })}
+          dek={bot.summary}
           slug={bot.slug}
           name={bot.name}
-          openLabel={t("card.open")}
         />
       ))}
     </div>

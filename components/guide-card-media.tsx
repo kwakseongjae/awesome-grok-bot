@@ -7,7 +7,7 @@ type Props = {
 };
 
 export function GuideCardMedia({ kind }: Props) {
-  if (kind === "hermes") return <MigrateLockup source="hermes" />;
-  if (kind === "openclaw") return <MigrateLockup source="openclaw" />;
-  return <GrokBotMark motion className="size-16" />;
+  if (kind === "hermes") return <MigrateLockup source="hermes" compact />;
+  if (kind === "openclaw") return <MigrateLockup source="openclaw" compact />;
+  return <GrokBotMark motion className="size-20" />;
 }

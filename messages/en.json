@@ -76,7 +76,9 @@
     "nextPage": "Next",
     "pageStatus": "{page} / {pages}",
     "mascotName": "Awesome",
-    "today": "Today: One Machine"
+    "today": "Today: One Machine",
+    "jobsTitle": "Jobs",
+    "jobsLead": "Pick a specialist. Open the listing to copy setup text."
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
@@ -509,6 +511,7 @@
   },
   "howTo": {
     "eyebrow": "Tutorial",
+    "backGuides": "Back to guides",
     "title": "How to use Grok Bot",
     "lead": "Closer to hiring a teammate than opening a chat box. Start with one empty Bot, show a job once, then grow the team.",
     "download": "The desktop app is on the official onboarding page.",
@@ -710,6 +713,7 @@
   },
   "card": {
     "open": "Open",
+    "readMore": "Read more",
     "by": "by @{handle}"
   },
   "license": {

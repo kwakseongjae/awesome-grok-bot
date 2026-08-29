@@ -76,7 +76,9 @@
     "nextPage": "다음",
     "pageStatus": "{page} / {pages}",
     "mascotName": "어썸",
-    "today": "오늘: One Machine"
+    "today": "오늘: One Machine",
+    "jobsTitle": "직무",
+    "jobsLead": "전문가를 고르세요. 목록에서 설정 문구를 Copy합니다."
   },
   "rank": {
     "eyebrow": "Scored 2026-08-27",
@@ -509,6 +511,7 @@
   },
   "howTo": {
     "eyebrow": "튜토리얼",
+    "backGuides": "가이드로",
     "title": "How to use Grok Bot",
     "lead": "채팅 창이 아니라 동료를 들이는 일에 가깝습니다. 빈 봇 하나에서 시작해, 한 번 보여 주고, 그다음에 팀을 늘립니다.",
     "download": "데스크톱 앱은 공식 온보딩에서 받습니다.",
@@ -710,6 +713,7 @@
   },
   "card": {
     "open": "열기",
+    "readMore": "더 보기",
     "by": "@{handle}"
   },
   "license": {

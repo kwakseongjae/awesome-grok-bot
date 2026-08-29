@@ -86,9 +86,14 @@ export default async function HowToPage({ params }: Props) {
           { name: t("title"), path: localePath(appLocale, "how-to") },
         ])}
       />
-      <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">{t("eyebrow")}</p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">{t("lead")}</p>
+      <Link
+        href="/guides"
+        className="text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        ← {t("backGuides")}
+      </Link>
+      <h1 className="mt-8 text-4xl font-semibold tracking-tight sm:text-5xl">{t("title")}</h1>
+      <p className="mt-4 max-w-2xl text-lg leading-7 text-muted-foreground">{t("lead")}</p>
 
       <p className="mt-4 text-sm text-muted-foreground">
         {t("download")}{" "}

@@ -4,7 +4,8 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { GuideCardMedia } from "@/components/guide-card-media";
-import { JobCard } from "@/components/job-card";
+import { GuideFeatured } from "@/components/guide-featured";
+import { GuideTile, guideTileGridClass } from "@/components/guide-tile";
 import { OFFICIAL_GUIDE_CARDS, SITE_GUIDE_CARDS } from "@/lib/guides";
 import { breadcrumbJsonLd, localePath, pageSeo, absoluteUrl } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
@@ -34,6 +35,8 @@ export default async function GuidesPage({ params }: Props) {
   const t = await getTranslations("guides");
   const card = await getTranslations("card");
 
+  const [featured, ...restSite] = SITE_GUIDE_CARDS;
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10">
       <JsonLd
@@ -58,60 +61,45 @@ export default async function GuidesPage({ params }: Props) {
       >
         ← {t("back")}
       </Link>
-      <header className="mt-8 space-y-3">
-        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-          {t("eyebrow")}
-        </p>
-        <h1 className="text-4xl font-semibold tracking-tight">{t("title")}</h1>
-        <p className="max-w-2xl text-muted-foreground">{t("lead")}</p>
-      </header>
 
-      <section className="mt-10 space-y-4">
-        <div className="space-y-2">
-          <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-            {t("oursTitle")}
-          </h2>
-          <p className="text-sm leading-6 text-muted-foreground">{t("oursLead")}</p>
-        </div>
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {SITE_GUIDE_CARDS.map((item) => (
-            <JobCard
-              key={item.href}
-              href={item.href}
-              title={t(item.titleKey)}
-              byline={t("byDirectory")}
-              blurb={t(item.blurbKey)}
-              name={t(item.titleKey)}
-              openLabel={card("open")}
-              media={<GuideCardMedia kind={item.media} />}
-            />
-          ))}
-        </div>
-      </section>
+      <div className="mt-10">
+        <GuideFeatured
+          href={featured.href}
+          kicker={t("byDirectory")}
+          title={t(featured.titleKey)}
+          dek={t(featured.blurbKey)}
+          cta={card("readMore")}
+          name={t(featured.titleKey)}
+          heading="h1"
+          media={<GuideCardMedia kind={featured.media} />}
+        />
+      </div>
 
-      <section className="mt-12 space-y-4">
-        <div className="space-y-2">
-          <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
-            {t("officialTitle")}
-          </h2>
-          <p className="text-sm leading-6 text-muted-foreground">{t("officialLead")}</p>
-        </div>
-        <div className="grid items-stretch gap-4 sm:grid-cols-2">
-          {OFFICIAL_GUIDE_CARDS.map((item) => (
-            <JobCard
-              key={item.href}
-              href={item.href}
-              title={t(item.titleKey)}
-              byline={t("byOfficial")}
-              blurb={t(item.blurbKey)}
-              name={t(item.titleKey)}
-              openLabel={t("openOfficial")}
-              external
-              media={<GuideCardMedia kind={item.media} />}
-            />
-          ))}
-        </div>
-      </section>
+      <div className={`mt-16 ${guideTileGridClass}`}>
+        {restSite.map((item) => (
+          <GuideTile
+            key={item.href}
+            href={item.href}
+            title={t(item.titleKey)}
+            kicker={t("byDirectory")}
+            dek={t(item.blurbKey)}
+            name={t(item.titleKey)}
+            media={<GuideCardMedia kind={item.media} />}
+          />
+        ))}
+        {OFFICIAL_GUIDE_CARDS.map((item) => (
+          <GuideTile
+            key={item.href}
+            href={item.href}
+            title={t(item.titleKey)}
+            kicker={t("byOfficial")}
+            dek={t(item.blurbKey)}
+            name={t(item.titleKey)}
+            external
+            media={<GuideCardMedia kind={item.media} />}
+          />
+        ))}
+      </div>
     </div>
   );
 }

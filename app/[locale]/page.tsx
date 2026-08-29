@@ -10,6 +10,7 @@ import { HomeMigrate } from "@/components/home-migrate";
 import { HomeOpsBar } from "@/components/home-ops-bar";
 import { HomeReading } from "@/components/home-reading";
 import { HomeVisitorWall } from "@/components/home-visitor-wall";
+import { JobKinds } from "@/components/job-kinds";
 import { SetupGuide } from "@/components/setup-guide";
 import { SiteFaq } from "@/components/site-faq";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
@@ -18,6 +19,7 @@ import { LISTING_FACE_SLUGS } from "@/lib/faces";
 import { rankingRows } from "@/lib/scores";
 import { pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
+import { jobKindListings } from "@/lib/templates";
 import { getVisitorStoreStatus, listVisitorMarks } from "@/lib/visitor-posts";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +77,13 @@ export default async function HomePage({ params, searchParams }: Props) {
       </section>
       <HomeVisitorWall marks={marks} canWrite={store.canWrite} />
       <SetupGuide />
+      <JobKinds
+        jobs={jobKindListings(bots).map((bot) => ({
+          slug: bot.slug,
+          name: bot.name,
+          summary: bot.summary,
+        }))}
+      />
       <HomeChangelog />
       <HomeMigrate />
       <HomeInstall />
