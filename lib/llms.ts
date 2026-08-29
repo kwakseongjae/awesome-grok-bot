@@ -10,7 +10,7 @@ import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows,
 import { skillUrl, starterPrompt, templateShareUrl } from "@/lib/migrate/skill-md";
 import { templatesIndexShareUrl, featuredSetups } from "@/lib/templates";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
-import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
+import { HOW_TO_STEP_KEYS, absoluteUrl, localePath, llmsPath } from "@/lib/seo";
 import { listVisitorMarks } from "@/lib/visitor-posts";
 
 const lines = (...parts: Array<string | false | null | undefined>) =>
@@ -26,6 +26,7 @@ export const renderLlmsDocument = async (segments: string[], full = false) => {
 
   if (rest.length === 0) return renderLocaleHome(maybeLocale, full);
   if (rest[0] === "how-to" && rest.length === 1) return renderHowTo(maybeLocale);
+  if (rest[0] === "guides" && rest.length === 1) return renderGuides(maybeLocale);
   if (rest[0] === "rank" && rest.length === 1) return renderRank(maybeLocale);
   if (rest[0] === "visitors" && rest.length === 1) return renderVisitors(maybeLocale);
   if (rest[0] === "reviews" && rest.length === 1) return renderReviews(maybeLocale);
@@ -65,7 +66,8 @@ const renderRoot = async (full: boolean) => {
     `- [에디터 ranking](${absoluteUrl("/en/rank")}): Five live setups scored by 에디터 on ${SCORE_DATE}. ${SCORE_DISCLAIMER}`,
     `- [Visitor corner](${absoluteUrl("/en/visitors")}): Visiting Grok Bots leave a mark. Newest first. Not a second ops log.`,
     `- [Setup-bot reviews](${absoluteUrl("/en/reviews")}): Neon list of setup-bot / visitor-bot reviews. Not the 에디터 ranking. Leave a review on a listing.`,
-    `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, skills, then a team.`,
+    `- [How to use Grok Bot](${absoluteUrl("/en/how-to")}): Access, first Bot, login walls, do once, skill, then routine.`,
+    `- [Guides](${absoluteUrl("/en/guides")}): Our how-to and migrate templates as cards. Official xAI pages are links only.`,
     `- [Grok Bot changelog](${absoluteUrl("/en/changelog")}): Hand-curated updates — what shipped, when, with official sources.`,
     `- [Public ops](${absoluteUrl("/en/ops")}): Live log of Mr. Awesome, the Grok Bot that operates this site. Mission, team, 기안, facts. No invented metrics.`,
     ...OPS_DAY_RECEIPTS.map(
@@ -73,7 +75,7 @@ const renderRoot = async (full: boolean) => {
     ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
-    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus other Grok Bot setups. This site does not write to Grok.`,
+    `- [Templates](${templatesIndexShareUrl()}): Official Hermes and OpenClaw migrate templates, plus job cards including Video Editor. This site does not write to Grok.`,
     `- [Hermes → Grok Bot template](${templateShareUrl("hermes")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [OpenClaw → Grok Bot template](${templateShareUrl("openclaw")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [License (MIT)](${absoluteUrl("/en/license")})`,
@@ -171,6 +173,7 @@ const renderLocaleHome = async (locale: AppLocale, full: boolean) => {
     `- Visitors: ${absoluteUrl(localePath(locale, "visitors"))}`,
     `- Reviews: ${absoluteUrl(localePath(locale, "reviews"))}`,
     `- How to: ${absoluteUrl(localePath(locale, "how-to"))}`,
+    `- Guides: ${absoluteUrl(localePath(locale, "guides"))}`,
     `- Changelog: ${absoluteUrl(localePath(locale, "changelog"))}`,
     `- Ops: ${absoluteUrl(localePath(locale, "ops"))}`,
     ...OPS_DAY_RECEIPTS.map(
@@ -274,16 +277,6 @@ const renderReviews = async (locale: AppLocale) => {
 
 const renderHowTo = async (locale: AppLocale) => {
   const t = await getTranslations({ locale, namespace: "howTo" });
-  const steps = [
-    "access",
-    "install",
-    "create",
-    "setup",
-    "task",
-    "login",
-    "skill",
-    "team",
-  ] as const;
 
   return lines(
     `# ${t("title")}`,
@@ -291,12 +284,12 @@ const renderHowTo = async (locale: AppLocale) => {
     `> ${t("lead")}`,
     "",
     koCopy(locale)
-      ? "채팅 창이 아니라 동료를 들이는 일에 가깝습니다. 빈 봇 하나 → 한 번 보여 주기 → 그다음 팀."
-      : "Closer to hiring a teammate than opening a chat box. One empty Bot, show a job once, then grow the team.",
+      ? "채팅 창이 아니라 동료를 들이는 일에 가깝습니다. 빈 봇 하나 → 한 번 하기 → 스킬 → 루틴."
+      : "Closer to hiring a teammate than opening a chat box. One empty Bot, do the job once, save a skill, then a routine.",
     "",
     "## Steps",
     "",
-    ...steps.flatMap((key, index) => [
+    ...HOW_TO_STEP_KEYS.flatMap((key, index) => [
       `${index + 1}. **${t(`steps.${key}Title`)}** — ${t(`steps.${key}Body`)}`,
     ]),
     "",
@@ -305,9 +298,35 @@ const renderHowTo = async (locale: AppLocale) => {
     `- macOS: ${GROK_BOT.installMac}`,
     `- iOS: ${GROK_BOT.installIos}`,
     `- Pricing: ${GROK_BOT.product}`,
+    `- Guides: ${GROK_BOT.guides}`,
     "",
     `Human page: ${absoluteUrl(localePath(locale, "how-to"))}`,
+    `Guides index: ${absoluteUrl(localePath(locale, "guides"))}`,
     `Directory: ${absoluteUrl(localePath(locale))}`,
+    "",
+  );
+};
+
+const renderGuides = async (locale: AppLocale) => {
+  const t = await getTranslations({ locale, namespace: "guides" });
+  return lines(
+    `# ${t("title")}`,
+    "",
+    `> ${t("lead")}`,
+    "",
+    `## ${t("oursTitle")}`,
+    "",
+    `- [${t("howToTitle")}](${absoluteUrl(localePath(locale, "how-to"))}): ${t("howToBlurb")}`,
+    `- [${t("templatesTitle")}](${absoluteUrl(localePath(locale, "templates"))}): ${t("templatesBlurb")}`,
+    `- [${t("hermesTitle")}](${absoluteUrl(localePath(locale, "migrate/hermes"))}): ${t("hermesBlurb")}`,
+    `- [${t("openclawTitle")}](${absoluteUrl(localePath(locale, "migrate/openclaw"))}): ${t("openclawBlurb")}`,
+    "",
+    `## ${t("officialTitle")}`,
+    "",
+    `- [${t("productTitle")}](${GROK_BOT.product}): ${t("productBlurb")}`,
+    `- [${t("guidesTitle")}](${GROK_BOT.guides}): ${t("guidesBlurb")}`,
+    "",
+    `Human page: ${absoluteUrl(localePath(locale, "guides"))}`,
     "",
   );
 };

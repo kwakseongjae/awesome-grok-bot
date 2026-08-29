@@ -23,7 +23,8 @@ import {
 import type { HandoffSource } from "../lib/migrate/types";
 import { LOCALES } from "../lib/locales";
 import { SITE_ORIGIN } from "../lib/site";
-import { templatesIndexShareUrl } from "../lib/templates";
+import { CATALOG } from "../data/catalog";
+import { FEATURED_TEMPLATE_SLUGS, templatesIndexShareUrl } from "../lib/templates";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -66,6 +67,18 @@ const assertSecretSkip = (root: string, envSentinel: string, authSentinel: strin
   assert.doesNotMatch(envText, /\bsk-[A-Za-z0-9_-]{16,}\b/);
   assert.doesNotMatch(authText, /\bsk-[A-Za-z0-9_-]{16,}\b/);
 };
+
+test("catalog ships Video Editor and keeps One Machine", () => {
+  const slugs = CATALOG.map((item) => item.slug);
+  assert.equal(FEATURED_TEMPLATE_SLUGS[0], "video-editor");
+  assert.equal(slugs.includes("video-editor"), true);
+  assert.equal(slugs.includes("x-top-fans"), true);
+  assert.equal(slugs.includes("one-machine"), true);
+  assert.equal(slugs.includes("kody"), false);
+  const video = CATALOG.find((item) => item.slug === "video-editor");
+  assert.match(video?.prompts.en ?? "", /Do not post/);
+  assert.match(video?.prompts.en ?? "", /overwrite/i);
+});
 
 test("fixture dummy secret files exist and are not real keys", () => {
   assertSecretSkip(HERMES, "fixture-dummy-env-value-never-migrate", "fixture-dummy-auth-value-never-migrate");
@@ -319,8 +332,25 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
   assert.equal(indexHtml.includes(templatesIndexShareUrl()), true, "templates index must include share URL");
   assert.equal(indexHtml.includes(templateShareUrl("hermes")), true, "templates index must include Hermes share URL");
   assert.equal(indexHtml.includes(templateShareUrl("openclaw")), true, "templates index must include OpenClaw share URL");
+  assert.equal(
+    indexHtml.includes(pasteInstallCommand("hermes", "en")),
+    true,
+    "templates index first HTML must include Hermes one-liner",
+  );
+  assert.equal(
+    indexHtml.includes(pasteInstallCommand("openclaw", "en")),
+    true,
+    "templates index first HTML must include OpenClaw one-liner",
+  );
   assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
+  assert.equal(indexHtml.includes("Video Editor"), true, "templates index must show Video Editor on a card");
   assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
+
+  const migrateRoot = await fetch(`${origin}/api/migrate`);
+  assert.equal(migrateRoot.status, 404, "/api/migrate must stay 404");
+
+  const guides = await fetch(`${origin}/en/guides`);
+  assert.equal(guides.status, 200, "/en/guides must be 200");
 
   for (const source of ["hermes", "openclaw"] as const) {
     const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);

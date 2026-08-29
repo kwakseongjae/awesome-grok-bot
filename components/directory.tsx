@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon, LayoutGridIcon, ListIcon, SlidersHor
 import { useLocale, useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
+import { JobCard } from "@/components/job-card";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { directoryHref, type DirectoryView } from "@/lib/directory-view";
 import { integrationLabel } from "@/lib/integrations";
 import { scoreForSlug } from "@/lib/scores";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -514,55 +514,21 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
 
 function DirectoryCards({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
-  const locale = useLocale() as ListingLocale;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {bots.map((bot) => {
-        const scored = scoreForSlug(bot.slug);
-        return (
-        <Link
+    <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {bots.map((bot) => (
+        <JobCard
           key={bot.id}
           href={listingHref(bot.slug)}
-          className="rounded-lg focus-visible:ring-3 focus-visible:ring-ring/50"
-          aria-label={bot.name}
-        >
-          <Card className="h-full rounded-lg transition-colors hover:bg-muted/40">
-            <CardHeader>
-              <div className="flex items-start gap-3">
-                <ListingFace slug={bot.slug} name={bot.name} size={56} decorative motion />
-                <div className="min-w-0 flex-1 space-y-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-                    <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-                    {scored ? (
-                      <ScoreBadge
-                        score={scored.score}
-                        label={t("rank.scoreAria", { score: scored.score })}
-                      />
-                    ) : null}
-                  </div>
-                  <CardTitle>{bot.name}</CardTitle>
-                  <CardDescription>{bot.summary}</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <PluginChipList items={bot.integrations} locale={locale} />
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
-                <span
-                  className="font-mono text-xs tabular-nums text-muted-foreground"
-                  aria-label={t("a11y.installCount", { count: bot.copy_count })}
-                >
-                  {t("a11y.installCount", { count: bot.copy_count })}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-        );
-      })}
+          title={bot.name}
+          byline={t("card.by", { handle: bot.contributor_handle })}
+          blurb={bot.summary}
+          slug={bot.slug}
+          name={bot.name}
+          openLabel={t("card.open")}
+        />
+      ))}
     </div>
   );
 }

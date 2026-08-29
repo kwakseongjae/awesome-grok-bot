@@ -37,7 +37,7 @@ export default async function TemplatesPage({ params }: Props) {
   const shareUrl = templatesIndexShareUrl();
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10">
       <JsonLd
         data={templatesJsonLd({
           locale: appLocale,
@@ -65,7 +65,7 @@ export default async function TemplatesPage({ params }: Props) {
         <p className="max-w-2xl text-muted-foreground">{t("lead")}</p>
       </header>
       <div className="mt-8">
-        <TemplatesIndex listings={listings} shareUrl={shareUrl} />
+        <TemplatesIndex listings={listings} shareUrl={shareUrl} locale={appLocale} />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { toAppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
+import { JobCard } from "@/components/job-card";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
@@ -79,52 +80,55 @@ export default async function BotDetailPage({ params }: Props) {
         ← {t("bot.back")}
       </Link>
 
-      <header className="mt-8 space-y-4">
-        <div className="flex items-start gap-4">
-          <ListingFace slug={bot.slug} name={bot.name} size={72} motion />
-          <div className="min-w-0 flex-1 space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-              <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-              {scored ? (
-                <ScoreBadge
-                  score={scored.score}
-                  label={t("rank.scoreAria", { score: scored.score })}
-                />
-              ) : null}
-            </div>
-            <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
-            <p className="text-lg text-muted-foreground">{bot.summary}</p>
+      <article className="mt-8 overflow-hidden rounded-lg border bg-card">
+        <div className="flex aspect-[16/10] items-center justify-center bg-muted p-8">
+          <ListingFace slug={bot.slug} name={bot.name} size={128} motion />
+        </div>
+        <header className="space-y-4 p-5 sm:p-8">
+          <p className="font-mono text-xs tracking-tight text-muted-foreground">
+            {t("card.by", { handle: bot.contributor_handle })}
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+            <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+            {scored ? (
+              <ScoreBadge
+                score={scored.score}
+                label={t("rank.scoreAria", { score: scored.score })}
+              />
+            ) : null}
           </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <CopyButton
-            text={bot.prompt}
-            label={t("bot.copy")}
-            copiedLabel={t("bot.copied")}
-            ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
-            botId={bot.id}
-            copyKind="listing"
-          />
-          {bot.kind === "team" ? (
+          <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
+          <p className="text-lg text-muted-foreground">{bot.summary}</p>
+          <div className="flex flex-wrap items-center gap-2">
             <CopyButton
-              text={formatTeamCopy(bot)}
-              label={t("bot.copyAll")}
+              text={bot.prompt}
+              label={t("bot.copy")}
               copiedLabel={t("bot.copied")}
-              ariaLabel={t("a11y.copyAll", { name: bot.name })}
+              ariaLabel={t("a11y.copyPrompt", { name: bot.name })}
               botId={bot.id}
-              copyKind="team"
-              variant="ghost"
+              copyKind="listing"
             />
+            {bot.kind === "team" ? (
+              <CopyButton
+                text={formatTeamCopy(bot)}
+                label={t("bot.copyAll")}
+                copiedLabel={t("bot.copied")}
+                ariaLabel={t("a11y.copyAll", { name: bot.name })}
+                botId={bot.id}
+                copyKind="team"
+                variant="ghost"
+              />
+            ) : null}
+            <ShareButton title={bot.name} url={shareUrl} />
+          </div>
+          <p className="text-sm text-muted-foreground">{t("bot.copyHint")}</p>
+          {bot.kind === "team" ? (
+            <p className="text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
           ) : null}
-          <ShareButton title={bot.name} url={shareUrl} />
-        </div>
-        <p className="text-sm text-muted-foreground">{t("bot.copyHint")}</p>
-        {bot.kind === "team" ? (
-          <p className="text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
-        ) : null}
-        <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
-      </header>
+          <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
+        </header>
+      </article>
 
       {scored ? <ScorePanel entry={scored} /> : null}
 
@@ -218,22 +222,20 @@ export default async function BotDetailPage({ params }: Props) {
           <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
-          <ul className="space-y-2">
+          <div className="grid items-stretch gap-4 sm:grid-cols-2">
             {related.map((item) => (
-              <li key={item.id} className="flex items-center gap-2">
-                <ListingFace slug={item.slug} name={item.name} size={32} decorative motion />
-                <span className="min-w-0">
-                  <Link
-                    href={`/bots/${item.slug}`}
-                    className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {item.name}
-                  </Link>
-                  <span className="text-muted-foreground"> · {item.summary}</span>
-                </span>
-              </li>
+              <JobCard
+                key={item.id}
+                href={`/bots/${item.slug}`}
+                title={item.name}
+                byline={t("card.by", { handle: item.contributor_handle })}
+                blurb={item.summary}
+                slug={item.slug}
+                name={item.name}
+                openLabel={t("card.open")}
+              />
             ))}
-          </ul>
+          </div>
         </section>
       ) : null}
     </div>
