@@ -13,6 +13,7 @@ export const HOW_TO_STEP_KEYS = [
   "task",
   "login",
   "skill",
+  "routine",
   "team",
 ] as const;
 
@@ -32,6 +33,7 @@ export const STATIC_INDEX_PATHS = [
   "migrate/hermes",
   "migrate/openclaw",
   "templates",
+  "guides",
   ...(SHOW_ACCOUNT_CHROME ? (["submit", "from-link"] as const) : []),
   "license",
 ] as const;

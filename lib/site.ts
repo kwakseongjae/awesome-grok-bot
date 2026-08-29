@@ -26,6 +26,7 @@ export const GROK_BOT = {
   installIos: "https://apps.apple.com/us/app/grok-bot/id6794501026",
   skills: "https://docs.x.ai/grok-bot/skills-routines-and-automations",
   computer: "https://docs.x.ai/grok-bot/computer-and-apps",
+  guides: "https://x.ai/bot/guides",
   launch: "https://x.ai/news/introducing-grok-bot",
   xAccount: "https://x.com/xai",
 } as const;

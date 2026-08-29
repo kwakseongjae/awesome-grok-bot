@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-29T04:20:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-30T02:10:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,20 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-29-job-cards-video-editor",
+    date: "2026-08-29",
+    source: "This site",
+    title: copy("Job cards and Video Editor"),
+    body: copy(
+      "Templates follow the official guides index for Hermes and OpenClaw (featured story plus one-liners), then a use-cases text grid for other setups including Video Editor. Home job kinds are pill tabs. Listing pages use a share card with Copy and Open. Hermes and OpenClaw migrate one-liners are unchanged.",
+    ),
+    links: [
+      { href: "/en/templates", label: "Templates" },
+      { href: "/en/bots/video-editor", label: "Video Editor" },
+      { href: "/en/guides", label: "Guides" },
+    ],
+  },
   {
     id: "2026-08-29-one-machine-each",
     date: "2026-08-29",

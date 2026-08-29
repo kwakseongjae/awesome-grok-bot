@@ -54,6 +54,7 @@ const STEP_LINKS: Partial<Record<(typeof STEP_KEYS)[number], StepLink[]>> = {
   setup: [{ href: "/", key: "linkDirectory", internal: true }],
   login: [{ href: GROK_BOT.computer, key: "linkComputer" }],
   skill: [{ href: GROK_BOT.skills, key: "linkSkills" }],
+  routine: [{ href: GROK_BOT.skills, key: "linkSkills" }],
   team: [
     { href: "/bots/floor-nexus", key: "linkNexus", internal: true },
     { href: "/bots/run-orchestrator", key: "linkOrchestrator", internal: true },
@@ -67,7 +68,7 @@ export default async function HowToPage({ params }: Props) {
   const appLocale = toAppLocale(locale);
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-10">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10">
       <JsonLd
         data={howToJsonLd({
           locale: appLocale,
@@ -85,9 +86,14 @@ export default async function HowToPage({ params }: Props) {
           { name: t("title"), path: localePath(appLocale, "how-to") },
         ])}
       />
-      <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">{t("eyebrow")}</p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tight">{t("title")}</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">{t("lead")}</p>
+      <Link
+        href="/guides"
+        className="text-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        ← {t("backGuides")}
+      </Link>
+      <h1 className="mt-8 text-4xl font-semibold tracking-tight sm:text-5xl">{t("title")}</h1>
+      <p className="mt-4 max-w-2xl text-lg leading-7 text-muted-foreground">{t("lead")}</p>
 
       <p className="mt-4 text-sm text-muted-foreground">
         {t("download")}{" "}
@@ -123,11 +129,15 @@ export default async function HowToPage({ params }: Props) {
         </figcaption>
       </figure>
 
-      <ol className="mt-10 space-y-8">
+      <ol className="mt-10 grid list-none gap-4 p-0 sm:grid-cols-2">
         {STEP_KEYS.map((key, index) => {
           const links = STEP_LINKS[key] ?? [];
           return (
-            <li key={key} className="flex gap-4">
+            <li
+              key={key}
+              id={`step-${key}`}
+              className="flex flex-col gap-3 rounded-lg border bg-card p-5"
+            >
               <span className="font-mono text-xs text-muted-foreground tabular-nums">{index + 1}</span>
               <div className="min-w-0 space-y-2">
                 <h2 className="text-lg font-semibold tracking-tight">{t(`steps.${key}Title`)}</h2>
@@ -170,6 +180,8 @@ export default async function HowToPage({ params }: Props) {
           {(
             [
               { href: GROK_BOT.getStarted, key: "refGetStarted" },
+              { href: GROK_BOT.product, key: "refProduct" },
+              { href: GROK_BOT.guides, key: "refGuides" },
               { href: GROK_BOT.skills, key: "refSkills" },
               { href: GROK_BOT.computer, key: "refComputer" },
               { href: GROK_BOT.launch, key: "refLaunch" },

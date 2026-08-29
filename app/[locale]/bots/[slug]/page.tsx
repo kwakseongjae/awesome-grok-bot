@@ -6,16 +6,20 @@ import { Link } from "@/i18n/navigation";
 import { CopyButton } from "@/components/copy-button";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
+import { ShareCard } from "@/components/share-card";
 import { PluginChipList } from "@/components/plugin-chip";
 import { ShareButton } from "@/components/share-button";
 import { ScorePanel } from "@/components/score-panel";
 import { SetupBotReviews } from "@/components/setup-bot-reviews";
+import { UseCaseCard } from "@/components/use-case-card";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { formatTeamCopy } from "@/lib/charter";
 import { getPublishedBot, listRelatedBots } from "@/lib/bots";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, breadcrumbJsonLd, listingJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { scoreForSlug } from "@/lib/scores";
-import { SITE_NAME } from "@/lib/site";
+import { GROK_BOT, SITE_NAME } from "@/lib/site";
 import { getVisitorStoreStatus, listSetupBotReviews } from "@/lib/visitor-posts";
 import type { ListingLocale } from "@/lib/types";
 
@@ -79,25 +83,13 @@ export default async function BotDetailPage({ params }: Props) {
         ← {t("bot.back")}
       </Link>
 
-      <header className="mt-8 space-y-4">
-        <div className="flex items-start gap-4">
-          <ListingFace slug={bot.slug} name={bot.name} size={72} motion />
-          <div className="min-w-0 flex-1 space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-              <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-              {scored ? (
-                <ScoreBadge
-                  score={scored.score}
-                  label={t("rank.scoreAria", { score: scored.score })}
-                />
-              ) : null}
-            </div>
-            <h1 className="text-4xl font-semibold tracking-tight">{bot.name}</h1>
-            <p className="text-lg text-muted-foreground">{bot.summary}</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="mx-auto mt-8 max-w-lg">
+        <ShareCard
+          name={bot.name}
+          slug={bot.slug}
+          byline={t("card.by", { handle: bot.contributor_handle })}
+          dek={bot.summary}
+        >
           <CopyButton
             text={bot.prompt}
             label={t("bot.copy")}
@@ -117,14 +109,32 @@ export default async function BotDetailPage({ params }: Props) {
               variant="ghost"
             />
           ) : null}
+          <a
+            href={GROK_BOT.product}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "outline" }), "cursor-pointer")}
+          >
+            {t("card.open")}
+          </a>
           <ShareButton title={bot.name} url={shareUrl} />
-        </div>
-        <p className="text-sm text-muted-foreground">{t("bot.copyHint")}</p>
+        </ShareCard>
+        <p className="mt-3 text-center text-sm text-muted-foreground">{t("bot.copyHint")}</p>
         {bot.kind === "team" ? (
-          <p className="text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
+          <p className="mt-1 text-center text-sm text-muted-foreground">{t("bot.copyAllHint")}</p>
         ) : null}
-        <p className="text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
-      </header>
+        <p className="mt-1 text-center text-sm text-muted-foreground">{t("bot.pasteHint")}</p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
+          <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
+          {scored ? (
+            <ScoreBadge
+              score={scored.score}
+              label={t("rank.scoreAria", { score: scored.score })}
+            />
+          ) : null}
+        </div>
+      </div>
 
       {scored ? <ScorePanel entry={scored} /> : null}
 
@@ -218,22 +228,17 @@ export default async function BotDetailPage({ params }: Props) {
           <h2 className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("bot.related")}
           </h2>
-          <ul className="space-y-2">
+          <div className="grid items-start gap-x-8 gap-y-10 sm:grid-cols-2">
             {related.map((item) => (
-              <li key={item.id} className="flex items-center gap-2">
-                <ListingFace slug={item.slug} name={item.name} size={32} decorative motion />
-                <span className="min-w-0">
-                  <Link
-                    href={`/bots/${item.slug}`}
-                    className="font-medium underline-offset-4 hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-                  >
-                    {item.name}
-                  </Link>
-                  <span className="text-muted-foreground"> · {item.summary}</span>
-                </span>
-              </li>
+              <UseCaseCard
+                key={item.id}
+                href={`/bots/${item.slug}`}
+                category={t(`category.${item.category}`)}
+                title={item.name}
+                dek={item.summary}
+              />
             ))}
-          </ul>
+          </div>
         </section>
       ) : null}
     </div>

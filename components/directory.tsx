@@ -7,12 +7,12 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { CategoryBadge, KindBadge, ScoreBadge } from "@/components/listing-badges";
 import { ListingFace } from "@/components/listing-face";
 import { PluginChip, PluginChipList } from "@/components/plugin-chip";
+import { UseCaseCard, useCaseGridClass } from "@/components/use-case-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { directoryHref, type DirectoryView } from "@/lib/directory-view";
 import { integrationLabel } from "@/lib/integrations";
 import { scoreForSlug } from "@/lib/scores";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -163,11 +163,9 @@ export function Directory({
   };
 
   const filterFieldProps = {
-    category,
     integration,
     kind,
     integrations,
-    onCategoryChange: handleCategoryChange,
     onIntegrationChange: setIntegration,
     onKindChange: (value: string) => setKind(value as BotKind | typeof ALL),
   };
@@ -237,6 +235,42 @@ export function Directory({
             </Link>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2" role="group" aria-label={t("filters.category")}>
+        <button
+          type="button"
+          aria-pressed={category === ALL}
+          className={cn(
+            "cursor-pointer rounded-full border px-3 py-1.5 text-sm tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50",
+            category === ALL
+              ? "border-foreground bg-foreground text-background"
+              : "border-border bg-background text-foreground hover:bg-muted/40",
+          )}
+          onClick={() => handleCategoryChange(ALL)}
+        >
+          {t("filters.anyCategory")} {bots.length}
+        </button>
+        {CATEGORIES.map((item) => {
+          const count = bots.filter((bot) => bot.category === item).length;
+          if (count === 0) return null;
+          return (
+            <button
+              key={item}
+              type="button"
+              aria-pressed={category === item}
+              className={cn(
+                "cursor-pointer rounded-full border px-3 py-1.5 text-sm tracking-tight focus-visible:ring-3 focus-visible:ring-ring/50",
+                category === item
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border bg-background text-foreground hover:bg-muted/40",
+              )}
+              onClick={() => handleCategoryChange(item)}
+            >
+              {t(`category.${item}`)} {count}
+            </button>
+          );
+        })}
       </div>
 
       <div className="hidden lg:block">
@@ -318,20 +352,16 @@ export function Directory({
 
 function FilterFields({
   idPrefix,
-  category,
   integration,
   kind,
   integrations,
-  onCategoryChange,
   onIntegrationChange,
   onKindChange,
 }: {
   idPrefix: string;
-  category: string;
   integration: string;
   kind: string;
   integrations: string[];
-  onCategoryChange: (value: string) => void;
   onIntegrationChange: (value: string) => void;
   onKindChange: (value: string) => void;
 }) {
@@ -339,21 +369,7 @@ function FilterFields({
   const uiLocale = useLocale() as ListingLocale;
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      <FilterSelect
-        id={`${idPrefix}-category`}
-        label={t("filters.category")}
-        value={category}
-        onChange={onCategoryChange}
-        placeholder={t("filters.anyCategory")}
-        options={[
-          { value: ALL, label: t("filters.anyCategory") },
-          ...CATEGORIES.map((item) => ({
-            value: item,
-            label: t(`category.${item}`),
-          })),
-        ]}
-      />
+    <div className="grid gap-3 sm:grid-cols-2">
       <FilterSelect
         id={`${idPrefix}-integration`}
         label={t("filters.integration")}
@@ -514,55 +530,18 @@ function DirectoryTable({ bots }: { bots: BotListing[] }) {
 
 function DirectoryCards({ bots }: { bots: BotListing[] }) {
   const t = useTranslations();
-  const locale = useLocale() as ListingLocale;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      {bots.map((bot) => {
-        const scored = scoreForSlug(bot.slug);
-        return (
-        <Link
+    <div className={useCaseGridClass}>
+      {bots.map((bot) => (
+        <UseCaseCard
           key={bot.id}
           href={listingHref(bot.slug)}
-          className="rounded-lg focus-visible:ring-3 focus-visible:ring-ring/50"
-          aria-label={bot.name}
-        >
-          <Card className="h-full rounded-lg transition-colors hover:bg-muted/40">
-            <CardHeader>
-              <div className="flex items-start gap-3">
-                <ListingFace slug={bot.slug} name={bot.name} size={56} decorative motion />
-                <div className="min-w-0 flex-1 space-y-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <CategoryBadge category={bot.category} label={t(`category.${bot.category}`)} />
-                    <KindBadge kind={bot.kind} label={t(`kind.${bot.kind}`)} />
-                    {scored ? (
-                      <ScoreBadge
-                        score={scored.score}
-                        label={t("rank.scoreAria", { score: scored.score })}
-                      />
-                    ) : null}
-                  </div>
-                  <CardTitle>{bot.name}</CardTitle>
-                  <CardDescription>{bot.summary}</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <PluginChipList items={bot.integrations} locale={locale} />
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-xs text-muted-foreground">@{bot.contributor_handle}</span>
-                <span
-                  className="font-mono text-xs tabular-nums text-muted-foreground"
-                  aria-label={t("a11y.installCount", { count: bot.copy_count })}
-                >
-                  {t("a11y.installCount", { count: bot.copy_count })}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-        );
-      })}
+          category={t(`category.${bot.category}`)}
+          title={bot.name}
+          dek={bot.summary}
+        />
+      ))}
     </div>
   );
 }

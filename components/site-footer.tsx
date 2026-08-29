@@ -10,6 +10,7 @@ import { CONTACT_EMAIL, GITHUB_REPO, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const USE_LINKS: (
+  | { href: "/guides"; key: "guides" }
   | { href: "/how-to"; key: "howToUse" }
   | { href: "/"; nav: "directory" }
   | { href: "/rank"; nav: "rank" }
@@ -18,6 +19,7 @@ const USE_LINKS: (
   | { href: "/ops"; nav: "ops" }
   | { href: "/submit"; nav: "submit" }
 )[] = [
+  { href: "/guides", key: "guides" },
   { href: "/how-to", key: "howToUse" },
   { href: "/", nav: "directory" },
   { href: "/rank", nav: "rank" },

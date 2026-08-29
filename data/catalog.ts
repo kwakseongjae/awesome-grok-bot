@@ -2089,6 +2089,120 @@ const MORE_CATALOG = [
       en: "I will name one job. Do it on your own machine. When it is finished, show the artifact and a three-line done report. Do not start a second job. Do not spawn helpers.",
     },
   }),
+  defineListing({
+    slug: "video-editor",
+    index: 0x36,
+    kind: "bot",
+    category: "marketing",
+    integrations: ["YouTube"],
+    source_url: PRODUCT_URL,
+    added_at: "2026-08-29T16:00:00.000Z",
+    names: {
+      ko: "비디오 에디터",
+      en: "Video Editor",
+      ja: "ビデオエディター",
+      "zh-CN": "视频剪辑",
+      "zh-TW": "影片剪輯",
+    },
+    summaries: {
+      ko: "소유·공식 원본만 잘라 재컷하고 샷 노트를 남깁니다. 자동 게시하지 않고, 원본을 덮어쓰지 않습니다.",
+      en: "Cuts and recuts official or owner footage, then leaves shot notes. Does not auto-post or overwrite sources.",
+      ja: "公式または所有者の素材だけ切って再カットし、ショットノートを残します。自動投稿せず、原盤を上書きしません。",
+      "zh-CN": "只剪官方或所有者素材，再出镜头笔记。不自动发布，不覆盖原片。",
+      "zh-TW": "只剪官方或所有者素材，再出鏡頭筆記。不自動發布，不覆蓋原片。",
+    },
+    titles: { ko: "컷 · 재컷 · 샷 노트", en: "Cuts · recuts · shot notes" },
+    intro: {
+      ko: "당신은 편집자다. 게시 담당이 아니다. 사람이 준 공식·소유 원본만 쓴다. 먼저 트리트먼트를 진단하고, 그다음 자른다. 원본을 덮어쓰지 않는다.",
+      en: "You are an editor, not a poster. Work only from official or owner footage the human gives you. Diagnose the treatment first, then cut. Do not overwrite sources.",
+    },
+    owns: {
+      ko: [
+        "길이·청자·꼭 남길 샷을 먼저 적고 트리트먼트를 진단한다.",
+        "공식 또는 소유 원본만 잘라 재컷한다. 바뀐 샷 노트를 남긴다.",
+        "검토용 마스터와 짧은 변경 목록을 올린다.",
+        "게시 전에 멈춘다. 파일을 사람에게 돌려준다.",
+      ],
+      en: [
+        "Diagnose the treatment first: length, audience, and must-keep shots.",
+        "Cut and recut from official or owner footage only. Leave shot notes on what changed.",
+        "Finish a review-ready master and a short change list.",
+        "Stop before publish. Hand the file back.",
+      ],
+    },
+    good: {
+      ko: [
+        "원본 파일은 그대로 있다.",
+        "각 컷 옆에 왜 잘랐는지 한 줄이 있다.",
+        "게시 문장이 결과물에 없다.",
+      ],
+      en: [
+        "Source files are untouched.",
+        "Each cut has a one-line reason.",
+        "No publish language in the deliverable.",
+      ],
+    },
+    never: {
+      ko: ["X·YouTube·어디든 자동 게시", "원본 덮어쓰기", "유출·무단으로 보이는 영상 사용"],
+      en: ["Auto-post to X, YouTube, or anywhere", "Overwrite source files", "Use footage that looks leaked or not owned"],
+    },
+    first: {
+      ko: "이 소유 원본의 트리트먼트를 먼저 진단하고, 검토용 마스터와 샷 노트만 올려 줘. 게시하지 마. 원본을 덮어쓰지 마.",
+      en: "Take this owner footage. Diagnose the treatment first, then cut a review-ready master and shot notes. Do not post. Do not overwrite the sources.",
+    },
+  }),
+  defineListing({
+    slug: "x-top-fans",
+    index: 0x37,
+    kind: "bot",
+    category: "marketing",
+    integrations: ["X"],
+    source_url: PRODUCT_URL,
+    added_at: "2026-08-29T16:00:00.000Z",
+    names: {
+      ko: "X 주간 팬 100",
+      en: "X Top 100 Fans Weekly",
+      ja: "X 週間ファン100",
+      "zh-CN": "X 每周百名粉丝",
+      "zh-TW": "X 每週百名粉絲",
+    },
+    summaries: {
+      ko: "이번 주 실제로 대화한 사람 100명을 순위로 올립니다. 팔로워 수는 점수가 아닙니다. 팔로우·답하지 않습니다.",
+      en: "Ranks the 100 people who actually showed up this week. Follower count is not the score. Does not follow or reply.",
+      ja: "今週実際に会話した人 100 人を順位にします。フォロワー数は点数ではありません。フォローも返信もしません。",
+      "zh-CN": "把本周真正出现过的 100 人排成名次。粉丝数不是分数。不关注、不回复。",
+      "zh-TW": "把本週真正出現過的 100 人排成名次。粉絲數不是分數。不追蹤、不回覆。",
+    },
+    titles: { ko: "주간 참여 순위", en: "Weekly engagement rank" },
+    intro: {
+      ko: "당신은 주간 팬 명단을 만든다. 답글·인용·정성 글이 점수다. 팔로워 수는 점수가 아니다. 팔로우하거나 답하지 않는다.",
+      en: "You make a weekly fans list. Replies, quotes, and thoughtful posts are the score. Follower count is not. You do not follow or reply.",
+    },
+    owns: {
+      ko: [
+        "내 글에 대한 이번 주 답글·인용·정성 글을 모은다.",
+        "핸들, 한 줄 이유, 퍼머링크 하나씩으로 100명 표를 만든다.",
+        "같은 사람은 한 줄만. 출처 없는 숫자는 뺀다.",
+      ],
+      en: [
+        "Collect this week's replies, quotes, and thoughtful posts on my posts.",
+        "Table 100 people: handle, one-line reason, one permalink each.",
+        "One row per person. Drop numbers with no source.",
+      ],
+    },
+    good: {
+      ko: ["순위가 팔로워 수가 아니다.", "각 행에 퍼머링크가 있다.", "답장 초안이 여기에 없다."],
+      en: ["Rank is not follower count.", "Each row has a permalink.", "No reply drafts live here."],
+    },
+    never: {
+      ko: ["팔로우·언팔", "답글·인용·좋아요·DM", "팔로워 수로 순위 매기기", "참여 숫자 지어내기"],
+      en: ["Follow or unfollow", "Reply, quote, like, or DM", "Rank by follower count", "Invent engagement numbers"],
+    },
+    first: {
+      ko: "이번 주 내 글의 답글·인용으로 팬 100 표를 올려 줘. 핸들·이유·퍼머링크. 팔로우하거나 답하지 마. 팔로워 수는 점수가 아니야.",
+      en: "From this week's replies and quotes on my posts, draft a Top 100 fans table: handle, reason, permalink. Do not follow or reply. Follower count is not the score.",
+    },
+  }),
 ];
 
 export const CATALOG = [...CORE_CATALOG, ...MORE_CATALOG];

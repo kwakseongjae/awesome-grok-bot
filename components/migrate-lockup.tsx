@@ -9,6 +9,8 @@ import type { HandoffSource } from "@/lib/migrate/types";
 type Props = {
   source: HandoffSource;
   className?: string;
+  /** Marks only, for ink tiles. Labels stay on the text side. */
+  compact?: boolean;
 };
 
 function SourceMark({ source }: { source: HandoffSource }) {
@@ -31,10 +33,20 @@ function GrokDestMark() {
   return <GrokBotMark motion className="size-10 sm:size-12" />;
 }
 
-export function MigrateLockup({ source, className }: Props) {
+export function MigrateLockup({ source, className, compact = false }: Props) {
   const t = useTranslations("migrate.home");
   const sourceLabel = source === "hermes" ? t("hermesMark") : t("openclawMark");
   const destLabel = t("destMark");
+
+  if (compact) {
+    return (
+      <div className={cn("flex items-center gap-3", className)} aria-hidden>
+        <SourceMark source={source} />
+        <ArrowRight className="size-4 shrink-0 text-background" />
+        <GrokDestMark />
+      </div>
+    );
+  }
 
   return (
     <div
