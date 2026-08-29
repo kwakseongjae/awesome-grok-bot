@@ -305,12 +305,17 @@
         "hermes": "ターミナルで実行するか、スターターを貼れば Hermes が入れます。",
         "openclaw": "ワークスペースの skills/ に置きます。curl 一行で足ります。"
       },
+      "templateEyebrow": "テンプレート",
+      "skillHint": "一行が入れるファイルです。取得せずファイルで置くなら skills/grok-bot-migrate/SKILL.md に貼ります。",
+      "moreTitle": "ほかのテンプレート",
+      "moreIndex": "テンプレート一覧",
+      "moreDirectoryLead": "スペシャリストとチーム。設定文を Copy して Grok Bot に貼ります。",
       "goldInChat": "ゴールドタスクはウェブフォームではありません。エージェントがチャットで 3–5 件聞きます。",
       "runbookLink": "フェーズランブック — エージェントが一段だけ再読するとき",
       "runbookBanner": "このページはエージェント用ランブックです。人がここでチェックする必要はありません。スキル着陸の一行を使っているエージェントに貼ってください。",
       "backSkill": "スキル着陸へ",
-      "openHermes": "Hermes スキルを開く",
-      "openOpenclaw": "OpenClaw スキルを開く"
+      "openHermes": "Hermes テンプレートを開く",
+      "openOpenclaw": "OpenClaw テンプレートを開く"
     },
     "home": {
       "eyebrow": "これ、本当にできます",
@@ -646,11 +651,23 @@
     "howToUse": "使い方",
     "colUse": "How to use",
     "colMove": "移行",
+    "templates": "テンプレート",
     "migrate": "移行",
     "colDirectory": "分野",
     "colLegal": "ライセンス",
     "llms": "llms.txt",
     "copyright": "© {year} Awesome Grok Bot"
+  },
+  "templates": {
+    "eyebrow": "テンプレート",
+    "title": "Grok Bot テンプレート",
+    "lead": "公式の Hermes / OpenClaw 移行テンプレートと、Grok Bot に貼るほかの設定です。このサイトは Grok に書きません。",
+    "migrateTitle": "移行テンプレート",
+    "migrateLead": "使っているエージェントに一行を貼ります。キーは移しません。",
+    "setupsTitle": "ほかの設定",
+    "setupsLead": "スペシャリストとチーム。設定文を Copy して Grok Bot に貼ります。",
+    "directory": "すべての掲載",
+    "back": "ディレクトリに戻る"
   },
   "license": {
     "title": "ライセンス",

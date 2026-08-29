@@ -26,7 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
               ? new Date(OPS_UPDATED_AT)
               : now,
       changeFrequency: path === "" || path === "ops" ? "daily" : "weekly",
-      priority: path === "" ? 1 : path.startsWith("migrate/") || path === "ops" || path.startsWith("ops/") ? 0.8 : 0.7,
+      priority: path === "" ? 1 : path.startsWith("migrate/") || path === "templates" || path === "ops" || path.startsWith("ops/") ? 0.8 : 0.7,
       alternates: { languages: pageLanguages(path) },
     })),
   );

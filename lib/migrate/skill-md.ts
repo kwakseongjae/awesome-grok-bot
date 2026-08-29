@@ -46,6 +46,10 @@ export const pasteInstallCommand = (source: HandoffSource, locale: ListingLocale
 export const pasteStarter = (source: HandoffSource, locale: ListingLocale) =>
   starterPrompt({ origin: SITE_ORIGIN, source, locale });
 
+/** One English share URL per source. Locale pages stay on /{locale}/migrate/{source}. */
+export const templateShareUrl = (source: HandoffSource) =>
+  `${SITE_ORIGIN}/en/migrate/${source}`;
+
 const SECRET_DENY = [
   ".env",
   "auth.json",

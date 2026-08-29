@@ -305,12 +305,17 @@
         "hermes": "Run it in a terminal, or paste the starter and let Hermes install.",
         "openclaw": "Drop it into workspace skills/. The curl line is enough."
       },
+      "templateEyebrow": "Template",
+      "skillHint": "This is the file the one-liner installs. Copy it into skills/grok-bot-migrate/SKILL.md if you want a file instead of a fetch.",
+      "moreTitle": "More templates",
+      "moreIndex": "Templates index",
+      "moreDirectoryLead": "Specialists and teams. Copy setup text and paste it into Grok Bot.",
       "goldInChat": "Gold tasks are not a web form. The agent asks for 3–5 in chat.",
       "runbookLink": "Phase runbook — when the agent needs one step again",
       "runbookBanner": "This page is an agent runbook. You do not have to check boxes here. Paste the one-liner from the skill landing into the agent you already use.",
       "backSkill": "Back to the skill",
-      "openHermes": "Open the Hermes skill",
-      "openOpenclaw": "Open the OpenClaw skill"
+      "openHermes": "Open the Hermes template",
+      "openOpenclaw": "Open the OpenClaw template"
     },
     "home": {
       "eyebrow": "Wait — this actually works",
@@ -646,11 +651,23 @@
     "howToUse": "How to use",
     "colUse": "How to use",
     "colMove": "Migration",
+    "templates": "Templates",
     "migrate": "Migrate",
     "colDirectory": "Directory",
     "colLegal": "Legal",
     "llms": "llms.txt",
     "copyright": "© {year} Awesome Grok Bot"
+  },
+  "templates": {
+    "eyebrow": "Template",
+    "title": "Grok Bot templates",
+    "lead": "Official Hermes and OpenClaw migrate templates, plus other setups you copy into Grok Bot. This site does not write to Grok.",
+    "migrateTitle": "Migrate templates",
+    "migrateLead": "Paste one line into the agent you already use. Keys stay behind.",
+    "setupsTitle": "Other setups",
+    "setupsLead": "Specialists and teams. Copy setup text and paste it into Grok Bot.",
+    "directory": "All listings",
+    "back": "Back to the directory"
   },
   "license": {
     "title": "License",

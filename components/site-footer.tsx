@@ -28,9 +28,11 @@ const USE_LINKS: (
 ];
 
 const MOVE_LINKS: (
+  | { href: "/templates"; key: "templates" }
   | { href: "/migrate"; key: "migrate" }
   | { href: "/migrate/hermes" | "/migrate/openclaw"; label: string }
 )[] = [
+  { href: "/templates", key: "templates" },
   { href: "/migrate", key: "migrate" },
   { href: "/migrate/hermes", label: "Hermes" },
   { href: "/migrate/openclaw", label: "OpenClaw" },

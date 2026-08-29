@@ -18,10 +18,12 @@ import {
   pasteInstallCommand,
   pasteStarter,
   renderSkillMarkdown,
+  templateShareUrl,
 } from "../lib/migrate/skill-md";
 import type { HandoffSource } from "../lib/migrate/types";
 import { LOCALES } from "../lib/locales";
 import { SITE_ORIGIN } from "../lib/site";
+import { templatesIndexShareUrl } from "../lib/templates";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HERMES = path.join(ROOT, "fixtures", "hermes-handoff");
@@ -215,21 +217,56 @@ test("GET /api/migrate and /api/migrate/preview stay 404 when an origin is set",
 test("skill landing paste is the canonical one-liner with no origin wait", () => {
   const desk = fs.readFileSync(path.join(ROOT, "components/migrate-desk.tsx"), "utf8");
   const page = fs.readFileSync(path.join(ROOT, "app/[locale]/migrate/[source]/page.tsx"), "utf8");
+  const analytics = fs.readFileSync(path.join(ROOT, "lib/analytics.ts"), "utf8");
 
   assert.doesNotMatch(desk, /waitingOrigin|window\.location|use client/);
   assert.match(page, /pasteStarter/);
+  assert.match(page, /renderSkillMarkdown/);
+  assert.match(page, /templateShareUrl/);
+  assert.match(desk, /copySkill/);
+  assert.match(desk, /skillMarkdown/);
+  assert.match(desk, /ShareButton/);
+  assert.match(desk, /moreTitle/);
+  assert.match(desk, /moreIndex/);
+  assert.match(desk, /href="\/templates"/);
   assert.doesNotMatch(page, /window\.location/);
+  assert.doesNotMatch(analytics, /copy_kind.*skill|content_type: "migrate"/);
+
+  assert.equal(templateShareUrl("hermes"), `${SITE_ORIGIN}/en/migrate/hermes`);
+  assert.equal(templateShareUrl("openclaw"), `${SITE_ORIGIN}/en/migrate/openclaw`);
+  assert.equal(templatesIndexShareUrl(), `${SITE_ORIGIN}/en/templates`);
 
   for (const locale of LOCALES) {
     const raw = fs.readFileSync(path.join(ROOT, "messages", `${locale}.json`), "utf8");
-    const messages = JSON.parse(raw) as { migrate?: { desk?: { waitingOrigin?: string } } };
+    const messages = JSON.parse(raw) as {
+      migrate?: {
+        desk?: {
+          waitingOrigin?: string;
+          templateEyebrow?: string;
+          skillHint?: string;
+          moreTitle?: string;
+          moreIndex?: string;
+          copySkill?: string;
+        };
+      };
+      templates?: { title?: string };
+    };
     assert.equal(messages.migrate?.desk?.waitingOrigin, undefined, `${locale} must not ship waitingOrigin`);
+    assert.equal(typeof messages.migrate?.desk?.templateEyebrow, "string", `${locale} templateEyebrow`);
+    assert.equal(typeof messages.migrate?.desk?.skillHint, "string", `${locale} skillHint`);
+    assert.equal(typeof messages.migrate?.desk?.moreTitle, "string", `${locale} moreTitle`);
+    assert.equal(typeof messages.migrate?.desk?.moreIndex, "string", `${locale} moreIndex`);
+    assert.equal(typeof messages.templates?.title, "string", `${locale} templates.title`);
+    assert.equal(messages.migrate?.desk?.copySkill, "SKILL.md", `${locale} copySkill stays SKILL.md`);
     assert.doesNotMatch(raw, /Reading this page/);
+    assert.doesNotMatch(messages.migrate?.desk?.skillHint ?? "", /write to Grok|importer/i);
 
     const hermesInstall = pasteInstallCommand("hermes", locale);
     const openclawInstall = pasteInstallCommand("openclaw", locale);
     const hermesStarter = pasteStarter("hermes", locale);
     const openclawStarter = pasteStarter("openclaw", locale);
+    const hermesSkill = renderSkillMarkdown("hermes", locale);
+    const openclawSkill = renderSkillMarkdown("openclaw", locale);
 
     assert.equal(
       hermesInstall,
@@ -245,6 +282,10 @@ test("skill landing paste is the canonical one-liner with no origin wait", () =>
     assert.doesNotMatch(openclawStarter, /Reading this page/);
     assertNoSecrets(`${locale} hermes starter`, hermesStarter);
     assertNoSecrets(`${locale} openclaw starter`, openclawStarter);
+    assertNoSecrets(`${locale} hermes skill`, hermesSkill);
+    assertNoSecrets(`${locale} openclaw skill`, openclawSkill);
+    assert.match(hermesSkill, /does not write to Grok|Grok에 쓰지 않는다/);
+    assert.match(openclawSkill, /skipped: secret/);
   }
 });
 
@@ -263,8 +304,27 @@ test("GET /migrate/hermes and /migrate/openclaw HTML includes the paste and no o
       const visible = html.replaceAll("&amp;", "&");
       const install = pasteInstallCommand(source, locale);
       assert.equal(visible.includes(install), true, `${locale}/${source} HTML must include ${install}`);
+      assert.equal(visible.includes(templateShareUrl(source)), true, `${locale}/${source} HTML must include share URL`);
+      assert.equal(html.includes("name: grok-bot-migrate"), true, `${locale}/${source} HTML must include SKILL.md`);
+      assert.equal(html.includes("skipped: secret"), true, `${locale}/${source} HTML must keep secret-skip`);
       assert.equal(html.includes("Reading this page"), false, `${locale}/${source} HTML must not wait on origin`);
       assert.doesNotMatch(html, /waitingOrigin/);
+      assert.equal(html.includes("/templates"), true, `${locale}/${source} HTML must link to templates index`);
     }
+  }
+
+  const index = await fetch(`${origin}/en/templates`);
+  assert.equal(index.status, 200, "/en/templates must be 200");
+  const indexHtml = (await index.text()).replaceAll("&amp;", "&");
+  assert.equal(indexHtml.includes(templatesIndexShareUrl()), true, "templates index must include share URL");
+  assert.equal(indexHtml.includes(templateShareUrl("hermes")), true, "templates index must include Hermes share URL");
+  assert.equal(indexHtml.includes(templateShareUrl("openclaw")), true, "templates index must include OpenClaw share URL");
+  assert.equal(indexHtml.includes("does not write to Grok"), true, "templates index must say the site does not write to Grok");
+  assert.doesNotMatch(indexHtml, /\/api\/migrate\/preview/);
+
+  for (const source of ["hermes", "openclaw"] as const) {
+    const skill = await fetch(`${origin}/api/migrate/skill/${source}?locale=en`);
+    assert.equal(skill.status, 200, `${source} skill API must stay 200`);
+    assert.match(skill.headers.get("content-type") || "", /text\/markdown/);
   }
 });
