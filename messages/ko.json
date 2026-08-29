@@ -305,12 +305,16 @@
         "hermes": "터미널에서 실행하거나, 스타터를 붙이면 Hermes가 설치합니다.",
         "openclaw": "워크스페이스 skills/에 넣습니다. curl 한 줄이면 됩니다."
       },
+      "templateEyebrow": "템플릿",
+      "skillHint": "한 줄이 설치하는 파일입니다. 받아서 쓰지 않고 파일로 넣을 때는 skills/grok-bot-migrate/SKILL.md에 붙입니다.",
+      "moreTitle": "다른 템플릿",
+      "moreDirectoryLead": "전문가와 팀. 설정 문구를 Copy해 Grok Bot에 붙입니다.",
       "goldInChat": "골드 태스크는 웹 폼이 아닙니다. 에이전트가 채팅에서 3–5개를 묻습니다.",
       "runbookLink": "페이즈 런북 — 에이전트가 한 단계만 다시 읽을 때",
       "runbookBanner": "이 페이지는 에이전트용 런북입니다. 사람이 여기를 체크할 필요는 없습니다. 스킬 랜딩의 한 줄을 쓰던 에이전트에 붙이세요.",
       "backSkill": "스킬 랜딩으로",
-      "openHermes": "Hermes 스킬 열기",
-      "openOpenclaw": "OpenClaw 스킬 열기"
+      "openHermes": "Hermes 템플릿 열기",
+      "openOpenclaw": "OpenClaw 템플릿 열기"
     },
     "home": {
       "eyebrow": "와우, 이런 게 됩니다",

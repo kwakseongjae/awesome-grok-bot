@@ -305,12 +305,16 @@
         "hermes": "在終端機執行，或把起始提示貼給 Hermes 讓它安裝。",
         "openclaw": "放到工作區 skills/。一行 curl 即可。"
       },
+      "templateEyebrow": "模板",
+      "skillHint": "這一行會安裝的檔案。若想放檔案而不是拉取，複製到 skills/grok-bot-migrate/SKILL.md。",
+      "moreTitle": "更多模板",
+      "moreDirectoryLead": "專家與團隊。Copy 設定文並貼進 Grok Bot。",
       "goldInChat": "金任務不是網頁表單。智能體會在聊天裡問 3–5 項。",
       "runbookLink": "階段手冊 — 智能體只需重讀一步時",
       "runbookBanner": "本頁是給智能體的手冊。你不必在此勾選。把技能頁的一行貼進正在用的智能體。",
       "backSkill": "回到技能頁",
-      "openHermes": "開啟 Hermes 技能",
-      "openOpenclaw": "開啟 OpenClaw 技能"
+      "openHermes": "開啟 Hermes 模板",
+      "openOpenclaw": "開啟 OpenClaw 模板"
     },
     "home": {
       "eyebrow": "這真的做得到",

@@ -305,12 +305,16 @@
         "hermes": "ターミナルで実行するか、スターターを貼れば Hermes が入れます。",
         "openclaw": "ワークスペースの skills/ に置きます。curl 一行で足ります。"
       },
+      "templateEyebrow": "テンプレート",
+      "skillHint": "一行が入れるファイルです。取得せずファイルで置くなら skills/grok-bot-migrate/SKILL.md に貼ります。",
+      "moreTitle": "ほかのテンプレート",
+      "moreDirectoryLead": "スペシャリストとチーム。設定文を Copy して Grok Bot に貼ります。",
       "goldInChat": "ゴールドタスクはウェブフォームではありません。エージェントがチャットで 3–5 件聞きます。",
       "runbookLink": "フェーズランブック — エージェントが一段だけ再読するとき",
       "runbookBanner": "このページはエージェント用ランブックです。人がここでチェックする必要はありません。スキル着陸の一行を使っているエージェントに貼ってください。",
       "backSkill": "スキル着陸へ",
-      "openHermes": "Hermes スキルを開く",
-      "openOpenclaw": "OpenClaw スキルを開く"
+      "openHermes": "Hermes テンプレートを開く",
+      "openOpenclaw": "OpenClaw テンプレートを開く"
     },
     "home": {
       "eyebrow": "これ、本当にできます",

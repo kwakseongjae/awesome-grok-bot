@@ -7,7 +7,7 @@ import { parsePhaseParam } from "@/lib/migrate/playbook";
 import { isHandoffSource, sourceLabel } from "@/lib/migrate/source";
 import { OPS_LOG, OPS_MISSION, OPS_PROPOSALS, OPS_PULSE, OPS_RESULTS, OPS_TEAM, OPS_DAY_RECEIPTS, opsReceiptBySlug, type OpsDayReceipt } from "@/lib/ops";
 import { SCORE_CRITERIA, SCORE_DATE, SCORE_DISCLAIMER, SCORE_RATER, rankingRows, scoreForSlug } from "@/lib/scores";
-import { skillUrl, starterPrompt } from "@/lib/migrate/skill-md";
+import { skillUrl, starterPrompt, templateShareUrl } from "@/lib/migrate/skill-md";
 import { GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import { absoluteUrl, localePath, llmsPath } from "@/lib/seo";
 import { listVisitorMarks } from "@/lib/visitor-posts";
@@ -71,8 +71,8 @@ const renderRoot = async (full: boolean) => {
     ),
     `- [Install coding agents inside Grok Bot](${absoluteUrl("/en/install")}): Paste-ready prompts for Claude Code, Codex CLI, OpenClaw, and Hermes.`,
     `- [Migrate from Hermes or OpenClaw](${absoluteUrl("/en/migrate")}): One starter paste. The source agent runs the skill. This site does not write to Grok.`,
-    `- [Hermes skill](${absoluteUrl("/en/migrate/hermes")})`,
-    `- [OpenClaw skill](${absoluteUrl("/en/migrate/openclaw")})`,
+    `- [Hermes → Grok Bot template](${templateShareUrl("hermes")}): Share URL. Copy the one-liner or SKILL.md.`,
+    `- [OpenClaw → Grok Bot template](${templateShareUrl("openclaw")}): Share URL. Copy the one-liner or SKILL.md.`,
     `- [License (MIT)](${absoluteUrl("/en/license")})`,
     `- [Per-locale indexes](${absoluteUrl("/en/llms.txt")}): ${LOCALES.map((locale) => absoluteUrl(llmsPath(locale))).join(", ")}`,
   ];
@@ -475,11 +475,14 @@ const renderMigrateHub = async (locale: AppLocale) => {
     `- ${t("ruleSecrets")}`,
     `- ${t("desk.cardChief")}`,
     "",
-    "## Desks",
+    "## Templates",
     "",
+    `- Hermes share URL: ${templateShareUrl("hermes")}`,
+    `- OpenClaw share URL: ${templateShareUrl("openclaw")}`,
     `- Hermes: ${absoluteUrl(localePath(locale, "migrate/hermes"))}`,
     `- OpenClaw: ${absoluteUrl(localePath(locale, "migrate/openclaw"))}`,
     `- Skill markdown: ${SITE_ORIGIN}/api/migrate/skill/{hermes|openclaw}?locale=${locale}`,
+    `- More templates (directory): ${absoluteUrl(localePath(locale))}`,
     "",
     `Human page: ${absoluteUrl(localePath(locale, "migrate"))}`,
     "",
@@ -498,8 +501,8 @@ const renderMigrateSource = async (locale: AppLocale, source: "hermes" | "opencl
     `> ${lead}`,
     "",
     koCopy(locale)
-      ? "Copy는 한 번입니다. 설치 주소와 「마이그레이션 해줘」가 그 한 줄 안에 있습니다. 골드 태스크는 웹 폼이 아니라 채팅에서 묻습니다."
-      : "Copy once. The install URL and “migrate this” live in that paste. Gold tasks are asked in chat, not a web form.",
+      ? "Copy는 한 번입니다. 설치 주소와 「마이그레이션 해줘」가 그 한 줄 안에 있습니다. SKILL.md 본문도 이 페이지에 있습니다. 골드 태스크는 웹 폼이 아니라 채팅에서 묻습니다. 사이트가 Grok에 쓰지 않습니다."
+      : "Copy once. The install URL and “migrate this” live in that paste. The SKILL.md body is on this page. Gold tasks are asked in chat, not a web form. This site does not write to Grok.",
     "",
     `## ${t("desk.copyStarter", { source: sourceLabel(source) })}`,
     "",
@@ -507,14 +510,22 @@ const renderMigrateSource = async (locale: AppLocale, source: "hermes" | "opencl
     starter,
     "```",
     "",
+    "## SKILL.md",
+    "",
+    koCopy(locale)
+      ? `본문은 사람 페이지에 있습니다. 기계용: ${skillUrl(SITE_ORIGIN, source, locale)}`
+      : `The body is on the human page. Machine file: ${skillUrl(SITE_ORIGIN, source, locale)}`,
+    "",
     "## Reads",
     "",
     `- ${t(`desk.cardReads.${source}`)}`,
     `- ${t("desk.cardChief")}`,
     `- ${t("desk.cardSecrets")}`,
     "",
+    `- Share URL (English): ${templateShareUrl(source)}`,
     `- Skill: ${skillUrl(SITE_ORIGIN, source, locale)}`,
     `- Human page: ${absoluteUrl(localePath(locale, `migrate/${source}`))}`,
+    `- More templates: ${absoluteUrl(localePath(locale))}`,
     `- Runbook (agents only): ${absoluteUrl(localePath(locale, `migrate/${source}/0`))}`,
     "",
   );

@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { MigrateDesk } from "@/components/migrate-desk";
 import { MigrateLockup } from "@/components/migrate-lockup";
 import { HANDOFF_SOURCES, isHandoffSource } from "@/lib/migrate/source";
-import { pasteStarter } from "@/lib/migrate/skill-md";
+import { pasteStarter, renderSkillMarkdown, templateShareUrl } from "@/lib/migrate/skill-md";
 import { breadcrumbJsonLd, localePath, pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
 import { JsonLd } from "@/components/json-ld";
@@ -41,8 +41,11 @@ export default async function MigrateSourcePage({ params }: Props) {
   if (!isHandoffSource(source)) notFound();
   const t = await getTranslations("migrate");
   const titleKey = source === "hermes" ? "hermesTitle" : "openclawTitle";
+  const leadKey = source === "hermes" ? "hermesPageLead" : "openclawPageLead";
   const appLocale = toAppLocale(locale);
   const starter = pasteStarter(source, appLocale);
+  const skillMarkdown = renderSkillMarkdown(source, appLocale);
+  const shareUrl = templateShareUrl(source);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-10">
@@ -62,10 +65,18 @@ export default async function MigrateSourcePage({ params }: Props) {
       <div className="mt-8 rounded-lg border bg-card p-5">
         <MigrateLockup source={source} />
       </div>
-      <h1 className="mt-8 text-4xl font-semibold tracking-tight">{t(titleKey)}</h1>
-      <p className="mt-3 max-w-2xl text-muted-foreground">{t("desk.pageLead")}</p>
+      <p className="mt-8 font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
+        {t("desk.templateEyebrow")}
+      </p>
+      <h1 className="mt-3 text-4xl font-semibold tracking-tight">{t(titleKey)}</h1>
+      <p className="mt-3 max-w-2xl text-muted-foreground">{t(leadKey)}</p>
       <div className="mt-8">
-        <MigrateDesk source={source} starter={starter} />
+        <MigrateDesk
+          source={source}
+          starter={starter}
+          skillMarkdown={skillMarkdown}
+          shareUrl={shareUrl}
+        />
       </div>
     </div>
   );
