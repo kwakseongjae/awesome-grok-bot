@@ -1,4 +1,5 @@
 import { DocInline } from "@/components/doc-inline";
+import { PdfPreview } from "@/components/pdf-preview";
 import { buttonVariants } from "@/components/ui/button";
 import type { DocLang, DocNode } from "@/lib/doc-md";
 import { loadDoc } from "@/lib/doc-md";
@@ -93,9 +94,7 @@ export function DocView({ lang, otherLabel }: { lang: DocLang; otherLabel: strin
           <a href={`/101/${lang}.md`} className={cn(buttonVariants())} download>
             Markdown
           </a>
-          <a href={`/101/${lang}.pdf`} className={cn(buttonVariants({ variant: "outline" }))} download>
-            PDF
-          </a>
+          <PdfPreview lang={lang} />
           <a href={`/${other}/101`} className={cn(buttonVariants({ variant: "outline" }))}>
             {otherLabel}
           </a>
@@ -103,7 +102,7 @@ export function DocView({ lang, otherLabel }: { lang: DocLang; otherLabel: strin
       </header>
       <nav className="space-y-2 border-y py-6">
         <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">Contents</p>
-        <ol className="list-decimal space-y-1 pl-5 text-sm">
+        <ol className="list-none space-y-1 text-sm">
           {toc.map((item) => (
             <li key={item.id}>
               <a

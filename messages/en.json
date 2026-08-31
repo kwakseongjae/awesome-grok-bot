@@ -576,6 +576,8 @@
     "eyebrow": "Field bible",
     "toc": "Contents",
     "print": "PDF",
+    "previewTitle": "Grok Bot 101 · PDF",
+    "downloadPdf": "Download",
     "otherEn": "English",
     "otherKo": "한국어",
     "meta": "v{version} · updated {date}",

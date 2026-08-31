@@ -576,6 +576,8 @@
     "eyebrow": "现场手册",
     "toc": "目录",
     "print": "PDF",
+    "previewTitle": "Grok Bot 101 · PDF",
+    "downloadPdf": "下载",
     "otherEn": "English",
     "otherKo": "한국어",
     "meta": "v{version} · {date} 更新",

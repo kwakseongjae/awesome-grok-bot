@@ -30,7 +30,7 @@ export async function GET(_req: Request, { params }: Props) {
     return new NextResponse(buf, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="grok-bot-101-${lang}.pdf"`,
+        "Content-Disposition": `inline; filename="grok-bot-101-${lang}.pdf"`,
       },
     });
   } catch {
