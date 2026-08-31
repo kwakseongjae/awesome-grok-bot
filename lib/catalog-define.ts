@@ -18,6 +18,7 @@ export type CatalogDraft = {
   category: Category;
   integrations: string[];
   source_url: string | null;
+  share_url?: string | null;
   added_at: string;
   names: Record<AppLocale, string>;
   summaries: Record<AppLocale, string>;

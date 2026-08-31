@@ -1,4 +1,5 @@
 import { CORE_CATALOG } from "@/data/catalog-core";
+import { PORTER_CATALOG } from "@/data/catalog-porter";
 import {
   defineListing,
   LAUNCH_URL,
@@ -2329,4 +2330,4 @@ const MORE_CATALOG = [
   }),
 ];
 
-export const CATALOG = [...CORE_CATALOG, ...MORE_CATALOG];
+export const CATALOG = [...CORE_CATALOG, ...MORE_CATALOG, ...PORTER_CATALOG];

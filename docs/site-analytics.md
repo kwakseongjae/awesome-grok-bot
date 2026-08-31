@@ -12,12 +12,14 @@ Do not set both `NEXT_PUBLIC_GTM_ID` and `NEXT_PUBLIC_GA_MEASUREMENT_ID`. GTM wi
 
 ## Events
 
-Primary funnel: land → search/filter → open listing → Copy.
+Primary funnel: land → search/filter → open listing → Copy or Add to Grok.
 
 | Event | When | Params |
 | --- | --- | --- |
 | `search` | Directory query idle 800ms | `search_term_len_bucket`, `result_count_bucket`, `category`, `has_integration_filter`, `kind_filter` |
-| `agb_copy` | Copy on listing / team / member / migrate starter | `copy_kind`, `has_bot_id` |
+| `agb_copy` | Copy on listing / team / member / migrate starter / template | `copy_kind`, `has_bot_id` |
+| `agb_add_to_grok` | Add to Grok (official x.ai preview) | `content_type` (`listing` \| `community`) |
+| `agb_bible_print` | Print / save PDF on /101 | `content_type=101` |
 | `share` | Listing share | `method` (`web_share` \| `clipboard`), `content_type=listing` |
 
 No raw query text. `page_view` is automatic — do not re-fire.

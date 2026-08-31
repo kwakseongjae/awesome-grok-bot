@@ -6,7 +6,7 @@ Live: [getgrokbot.com](https://getgrokbot.com). Agents: [/llms.txt](https://getg
 
 A [Grok Bot](https://github.com/kwakseongjae/awesome-grok-bot) directory. English default, with Korean and other locales.
 
-This repo is the public catalog of **bots** (named specialists you put into Grok Bot) and **teams** (a Chief plus specialists). On a listing page, **Copy** puts paste-ready setup text on the clipboard. There is no sponsor rail, ads, Stripe, or affiliate code.
+This repo is the public catalog of **bots** (named specialists you put into Grok Bot), **teams** (a Chief plus specialists), and **templates**. On a listing page, **Add to Grok** opens a public `x.ai/bot/…` preview when a share link exists; **Copy** still puts paste-ready setup text on the clipboard. **Portato** carries Hermes or OpenClaw into one Chief. getgrokbot does not mint `x.ai/bot` links — those come from Share as template inside Grok Bot. **Grok Bot 101** lives as editable Markdown in `content/101/en.md` and `content/101/ko.md` (screenshots in `content/101/assets/`). Download Markdown or PDF from `/101`. There is no sponsor rail, ads, Stripe, or affiliate code.
 
 Visual system: Grok-like white/black monotone. See [`design.md`](design.md). Listing faces are the Grok Bot sphere SVG (`public/brand/grok-bot-face.svg`). Migrate cards use official vendor marks in `public/brand/migrate/`.
 

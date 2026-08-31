@@ -1,6 +1,16 @@
 import { countBucket, event, lenBucket } from "@/lib/gtag";
 
-export type CopyKind = "listing" | "team" | "member" | "starter" | "install";
+export type CopyKind = "listing" | "team" | "member" | "starter" | "install" | "template";
+
+export const trackAddToGrok = (args: { source: "listing" | "community" }) => {
+  event("agb_add_to_grok", {
+    content_type: args.source,
+  });
+};
+
+export const trackBiblePrint = () => {
+  event("agb_bible_print", { content_type: "101" });
+};
 
 export const trackListingCopy = (args: { kind: CopyKind; has_bot_id: boolean }) => {
   event("agb_copy", {

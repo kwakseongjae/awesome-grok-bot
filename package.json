@@ -14,7 +14,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "tsx --test scripts/test-migrate-fixture.ts",
-    "db:migrate": "node scripts/migrate.mjs"
+    "db:migrate": "node scripts/migrate.mjs",
+    "101:pdf": "python3 scripts/build-101-pdf.py"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

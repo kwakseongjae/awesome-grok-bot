@@ -129,6 +129,10 @@ Grok Bot. A **team** has a chief plus specialists.
 | Migrate | 이전 | Migrate |
 | Handoff stepper | 인수인계 | Handoff |
 | Share | 공유 | Share |
+| Template | 템플릿 | Template |
+| Add to Grok | Add to Grok | Add to Grok |
+| Portato | Portato | Portato |
+| 101 | Grok Bot 101 | Grok Bot 101 |
 
 Do not show 헌장 / charter or 성공 / Success in the UI. Code and
 data may still use `charter` / `success` as keys.

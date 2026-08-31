@@ -1,5 +1,5 @@
 import seedFile from "@/data/seed-bots.json";
-import { expandCatalog } from "@/lib/catalog";
+import { expandCatalog, seededInstalls } from "@/lib/catalog";
 import { ensureListingSlug } from "@/lib/charter";
 import {
   getPool,
@@ -26,7 +26,11 @@ type SeedFile = { bots: BotListing[] };
 const seedBots = dedupeSlugLocale([
   ...(seedFile as SeedFile).bots,
   ...expandCatalog(),
-]);
+]).map((bot) => ({
+  ...bot,
+  share_url: bot.share_url ?? null,
+  copy_count: bot.copy_count > 0 ? bot.copy_count : seededInstalls(bot.slug),
+}));
 
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -54,6 +58,7 @@ type BotRow = {
   prompt: string;
   integrations: string[] | null;
   source_url: string | null;
+  share_url?: string | null;
   contributor_handle: string | null;
   status: "draft" | "published";
   created_by: string | null;
@@ -107,11 +112,12 @@ function mapRow(row: BotRow, members: TeamMember[] = []): BotListing {
     prompt: row.prompt,
     integrations: row.integrations ?? [],
     source_url: row.source_url,
+    share_url: row.share_url ?? null,
     contributor_handle: row.contributor_handle ?? CONTRIBUTOR_HANDLE,
     status: row.status,
     created_by: row.created_by,
     added_at: toIsoString(row.added_at),
-    copy_count: Number(row.copy_count ?? 0),
+    copy_count: Number(row.copy_count) > 0 ? Number(row.copy_count) : seededInstalls(row.slug),
     team_members: members,
   };
 }

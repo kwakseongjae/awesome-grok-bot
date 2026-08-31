@@ -1,18 +1,18 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "Specialists and teams you put into Grok Bot. Copy setup text from a listing and paste it in. You can also hand off from Hermes or OpenClaw."
+    "description": "A Grok Bot directory and public templates from X. Copy setup text, or Add to Grok Bot from an official share link."
   },
   "seo": {
     "faqTitle": "Questions",
     "faq": {
       "what": {
         "q": "What is Awesome Grok Bot?",
-        "a": "A sponsor-free Grok Bot directory. Copy specialist or team setup text and paste it into Grok Bot. It is not an official xAI product."
+        "a": "A sponsor-free Grok Bot directory. Add a public template, or copy setup text into Grok Bot. It is not an official xAI product."
       },
       "importer": {
         "q": "Does Grok Bot have an official importer?",
-        "a": "No. There is also no public API to create Bots or write memory. This site is a catalog plus a Hermes and OpenClaw skill."
+        "a": "No importer for Hermes or OpenClaw, and no public API to create Bots. Grok Bot can share a public template link (Add to Grok Bot). This site is a catalog, those share links, and a Hermes / OpenClaw skill."
       },
       "updates": {
         "q": "Where can I see Grok Bot updates and new features?",
@@ -24,11 +24,15 @@
       },
       "copy": {
         "q": "How do I use a listing?",
-        "a": "Copy the setup text from a detail page and paste it into Grok Bot. Start with one Chief. Login and 2FA stay human."
+        "a": "If the listing has a public x.ai share link, choose Add to Grok. Otherwise Copy the setup text into Edit Profile. Start with one Chief. Login and 2FA stay human."
+      },
+      "template": {
+        "q": "What is a Grok Bot template?",
+        "a": "A public share link (x.ai/bot/…) that installs a copy of a Bot: identity, description, skills, and routines. getgrokbot does not mint those URLs — the author publishes Share as template inside Grok Bot, then we store the link. Until then, Copy into Edit Profile. Strip keys before you share."
       },
       "migrate": {
         "q": "How do I move from Hermes or OpenClaw?",
-        "a": "Paste one line from getgrokbot.com/migrate into the agent you already use. That agent reads the skill and hands over packets. Keys and .env stay behind."
+        "a": "Install Portato from the directory, then paste one line from getgrokbot.com/migrate into the agent you already use. That agent reads the skill and hands over packets. Keys and .env stay behind."
       },
       "free": {
         "q": "Is this paid?",
@@ -45,6 +49,8 @@
     "submit": "Submit",
     "fromLink": "From a link",
     "howTo": "How to",
+    "templates": "Templates",
+    "bible": "Grok Bot 101",
     "install": "Install agents",
     "changelog": "Changelog",
     "ops": "Ops",
@@ -61,7 +67,7 @@
   "home": {
     "eyebrow": "Get your grok bot.",
     "title": "Awesome Grok Bot",
-    "lead": "Specialists and teams you put into Grok Bot. Copy setup text from a listing and paste it in. You can also hand off from Hermes or OpenClaw.",
+    "lead": "A directory of specialists and teams you copy into Grok Bot. Shared templates from X install with Add to Grok Bot.",
     "search": "Search by name, summary, or plugin",
     "searchLabel": "Search",
     "viewTable": "Table",
@@ -180,7 +186,9 @@
     "copy": "Copy",
     "copyAll": "Copy all",
     "copied": "Copied",
-    "copyHint": "Copies setup text for this listing only.",
+    "addToGrok": "Add to Grok Bot",
+    "addHint": "Opens the official x.ai preview. You need the Grok Bot app to finish. Copy still pastes setup text into Edit Profile.",
+    "copyHint": "Copies setup text for this listing only. Paste it into Bot actions → Edit Profile.",
     "copyAllHint": "Copies every member setup text on the team.",
     "memberCopyHint": "Copies this member only.",
     "copyFailed": "Could not copy to the clipboard. Check browser permission.",
@@ -315,6 +323,7 @@
       "moreIndex": "Templates index",
       "moreDirectoryLead": "Specialists and teams. Copy setup text and paste it into Grok Bot.",
       "goldInChat": "Gold tasks are not a web form. The agent asks for 3–5 in chat.",
+      "porterListing": "Portato template — install the Grok-side Bot first",
       "runbookLink": "Phase runbook — when the agent needs one step again",
       "runbookBanner": "This page is an agent runbook. You do not have to check boxes here. Paste the one-liner from the skill landing into the agent you already use.",
       "backSkill": "Back to the skill",
@@ -327,6 +336,8 @@
       "openclaw": "OpenClaw → Grok Bot",
       "body": "Paste the skill into the agent you already use and say migrate. Keys stay behind.",
       "cta": "Start the handoff",
+      "porterBody": "Install Portato on Grok Bot first. Then paste one line into the agent you already use.",
+      "porterCta": "Open Portato",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw",
       "destMark": "Grok Bot"
@@ -506,9 +517,75 @@
     "routineTitle": "Then a routine",
     "routineBody": "Schedule when only after how is saved. Cap 50 per Bot.",
     "loginNote": "Passwords, SSO, and 2FA stay with you.",
+    "bibleTitle": "Grok Bot 101",
+    "bibleBody": "The field bible: templates, Portato, Grok Build, Cursor, X and Threads.",
+    "bibleCta": "Open the bible",
     "videoTitle": "Grok Bot setup guide",
     "videoBody": "Nate Herk’s 20-minute walkthrough for a Bot team.",
     "videoCta": "Watch"
+  },
+  "templates": {
+    "eyebrow": "Share and add",
+    "title": "Grok Bot templates",
+    "lead": "A template here is a public x.ai/bot share link. Add to Grok Bot installs a copy on your account. Directory listings without a share link stay in the table — Copy into Edit Profile.",
+    "migrateTitle": "Migrate templates",
+    "migrateLead": "Paste one line into the agent you already use. Keys stay behind.",
+    "setupsTitle": "Other setups",
+    "setupsLead": "Specialists and teams from this directory. Search or pick a category. Copy setup text, then open the listing. This site does not write to Grok.",
+    "byDirectory": "by this directory",
+    "directory": "All listings",
+    "back": "Back to the directory",
+    "search": "Search by name or summary",
+    "searchLabel": "Search setups",
+    "all": "All",
+    "clear": "Clear",
+    "empty": "No setups match.",
+    "emptyHint": "Try another search or pick All.",
+    "results": "{count, plural, one {# setup} other {# setups}}",
+    "copySetup": "Copy setup text",
+    "openListing": "Open listing",
+    "openListingAria": "Open listing for {name}",
+    "categories": "Category",
+    "mint": "getgrokbot does not issue x.ai/bot links. The author publishes Share as template inside Grok Bot, posts it on X, then we store that URL.",
+    "safety": "Third-party templates are unverified. Read the preview. Connect the smallest useful accounts. Run one reversible task before you enable routines. Do not share keys.",
+    "docsShare": "Share a Bot · docs.x.ai",
+    "docsTerms": "Third-party bot terms · x.ai",
+    "homeEyebrow": "Shared on X",
+    "homeTitle": "Templates you can add today",
+    "homeLead": "Public share links from X. Name, author, and description match the official x.ai preview.",
+    "homeCta": "All templates",
+    "featuredTitle": "Popular on X",
+    "featuredLead": "The templates people actually posted and reused.",
+    "xTitle": "All shared templates",
+    "xLead": "Each card matches the official x.ai/bot preview. Original X post for credit.",
+    "xCredit": "Original post · @{handle}",
+    "xPost": "Original post",
+    "byAuthor": "by {name}",
+    "thirdParty": "This AI bot was created by a third-party user, not by SpaceXAI. It may act on your behalf. By clicking “Add to Grok Bot”, you accept the <terms>terms</terms>.",
+    "download": "Don't have Grok Bot? Download",
+    "count": "{count, plural, one {# template} other {# templates}}",
+    "tagAll": "All",
+    "tagCredit": "Credit / cards",
+    "tagCoding": "Coding",
+    "tagOps": "Ops",
+    "tagCreative": "Creative",
+    "tagPersonal": "Personal",
+    "allListings": "Browse the full directory"
+  },
+  "bible": {
+    "eyebrow": "Field bible",
+    "toc": "Contents",
+    "print": "PDF",
+    "otherEn": "English",
+    "otherKo": "한국어",
+    "meta": "v{version} · updated {date}",
+    "updateNote": "This page is the living draft. Print or save as PDF for a snapshot. Changelog records what shipped in the app."
+  },
+  "porter": {
+    "shareTitle": "Post this on X or Threads",
+    "shareLead": "Share the install, not the keys. Gold tasks yes. .env no.",
+    "postX": "Post on X",
+    "postThreads": "Post on Threads"
   },
   "howTo": {
     "eyebrow": "Tutorial",
@@ -524,6 +601,8 @@
     "linkMac": "macOS install · cursor.com/bot/onboarding",
     "linkIos": "iOS · App Store",
     "linkDirectory": "Copy setup text from the directory",
+    "linkTemplates": "Templates — Add to Grok or Copy",
+    "linkBible": "Grok Bot 101 — field bible",
     "linkComputer": "Computer and apps · handbook",
     "linkSkills": "Skills and routines · handbook",
     "linkNexus": "Floor Nexus setup",
@@ -665,38 +744,17 @@
     "mail": "Mail",
     "mailAria": "Send email",
     "howToUse": "How to use",
+    "bible": "Grok Bot 101",
+    "templates": "Templates",
     "colUse": "How to use",
     "guides": "Guides",
+    "colRead": "Read",
     "colMove": "Migration",
-    "templates": "Templates",
     "migrate": "Migrate",
     "colDirectory": "Directory",
     "colLegal": "Legal",
     "llms": "llms.txt",
     "copyright": "© {year} Awesome Grok Bot"
-  },
-  "templates": {
-    "eyebrow": "Template",
-    "title": "Grok Bot templates",
-    "lead": "Official Hermes and OpenClaw migrate templates, plus other setups you copy into Grok Bot. This site does not write to Grok.",
-    "migrateTitle": "Migrate templates",
-    "migrateLead": "Paste one line into the agent you already use. Keys stay behind.",
-    "setupsTitle": "Other setups",
-    "setupsLead": "Specialists and teams from this directory. Search or pick a category. Copy setup text, then open the listing. This site does not write to Grok.",
-    "byDirectory": "by this directory",
-    "directory": "All listings",
-    "back": "Back to the directory",
-    "search": "Search by name or summary",
-    "searchLabel": "Search setups",
-    "all": "All",
-    "clear": "Clear",
-    "empty": "No setups match.",
-    "emptyHint": "Try another search or pick All.",
-    "results": "{count, plural, one {# setup} other {# setups}}",
-    "copySetup": "Copy setup text",
-    "openListing": "Open listing",
-    "openListingAria": "Open listing for {name}",
-    "categories": "Category"
   },
   "guides": {
     "eyebrow": "Guides",

@@ -31,6 +31,8 @@ export type BotListing = {
   prompt: string;
   integrations: string[];
   source_url: string | null;
+  /** Official public template: https://x.ai/bot/{token}. Null = Copy into Edit Profile. */
+  share_url: string | null;
   contributor_handle: string;
   status: BotStatus;
   created_by: string | null;
@@ -57,6 +59,7 @@ export type BotDraftInput = {
   prompt: string;
   integrations: string[];
   source_url?: string | null;
+  share_url?: string | null;
   status: BotStatus;
   team_members: TeamMember[];
 };

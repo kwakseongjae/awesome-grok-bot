@@ -1,18 +1,18 @@
 {
   "meta": {
     "title": "Awesome Grok Bot",
-    "description": "Grok Bot에 넣는 전문가와 팀 목록입니다. 상세 페이지에서 Copy로 설정 문구를 붙입니다. Hermes·OpenClaw에서 이어 받을 수도 있습니다."
+    "description": "Grok Bot에 넣는 전문가, 팀, 템플릿입니다. 공개 공유 링크로 설치하거나 설정 문구를 Copy합니다. Portato가 Hermes·OpenClaw를 옮깁니다."
   },
   "seo": {
     "faqTitle": "자주 묻는 질문",
     "faq": {
       "what": {
         "q": "Awesome Grok Bot은 뭔가요?",
-        "a": "스폰서 없는 Grok Bot 디렉터리입니다. 전문가나 팀 설정 문구를 Copy해서 Grok Bot에 붙입니다. xAI 공식 제품이 아닙니다."
+        "a": "스폰서 없는 Grok Bot 디렉터리입니다. 공개 템플릿을 Add 하거나 설정 문구를 Copy해서 Grok Bot에 붙입니다. xAI 공식 제품이 아닙니다."
       },
       "importer": {
         "q": "Grok Bot에 공식 이전 버튼이 있나요?",
-        "a": "없습니다. 봇을 만들거나 기억을 쓰는 공개 API도 없습니다. 이 사이트는 목록과 Hermes·OpenClaw용 스킬을 제공합니다."
+        "a": "Hermes·OpenClaw 공식 가져오기는 없고, 봇을 만드는 공개 API도 없습니다. Grok Bot은 공개 템플릿 링크(Add to Grok Bot)를 나눌 수 있습니다. 이 사이트는 목록, 그 링크, Hermes·OpenClaw 스킬입니다."
       },
       "updates": {
         "q": "Grok Bot 업데이트와 새 기능은 어디서 보나요?",
@@ -24,11 +24,15 @@
       },
       "copy": {
         "q": "목록은 어떻게 쓰나요?",
-        "a": "상세 페이지에서 Copy한 설정 문구를 Grok Bot에 붙입니다. 첫 봇은 Chief 하나부터 두고, 로그인·2FA는 사람이 합니다."
+        "a": "목록에 공개 x.ai 공유 링크가 있으면 Add to Grok을 고릅니다. 없으면 설정 문구를 Copy해서 Edit Profile에 붙입니다. 첫 봇은 Chief 하나. 로그인·2FA는 사람이 합니다."
+      },
+      "template": {
+        "q": "Grok Bot 템플릿이 뭔가요?",
+        "a": "공개 공유 링크(x.ai/bot/…)로 봇 사본을 설치합니다. getgrokbot은 그 주소를 발급하지 않습니다. 작성자가 Grok Bot 안에서 Share as template로 낸 뒤, 우리가 그 링크를 저장합니다. 그 전엔 Copy로 Edit Profile에 붙입니다. 공유 전에 키를 빼세요."
       },
       "migrate": {
         "q": "Hermes나 OpenClaw에서 옮기려면?",
-        "a": "getgrokbot.com/migrate에서 한 줄을 쓰던 에이전트에 붙입니다. 그 에이전트가 스킬을 읽고 패킷으로 넘깁니다. 키와 .env는 옮기지 않습니다."
+        "a": "디렉터리에서 Portato를 깐 뒤, getgrokbot.com/migrate의 한 줄을 쓰던 에이전트에 붙입니다. 그 에이전트가 스킬을 읽고 패킷으로 넘깁니다. 키와 .env는 남깁니다."
       },
       "free": {
         "q": "유료인가요?",
@@ -45,6 +49,8 @@
     "submit": "등록",
     "fromLink": "링크에서 만들기",
     "howTo": "쓰는 법",
+    "templates": "템플릿",
+    "bible": "Grok Bot 101",
     "install": "에이전트 설치",
     "changelog": "체인지로그",
     "ops": "운영",
@@ -61,7 +67,7 @@
   "home": {
     "eyebrow": "Get your grok bot.",
     "title": "Awesome Grok Bot",
-    "lead": "Grok Bot에 넣는 전문가와 팀 목록입니다. 상세 페이지에서 Copy로 설정 문구를 붙입니다. Hermes·OpenClaw에서 이어 받을 수도 있습니다.",
+    "lead": "Grok Bot에 넣는 전문가와 팀 디렉터리입니다. 설정 문구는 Copy. X에서 공유된 템플릿은 Add to Grok Bot.",
     "search": "이름, 요약, 플러그인으로 검색",
     "searchLabel": "검색",
     "viewTable": "표",
@@ -180,7 +186,9 @@
     "copy": "Copy",
     "copyAll": "Copy all",
     "copied": "Copied",
-    "copyHint": "이 목록의 설정 문구만 복사합니다.",
+    "addToGrok": "Add to Grok Bot",
+    "addHint": "공식 x.ai 미리보기가 열립니다. 마무리는 Grok Bot 앱이 필요합니다. Copy는 설정 문구를 Edit Profile에 붙입니다.",
+    "copyHint": "이 목록의 설정 문구만 복사합니다. Bot actions → Edit Profile에 붙이세요.",
     "copyAllHint": "팀 전체 설정 문구를 한 번에 복사합니다.",
     "memberCopyHint": "이 팀원의 설정 문구만 복사합니다.",
     "copyFailed": "클립보드에 넣지 못했습니다. 브라우저 권한을 확인해 주세요.",
@@ -315,6 +323,7 @@
       "moreIndex": "템플릿 목록",
       "moreDirectoryLead": "전문가와 팀. 설정 문구를 Copy해 Grok Bot에 붙입니다.",
       "goldInChat": "골드 태스크는 웹 폼이 아닙니다. 에이전트가 채팅에서 3–5개를 묻습니다.",
+      "porterListing": "Portato 템플릿 — Grok 쪽 봇을 먼저 설치",
       "runbookLink": "페이즈 런북 — 에이전트가 한 단계만 다시 읽을 때",
       "runbookBanner": "이 페이지는 에이전트용 런북입니다. 사람이 여기를 체크할 필요는 없습니다. 스킬 랜딩의 한 줄을 쓰던 에이전트에 붙이세요.",
       "backSkill": "스킬 랜딩으로",
@@ -327,6 +336,8 @@
       "openclaw": "OpenClaw → Grok Bot",
       "body": "쓰던 에이전트에 스킬을 붙이고 마이그레이션 해 달라고 합니다. 키는 안 옮깁니다.",
       "cta": "이전하기",
+      "porterBody": "먼저 Grok Bot에 Portato를 깝니다. 그다음 쓰던 에이전트에 한 줄을 붙입니다.",
+      "porterCta": "Portato 열기",
       "hermesMark": "Hermes Agent",
       "openclawMark": "OpenClaw",
       "destMark": "Grok Bot"
@@ -506,9 +517,75 @@
     "routineTitle": "그다음 루틴",
     "routineBody": "when은 how 다음입니다. 봇당 루틴 50개.",
     "loginNote": "비밀번호, SSO, 2FA는 사람이 처리합니다.",
+    "bibleTitle": "Grok Bot 101",
+    "bibleBody": "현장 바이블. 템플릿, Portato, Grok Build, Cursor, X와 Threads.",
+    "bibleCta": "바이블 열기",
     "videoTitle": "Grok Bot 세팅 가이드",
     "videoBody": "Nate Herk이 20분 만에 봇 팀을 만드는 방법.",
     "videoCta": "영상 보기"
+  },
+  "templates": {
+    "eyebrow": "공유하고 설치",
+    "title": "Grok Bot 템플릿",
+    "lead": "여기 템플릿은 공개 x.ai/bot 공유 링크만 말합니다. Add to Grok Bot으로 계정에 사본이 깝니다. 공유 링크가 없는 목록은 디렉터리 표에 있고, Edit Profile에 Copy합니다.",
+    "migrateTitle": "이전 템플릿",
+    "migrateLead": "쓰던 에이전트에 한 줄을 붙입니다. 키는 옮기지 않습니다.",
+    "setupsTitle": "다른 설정",
+    "setupsLead": "이 디렉터리의 전문가와 팀. 검색하거나 분류를 고릅니다. 설정 문구를 Copy한 뒤 목록을 엽니다. 사이트가 Grok에 쓰지 않습니다.",
+    "byDirectory": "이 디렉터리",
+    "directory": "전체 목록",
+    "back": "디렉터리로 돌아가기",
+    "search": "이름이나 요약으로 검색",
+    "searchLabel": "설정 검색",
+    "all": "전체",
+    "clear": "지우기",
+    "empty": "맞는 설정이 없습니다.",
+    "emptyHint": "검색어를 바꾸거나 전체를 고르세요.",
+    "results": "{count, plural, other {#개}}",
+    "copySetup": "Copy setup text",
+    "openListing": "목록 열기",
+    "openListingAria": "{name} 목록 열기",
+    "categories": "분류",
+    "mint": "getgrokbot은 x.ai/bot 링크를 발급하지 않습니다. 작성자가 Grok Bot에서 Share as template 한 뒤 X에 올리면, 그 URL을 저장합니다.",
+    "safety": "제3자 템플릿은 미검증입니다. 미리보기를 읽고, 필요한 최소 계정만 연결하고, 되돌릴 수 있는 작업 한 번 한 뒤에 루틴을 켜세요. 키를 공유하지 마세요.",
+    "docsShare": "봇 공유 · docs.x.ai",
+    "docsTerms": "제3자 봇 약관 · x.ai",
+    "homeEyebrow": "X에서 공유",
+    "homeTitle": "지금 Add 할 수 있는 템플릿",
+    "homeLead": "X에 올라온 공개 공유 링크. 이름, 작성자, 설명은 공식 x.ai 미리보기와 같습니다.",
+    "homeCta": "템플릿 전체",
+    "featuredTitle": "X에서 많이 도는 것",
+    "featuredLead": "실제로 공유되고 다시 쓰인 템플릿입니다.",
+    "xTitle": "공유 템플릿 전체",
+    "xLead": "카드는 공식 x.ai/bot 미리보기와 같습니다. 원문 X 포스트로 크레딧.",
+    "xCredit": "원문 · @{handle}",
+    "xPost": "원문 포스트",
+    "byAuthor": "by {name}",
+    "thirdParty": "이 AI 봇은 SpaceXAI가 아닌 제3자 사용자가 만들었습니다. 사용자를 대신해 동작할 수 있습니다. “Add to Grok Bot”을 누르면 <terms>약관</terms>에 동의합니다.",
+    "download": "Grok Bot이 없나요? 다운로드",
+    "count": "{count, plural, other {#개 템플릿}}",
+    "tagAll": "전체",
+    "tagCredit": "크레딧 / 카드",
+    "tagCoding": "코딩",
+    "tagOps": "운영",
+    "tagCreative": "크리에이티브",
+    "tagPersonal": "개인",
+    "allListings": "디렉터리 전체 보기"
+  },
+  "bible": {
+    "eyebrow": "현장 바이블",
+    "toc": "목차",
+    "print": "PDF",
+    "otherEn": "English",
+    "otherKo": "한국어",
+    "meta": "v{version} · {date} 갱신",
+    "updateNote": "이 페이지가 살아 있는 초안입니다. 스냅샷은 인쇄하거나 PDF로 저장하세요. 앱에 뭐가 나왔는지는 체인지로그."
+  },
+  "porter": {
+    "shareTitle": "X나 Threads에 올리기",
+    "shareLead": "키가 아니라 설치를 공유하세요. 골드 태스크는 되고 .env는 안 됩니다.",
+    "postX": "X에 올리기",
+    "postThreads": "Threads에 올리기"
   },
   "howTo": {
     "eyebrow": "튜토리얼",
@@ -524,6 +601,8 @@
     "linkMac": "macOS 설치 · cursor.com/bot/onboarding",
     "linkIos": "iOS · App Store",
     "linkDirectory": "디렉터리에서 설정 문구 Copy",
+    "linkTemplates": "템플릿 — Add to Grok 또는 Copy",
+    "linkBible": "Grok Bot 101 — 현장 바이블",
     "linkComputer": "컴퓨터와 앱 · 핸드북",
     "linkSkills": "스킬과 루틴 · 핸드북",
     "linkNexus": "플로어 넥서스 설정",
@@ -665,38 +744,17 @@
     "mail": "Mail",
     "mailAria": "메일 보내기",
     "howToUse": "사용 방법",
+    "bible": "Grok Bot 101",
+    "templates": "템플릿",
     "colUse": "사용 방법",
     "guides": "가이드",
+    "colRead": "읽기",
     "colMove": "마이그레이션",
-    "templates": "템플릿",
     "migrate": "마이그레이션",
     "colDirectory": "분야",
     "colLegal": "라이선스",
     "llms": "llms.txt",
     "copyright": "© {year} Awesome Grok Bot"
-  },
-  "templates": {
-    "eyebrow": "템플릿",
-    "title": "Grok Bot 템플릿",
-    "lead": "공식 Hermes·OpenClaw 이전 템플릿과, Grok Bot에 붙이는 다른 설정입니다. 사이트가 Grok에 쓰지 않습니다.",
-    "migrateTitle": "이전 템플릿",
-    "migrateLead": "쓰던 에이전트에 한 줄을 붙입니다. 키는 옮기지 않습니다.",
-    "setupsTitle": "다른 설정",
-    "setupsLead": "이 디렉터리의 전문가와 팀. 검색하거나 분류를 고릅니다. 설정 문구를 Copy한 뒤 목록을 엽니다. 사이트가 Grok에 쓰지 않습니다.",
-    "byDirectory": "이 디렉터리",
-    "directory": "전체 목록",
-    "back": "디렉터리로 돌아가기",
-    "search": "이름이나 요약으로 검색",
-    "searchLabel": "설정 검색",
-    "all": "전체",
-    "clear": "지우기",
-    "empty": "맞는 설정이 없습니다.",
-    "emptyHint": "검색어를 바꾸거나 전체를 고르세요.",
-    "results": "{count, plural, other {#개}}",
-    "copySetup": "Copy setup text",
-    "openListing": "목록 열기",
-    "openListingAria": "{name} 목록 열기",
-    "categories": "분류"
   },
   "guides": {
     "eyebrow": "가이드",

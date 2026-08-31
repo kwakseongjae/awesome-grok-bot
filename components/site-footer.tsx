@@ -6,27 +6,39 @@ import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { SITE_UPDATED_AT } from "@/lib/changelog";
 import type { ListingLocale } from "@/lib/types";
-import { CONTACT_EMAIL, GITHUB_REPO, SHOW_ACCOUNT_CHROME } from "@/lib/site";
+import { CONTACT_EMAIL, GITHUB_REPO, GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const USE_LINKS: (
-  | { href: "/guides"; key: "guides" }
-  | { href: "/how-to"; key: "howToUse" }
+  | { href: "/templates"; key: "templates" }
   | { href: "/"; nav: "directory" }
-  | { href: "/rank"; nav: "rank" }
-  | { href: "/visitors"; nav: "visitors" }
-  | { href: "/reviews"; nav: "reviews" }
-  | { href: "/ops"; nav: "ops" }
+  | { href: "/how-to"; key: "howToUse" }
+  | { href: "/guides"; key: "guides" }
+  | { href: "/install"; nav: "install" }
   | { href: "/submit"; nav: "submit" }
 )[] = [
-  { href: "/guides", key: "guides" },
-  { href: "/how-to", key: "howToUse" },
+  { href: "/templates", key: "templates" },
   { href: "/", nav: "directory" },
-  { href: "/rank", nav: "rank" },
+  { href: "/how-to", key: "howToUse" },
+  { href: "/guides", key: "guides" },
+  { href: "/install", nav: "install" },
+  ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit", nav: "submit" }] as const) : []),
+];
+
+const READ_LINKS: (
+  | { href: "/101"; key: "bible" }
+  | { href: "/changelog"; key: "changelog" }
+  | { href: "/ops"; nav: "ops" }
+  | { href: "/visitors"; nav: "visitors" }
+  | { href: "/reviews"; nav: "reviews" }
+  | { href: "/rank"; nav: "rank" }
+)[] = [
+  { href: "/101", key: "bible" },
+  { href: "/changelog", key: "changelog" },
+  { href: "/ops", nav: "ops" },
   { href: "/visitors", nav: "visitors" },
   { href: "/reviews", nav: "reviews" },
-  { href: "/ops", nav: "ops" },
-  ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit", nav: "submit" }] as const) : []),
+  { href: "/rank", nav: "rank" },
 ];
 
 const MOVE_LINKS: (
@@ -90,13 +102,28 @@ export function SiteFooter() {
         </div>
 
         <div className="flex lg:justify-end">
-          <div className="grid grid-cols-2 gap-10 sm:gap-16">
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-16">
             <FooterCol title={t("colUse")}>
               {USE_LINKS.map((item) => (
                 <FooterLink key={item.href} href={item.href}>
                   {"nav" in item ? nav(item.nav) : t(item.key)}
                 </FooterLink>
               ))}
+            </FooterCol>
+            <FooterCol title={t("colRead")}>
+              {READ_LINKS.map((item) => (
+                <FooterLink key={item.href} href={item.href}>
+                  {"nav" in item ? nav(item.nav) : item.key === "changelog" ? nav("changelog") : t(item.key)}
+                </FooterLink>
+              ))}
+              <a
+                href={GROK_BOT.getStarted}
+                target="_blank"
+                rel="noreferrer"
+                className="w-fit text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                {nav("docs")}
+              </a>
             </FooterCol>
             <FooterCol title={t("colMove")}>
               {MOVE_LINKS.map((item) => (

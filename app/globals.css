@@ -368,6 +368,29 @@
   }
 }
 
+@media print {
+  header,
+  footer,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+
+  .bible-print a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    word-break: break-all;
+  }
+}
+
 .mark-idle {
   animation: mark-idle 3.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }

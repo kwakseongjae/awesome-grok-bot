@@ -1,7 +1,7 @@
 import type { ListingLocale } from "@/lib/types";
 
 /** Bump manually on every content update (KST). Shown in the footer and on /changelog. */
-export const SITE_UPDATED_AT = "2026-08-30T06:40:00+09:00";
+export const SITE_UPDATED_AT = "2026-08-31T21:00:00+09:00";
 
 export type ChangelogLink = {
   href: string;
@@ -44,6 +44,24 @@ const copy = (en: string, extra: Partial<Record<ListingLocale, string>> = {}): R
  * }
  */
 export const CHANGELOG: ChangelogEntry[] = [
+  {
+    id: "2026-08-31-x-templates-101",
+    date: "2026-08-31",
+    source: "This site",
+    title: copy("Shared templates from X, Grok Bot 101", {
+      ko: "X 공유 템플릿, Grok Bot 101",
+    }),
+    body: copy(
+      "Templates are only public x.ai/bot share links posted on X. Directory listings stay in the table. Header is Grok Bot 101, changelog, and Docs.",
+      {
+        ko: "템플릿은 X에 올라온 공개 x.ai/bot 공유 링크만 말합니다. 디렉터리 목록은 표에 둡니다. 헤더는 Grok Bot 101, 체인지로그, Docs.",
+      },
+    ),
+    links: [
+      { href: "/en/templates", label: "Templates" },
+      { href: "/en/101", label: "Grok Bot 101" },
+    ],
+  },
   {
     id: "2026-08-29-jess-sanity-templates",
     date: "2026-08-29",

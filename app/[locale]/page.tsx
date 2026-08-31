@@ -1,26 +1,16 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { toAppLocale } from "@/i18n/routing";
-import { CatalogRank } from "@/components/catalog-rank";
 import { Directory } from "@/components/directory";
 import { HeroHuddle } from "@/components/hero-huddle";
-import { HomeChangelog } from "@/components/home-changelog";
-import { HomeInstall } from "@/components/home-install";
-import { HomeMigrate } from "@/components/home-migrate";
 import { HomeOpsBar } from "@/components/home-ops-bar";
-import { HomeReading } from "@/components/home-reading";
-import { HomeVisitorWall } from "@/components/home-visitor-wall";
-import { JobKinds } from "@/components/job-kinds";
-import { SetupGuide } from "@/components/setup-guide";
+import { HomeTemplates } from "@/components/home-templates";
 import { SiteFaq } from "@/components/site-faq";
 import { parseDirectoryCategory, parseDirectoryView } from "@/lib/directory-view";
 import { listIntegrations, listPublishedBots } from "@/lib/bots";
 import { LISTING_FACE_SLUGS } from "@/lib/faces";
-import { rankingRows } from "@/lib/scores";
 import { pageSeo } from "@/lib/seo";
 import { SITE_NAME } from "@/lib/site";
-import { jobKindListings } from "@/lib/templates";
-import { getVisitorStoreStatus, listVisitorMarks } from "@/lib/visitor-posts";
 
 export const dynamic = "force-dynamic";
 
@@ -45,12 +35,8 @@ export default async function HomePage({ params, searchParams }: Props) {
   setRequestLocale(toAppLocale(locale));
   const t = await getTranslations();
   const uiLocale = toAppLocale(locale);
-  const [bots, integrations, marks] = await Promise.all([
-    listPublishedBots({ locale: uiLocale }),
-    listIntegrations(),
-    listVisitorMarks(),
-  ]);
-  const store = getVisitorStoreStatus();
+  const bots = await listPublishedBots({ locale: uiLocale });
+  const integrations = await listIntegrations();
   const huddle = LISTING_FACE_SLUGS.map((slug) => {
     const match =
       bots.find((bot) => bot.slug === slug && bot.locale === uiLocale) ??
@@ -59,10 +45,9 @@ export default async function HomePage({ params, searchParams }: Props) {
   });
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-12 sm:py-16">
+    <div className="mx-auto w-full max-w-6xl space-y-10 px-4 py-10 sm:py-12">
       <HomeOpsBar />
-      <section className="space-y-6 overflow-x-clip border-b pb-12">
-        <HeroHuddle listings={huddle} />
+      <section className="flex flex-col items-start gap-8 overflow-x-clip border-b pb-8 lg:flex-row lg:items-center lg:justify-between">
         <div className="max-w-2xl space-y-4">
           <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">
             {t("home.eyebrow")}
@@ -74,21 +59,9 @@ export default async function HomePage({ params, searchParams }: Props) {
             {t("home.lead")}
           </p>
         </div>
+        <HeroHuddle listings={huddle} className="hidden max-w-[11rem] shrink-0 sm:max-w-[13rem] lg:block" />
       </section>
-      <HomeVisitorWall marks={marks} canWrite={store.canWrite} />
-      <SetupGuide />
-      <JobKinds
-        jobs={jobKindListings(bots).map((bot) => ({
-          slug: bot.slug,
-          name: bot.name,
-          summary: bot.summary,
-        }))}
-      />
-      <HomeChangelog />
-      <HomeMigrate />
-      <HomeInstall />
-      <HomeReading />
-      <CatalogRank rows={rankingRows(bots)} />
+      <HomeTemplates />
       <Directory
         bots={bots}
         integrations={integrations}

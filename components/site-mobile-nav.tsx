@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { AuthButtons } from "@/components/auth-buttons";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GROK_BOT, SHOW_ACCOUNT_CHROME } from "@/lib/site";
+import { HEADER_NAV } from "@/lib/nav";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,17 +16,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-const NAV_ITEMS = [
-  { href: "/how-to" as const, key: "howTo" as const },
-  { href: "/install" as const, key: "install" as const },
-  { href: "/changelog" as const, key: "changelog" as const },
-  { href: "/ops" as const, key: "ops" as const },
-  { href: "/migrate" as const, key: "migrate" as const },
-  { href: "/visitors" as const, key: "visitors" as const },
-  { href: "/reviews" as const, key: "reviews" as const },
-  ...(SHOW_ACCOUNT_CHROME ? ([{ href: "/submit" as const, key: "submit" as const }] as const) : []),
-] as const;
 
 export function SiteMobileNav() {
   const t = useTranslations("nav");
@@ -54,7 +44,7 @@ export function SiteMobileNav() {
           </SheetClose>
         </SheetHeader>
         <nav className="flex flex-col gap-1 p-4" aria-label={a11y("mainNav")}>
-          {NAV_ITEMS.map((item) => (
+          {HEADER_NAV.map((item) => (
             <SheetClose key={item.href} asChild>
               <Link
                 href={item.href}

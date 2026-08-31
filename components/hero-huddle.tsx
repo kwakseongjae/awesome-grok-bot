@@ -14,9 +14,10 @@ export type HuddleListing = {
 
 type Props = {
   listings: HuddleListing[];
+  className?: string;
 };
 
-export function HeroHuddle({ listings }: Props) {
+export function HeroHuddle({ listings, className }: Props) {
   const t = useTranslations("home");
   const a11y = useTranslations("a11y");
   const labelId = useId();
@@ -24,7 +25,11 @@ export function HeroHuddle({ listings }: Props) {
   const count = Math.max(listings.length, 1);
 
   return (
-    <div className="huddle relative mx-auto aspect-square w-full max-w-[min(100%,34rem)]" role="group" aria-labelledby={labelId}>
+    <div
+      className={cn("huddle relative mx-auto aspect-square w-full max-w-[min(100%,34rem)]", className)}
+      role="group"
+      aria-labelledby={labelId}
+    >
       <p id={labelId} className="sr-only">
         {a11y("huddle")}
       </p>

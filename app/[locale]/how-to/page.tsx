@@ -36,8 +36,8 @@ type ExternalLinkKey =
 type StepLink =
   | { href: string; key: ExternalLinkKey }
   | {
-      href: "/" | "/bots/floor-nexus" | "/bots/run-orchestrator";
-      key: "linkDirectory" | "linkNexus" | "linkOrchestrator";
+      href: "/" | "/templates" | "/101" | "/bots/floor-nexus" | "/bots/run-orchestrator";
+      key: "linkDirectory" | "linkTemplates" | "linkBible" | "linkNexus" | "linkOrchestrator";
       internal: true;
     };
 
@@ -51,7 +51,11 @@ const STEP_LINKS: Partial<Record<(typeof STEP_KEYS)[number], StepLink[]>> = {
     { href: GROK_BOT.installMac, key: "linkMac" },
     { href: GROK_BOT.installIos, key: "linkIos" },
   ],
-  setup: [{ href: "/", key: "linkDirectory", internal: true }],
+  setup: [
+    { href: "/", key: "linkDirectory", internal: true },
+    { href: "/templates", key: "linkTemplates", internal: true },
+    { href: "/101", key: "linkBible", internal: true },
+  ],
   login: [{ href: GROK_BOT.computer, key: "linkComputer" }],
   skill: [{ href: GROK_BOT.skills, key: "linkSkills" }],
   routine: [{ href: GROK_BOT.skills, key: "linkSkills" }],

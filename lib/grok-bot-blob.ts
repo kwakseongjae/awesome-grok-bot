@@ -488,6 +488,8 @@ const EXTRA_SKINS: Record<string, BotSkin> = {
   jess: { shape: "galet", color: "ambre", expression: "attentif" },
   sanity: { shape: "squircle", color: "gris", expression: "attentif" },
   "eng-table": { shape: "hexagone", color: "encre", expression: "attentif" },
+  "porter-hermes": { shape: "galet", color: "violet", expression: "attentif" },
+  "porter-openclaw": { shape: "goutte", color: "encre", expression: "fier" },
 };
 
 function hash32(input: string) {

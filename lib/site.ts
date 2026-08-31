@@ -20,6 +20,8 @@ export const GROK_BOT = {
   getStarted: "https://docs.x.ai/grok-bot/get-started",
   overview: "https://docs.x.ai/grok-bot/overview",
   faq: "https://docs.x.ai/grok-bot/faq",
+  bots: "https://docs.x.ai/grok-bot/bots",
+  shareTerms: "https://x.ai/legal/bot-sharing-terms",
   pricingCursor: "https://cursor.com/pricing",
   plansHelp: "https://cursor.com/help/grok-bot/plans",
   installMac: "https://cursor.com/bot/onboarding",
