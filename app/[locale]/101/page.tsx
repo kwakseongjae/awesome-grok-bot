@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: meta.title,
     description:
       lang === "ko"
-        ? "Grok Bot 현장 바이블. X 템플릿, Portato, Grok Build, Cursor. Markdown과 PDF로 가져갈 수 있습니다."
+        ? "Grok Bot을 현장에서 쓰기 위한 안내서입니다. X 템플릿, Portato, Grok Build, Cursor. Markdown과 PDF로 가져갈 수 있습니다."
         : "Field bible for Grok Bot. X templates, Portato, Grok Build, Cursor. Download as Markdown or PDF.",
   });
 }
@@ -47,7 +47,12 @@ export default async function BiblePage({ params }: Props) {
           { name: meta.title, path: localePath(appLocale, "101") },
         ])}
       />
-      <DocView lang={lang} otherLabel={lang === "en" ? t("otherKo") : t("otherEn")} />
+      <DocView
+        lang={lang}
+        otherLabel={lang === "en" ? t("otherKo") : t("otherEn")}
+        eyebrow={t("eyebrow")}
+        tocLabel={t("toc")}
+      />
     </div>
   );
 }

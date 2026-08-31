@@ -518,7 +518,7 @@
     "routineBody": "when은 how 다음입니다. 봇당 루틴 50개.",
     "loginNote": "비밀번호, SSO, 2FA는 사람이 처리합니다.",
     "bibleTitle": "Grok Bot 101",
-    "bibleBody": "현장 바이블. 템플릿, Portato, Grok Build, Cursor, X와 Threads.",
+    "bibleBody": "현장에서 쓰는 안내서입니다. 템플릿, Portato, Grok Build, Cursor, X와 Threads.",
     "bibleCta": "바이블 열기",
     "videoTitle": "Grok Bot 세팅 가이드",
     "videoBody": "Nate Herk이 20분 만에 봇 팀을 만드는 방법.",
@@ -581,7 +581,7 @@
     "otherEn": "English",
     "otherKo": "한국어",
     "meta": "v{version} · {date} 갱신",
-    "updateNote": "이 페이지가 살아 있는 초안입니다. 스냅샷은 인쇄하거나 PDF로 저장하세요. 앱에 뭐가 나왔는지는 체인지로그."
+    "updateNote": "이 페이지는 계속 고치는 초안입니다. 스냅샷이 필요하면 인쇄하거나 PDF로 저장하세요. 앱에 뭐가 나왔는지는 체인지로그를 보세요."
   },
   "porter": {
     "shareTitle": "X나 Threads에 올리기",

@@ -74,7 +74,17 @@ function Node({ node }: { node: DocNode }) {
   );
 }
 
-export function DocView({ lang, otherLabel }: { lang: DocLang; otherLabel: string }) {
+export function DocView({
+  lang,
+  otherLabel,
+  eyebrow,
+  tocLabel,
+}: {
+  lang: DocLang;
+  otherLabel: string;
+  eyebrow: string;
+  tocLabel: string;
+}) {
   const { meta, nodes, toc } = loadDoc(lang);
   const other: DocLang = lang === "en" ? "ko" : "en";
   const updated = meta.updated
@@ -84,7 +94,7 @@ export function DocView({ lang, otherLabel }: { lang: DocLang; otherLabel: strin
   return (
     <article className="space-y-8">
       <header className="space-y-4">
-        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">Field bible</p>
+        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">{eyebrow}</p>
         <h1 className="text-4xl font-semibold tracking-tight">{meta.title}</h1>
         <p className="font-mono text-xs text-muted-foreground">
           v{meta.version}
@@ -101,7 +111,7 @@ export function DocView({ lang, otherLabel }: { lang: DocLang; otherLabel: strin
         </div>
       </header>
       <nav className="space-y-2 border-y py-6">
-        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">Contents</p>
+        <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground uppercase">{tocLabel}</p>
         <ol className="list-none space-y-1 text-sm">
           {toc.map((item) => (
             <li key={item.id}>
